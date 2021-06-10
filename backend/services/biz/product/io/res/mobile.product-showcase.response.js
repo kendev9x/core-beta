@@ -1,0 +1,35 @@
+module.exports = {
+	productCode: "",
+	templateId: "",
+	templateRev: "",
+	img: "",
+	photos: "",
+	img360: "",
+	photos360: "",
+	name: {},
+	shortDesc: {},
+	description: {},
+	price: 0,
+	quantity: 0,
+	unit: "",
+	tags: [],
+	attrs: {},
+	skuAttrs: [],
+	skus: [
+		{
+			refCode: "",
+			name: {},
+			attrs: {},
+			attrsExt: {},
+			sku: "",
+			img: "",
+			photos: [],
+			price: 0,
+			shortDesc: {},
+			description: {},
+			quantity: 0,
+		}
+	],
+	createDate: { type: Date, default: new Date() },
+	searchInfo: {}
+};

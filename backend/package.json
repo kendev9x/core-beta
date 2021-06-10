@@ -1,0 +1,93 @@
+{
+  "name": "nova-be",
+  "version": "1.0.0",
+  "description": "My Moleculer-based microservices project",
+  "scripts": {
+    "dev": "moleculer-runner --repl --config configs/dev.config.js --envfile .run.env services/gw/apis/*.gw.js services/gw/sockets/*.socket.js services/biz/**/start.js",
+    "staging": "moleculer-runner --repl --hot --config configs/staging.config.js --envfile .run.env services/gw/apis/*.gw.js services/gw/sockets/*.socket.js services/biz/**/start.js",
+    "uat": "moleculer-runner --repl --hot --config configs/uat.config.js --envfile .run.env services/gw/apis/*.gw.js services/gw/sockets/*.socket.js services/biz/**/start.js",
+    "prod": "moleculer-runner --repl --hot --config configs/prod.config.js --envfile .run.env services/gw/apis/*.gw.js services/gw/sockets/*.socket.js services/biz/**/start.js",
+    "start": "moleculer-runner --envfile .run.env --instances=max bin/services_enable/*.service.js",
+    "cli": "moleculer connect NATS",
+    "ci": "jest --watch",
+    "test": "jest --coverage",
+    "lint": "eslint services/gw",
+    "dc:up": "docker-compose up --build -d",
+    "dc:logs": "docker-compose logs -f",
+    "dc:down": "docker-compose down",
+    "all": "moleculer-runner --repl --config configs/dev.config.js --envfile .run.env bin/services_enable/*.service.js --instances=max",
+    "bizProduct": "moleculer-runner --repl --hot --config configs/dev/biz.product.config.js --envfile .run.env bin/services_enable/biz.product.service.js --instances 1",
+    "bizTracking": "moleculer-runner --repl --hot --config configs/dev/biz.tracking.config.js --envfile .run.env bin/services_enable/biz.tracking.service.js --instances 1",
+    "bizAccount": "moleculer-runner --repl --hot --config configs/dev/biz.account.config.js --envfile .run.env bin/services_enable/biz.account.service.js --instances 1",
+    "bizAuth": "moleculer-runner --repl --hot --config configs/dev/biz.auth.config.js --envfile .run.env bin/services_enable/biz.auth.service.js --instances 1",
+    "gwMobile": "moleculer-runner --repl --hot --config configs/dev/gw.mobile.config.js --envfile .run.env services/gw/apis/mobile.gw.js --instances 1",
+    "gwPortal": "moleculer-runner --repl --hot --config configs/dev/gw.portal.config.js --envfile .run.env services/gw/apis/portal.gw.js --instances 1"
+  },
+  "keywords": [
+    "microservices",
+    "moleculer"
+  ],
+  "author": "",
+  "devDependencies": {
+    "dateformat": "^4.4.1",
+    "eslint": "^7.7.0",
+    "fastify": "^1.14.6",
+    "fastify-static": "^1.1.0",
+    "jest": "^26.4.2",
+    "jest-cli": "^26.4.2",
+    "json-diff": "^0.5.4",
+    "moleculer-repl": "^0.6.4",
+    "moleculer-web-swagger": "^0.0.4",
+    "request-promise": "^4.2.6",
+    "swagger-ui-dist": "^3.38.0"
+  },
+  "dependencies": {
+    "@elastic/elasticsearch": "^7.10.0",
+    "automapper": "^1.0.0",
+    "cqrs-domain": "^2.14.79",
+    "dotenv": "^8.2.0",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.1",
+    "fastify-swagger": "^3.5.0",
+    "http-status-codes": "^2.1.4",
+    "i": "^0.3.6",
+    "ioredis": "^4.17.3",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.20",
+    "moleculer": "^0.14.10",
+    "moleculer-db": "^0.8.4",
+    "moleculer-db-adapter-mongo": "^0.4.7",
+    "moleculer-web": "^0.9.0",
+    "mongo-sanitize": "^1.1.0",
+    "mongoose": "^5.10.16",
+    "mongoose-aggregate-paginate-v2": "^1.0.42",
+    "mongoose-field-encryption": "^4.0.1",
+    "mongoose-paginate-v2": "^1.3.12",
+    "mssql": "^7.1.0",
+    "nats": "^1.4.12",
+    "npm": "^6.14.9",
+    "protobufjs": "^6.10.2",
+    "randomatic": "^3.1.1",
+    "redis": "^3.1.2",
+    "save": "^2.4.0",
+    "swagger-jsdoc": "^6.0.0-rc.4",
+    "swagger-stats": "^0.95.18",
+    "swagger-ui-express": "^4.1.5",
+    "tedious": "^11.0.8",
+    "uuid": "^8.3.2",
+    "xlsx-stream-reader": "^1.1.1"
+  },
+  "engines": {
+    "node": ">= 10.x.x"
+  },
+  "jest": {
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node",
+    "rootDir": "./services",
+    "roots": [
+      "../test"
+    ]
+  }
+}
