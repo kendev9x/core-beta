@@ -40,7 +40,7 @@ class ProductMobileRoutes extends BaseRoute {
 			use: [],
 			mergeParams: true,
 			authentication: true,
-			authorization: true,
+			authorization: false,
 			autoAliases: true,
 			aliases: this.registerAlias(),
 			bodyParsers: {

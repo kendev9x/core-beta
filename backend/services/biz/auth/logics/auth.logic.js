@@ -30,19 +30,20 @@ class AuthLogic extends BaseLogic {
 		if (!apiKeyEncoded) {
 			return ResponseHelper.resErr(ResponseCode.SYS_STATUS_CODE.BAD_REQUEST, "Api key invalid", 400);
 		}
-		let decodeApiKey = NovaHelpers.EncryptHelper.decryptBase64(apiKeyEncoded).toString();
-		decodeApiKey = decodeApiKey.replace(/['"]+/g, '');
-		const arr = decodeApiKey.split(".");
+		let decodeApiKeyParam = NovaHelpers.EncryptHelper.decryptBase64(apiKeyEncoded).toString();
+		// decodeApiKey = decodeApiKey.replace(/['"]+/g, '');
+		// const arr = decodeApiKey.split(".");
+		const decodeApiKey = JSON.parse(decodeApiKeyParam);
 
 		const { route } = ctx.params.params;
 		const authLog = {
-			client_id: decodeApiKey,
+			client_id: decodeApiKeyParam,
 			session: apiKeyEncoded,
 			action: route
 		};
 
 		const apiKey = await this.apiKeyModel.findOne({id: "authenticate_key"});
-		if (!decodeApiKey || !apiKey|| arr.length !==2 || arr[0] !== apiKey.prefix) {
+		if (!decodeApiKey || !apiKey|| decodeApiKey.publicKey !== apiKey.prefix) {
 			authLog.message = "Api key invalid";
 			await this.authLogLogic.createAuthLog(authLog);
 			return ResponseHelper.resErr(ResponseCode.SYS_STATUS_CODE.BAD_REQUEST, "Api key invalid", 400);
@@ -50,7 +51,7 @@ class AuthLogic extends BaseLogic {
 		authLog.message = "Authenticate success";
 
 		const timing = apiKey.timing;
-		let filter = {client_id: decodeApiKey,
+		let filter = {client_id: decodeApiKeyParam,
 			createdAt: {$gte: new Date(new Date().getTime() - 1000 * 60),  $lt: new Date()}
 		};
 		const logs = await this.authLogLogic.getLogs(filter);

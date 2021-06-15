@@ -33,7 +33,6 @@ class AuthLogLogic extends BaseLogic {
 
 	async getLogs(filter){
 		return this.authLogModel.getAll(filter);
-
 	}
 }
 
