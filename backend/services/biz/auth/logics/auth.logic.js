@@ -31,8 +31,6 @@ class AuthLogic extends BaseLogic {
 			return ResponseHelper.resErr(ResponseCode.SYS_STATUS_CODE.BAD_REQUEST, "Api key invalid", 400);
 		}
 		let decodeApiKeyParam = NovaHelpers.EncryptHelper.decryptBase64(apiKeyEncoded).toString();
-		// decodeApiKey = decodeApiKey.replace(/['"]+/g, '');
-		// const arr = decodeApiKey.split(".");
 		const decodeApiKey = JSON.parse(decodeApiKeyParam);
 
 		const { route } = ctx.params.params;
