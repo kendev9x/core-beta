@@ -1,7 +1,7 @@
-const BamCashModel = require("./bam-cash.model");
-const BamBonusModel = require("./bam-bonus.model");
+const CashWalletModel = require("./cash-wallet.model");
+const BonusWalletModel = require("./bonus-wallet.model");
 const CoreSQLModel = require("./core-sql.model");
 
 module.exports = {
-	BamCashModel, BamBonusModel, CoreSQLModel
+	CashWalletModel, BonusWalletModel, CoreSQLModel
 };

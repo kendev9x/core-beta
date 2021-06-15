@@ -6,15 +6,20 @@ const AuthLogLogic = require("./auth-log.logic");
 const DeviceInfoLogic = require("./device-info.logic");
 const uuid = require("uuid");
 const jwt = require('jsonwebtoken');
-const { ResponseHelper } = require("../../../../libs/helpers");
+const { ResponseHelper, FunctionHelper } = require("../../../../libs/helpers");
+const UserConnector = require("../connectors/user.connector");
+const CustomerConnector = require("../connectors/customer.connector");
 
 class AuthLogic extends BaseLogic {
 	constructor(mainProcess) {
 		super(mainProcess);
 		this.models = mainProcess.models;
 		this.apiKeyModel = this.models.ApiKeyModel;
+		this.otpModel = this.models.OtpModel;
 		this.authLogLogic = new AuthLogLogic(mainProcess);
 		this.deviceInfoLogic = new DeviceInfoLogic(mainProcess);
+		this.userConnector = new UserConnector(mainProcess);
+		this.customerConnector = new CustomerConnector(mainProcess);
 	}
 
 	async validateApiKey(ctx){
@@ -37,7 +42,7 @@ class AuthLogic extends BaseLogic {
 		};
 
 		const apiKey = await this.apiKeyModel.findOne({id: "authenticate_key"});
-		if (!decodeApiKey || !apiKey|| arr.length !=2 || arr[0] !== apiKey.prefix) {
+		if (!decodeApiKey || !apiKey|| arr.length !==2 || arr[0] !== apiKey.prefix) {
 			authLog.message = "Api key invalid";
 			await this.authLogLogic.createAuthLog(authLog);
 			return ResponseHelper.resErr(ResponseCode.SYS_STATUS_CODE.BAD_REQUEST, "Api key invalid", 400);
@@ -56,8 +61,7 @@ class AuthLogic extends BaseLogic {
 
 		}
 		await this.authLogLogic.createAuthLog(authLog);
-		// return ResponseHelper.resInfo(ResponseCode.SYS_STATUS_CODE.OK);
-		return  this.verifyToken(ctx);
+		return ResponseHelper.resInfo(ResponseCode.SYS_STATUS_CODE.OK);
 	}
 
 	async genKey(ctx){
@@ -105,15 +109,17 @@ class AuthLogic extends BaseLogic {
 		try {
 			// check userName + password
 			const {userName, password} = ctx.params;
-			if (userName != 'admin' || password != '123456') {
+			const user = await this.userConnector.findUserByUserAndPass(ctx, {userName, password});
+			if (_.isEmpty(user)) {
 				return ResponseHelper.resErr(ResponseCode.SYS_STATUS_CODE.UNAUTHORIZED, "userName & password incorrect", 401);
 			}
 
 			const token = jwt.sign({
 				exp: Math.floor(Date.now() / 1000) + (60 * 60),
 				data: {
-					accountId: '224324234',
-					fullName: "Nguyễn Văn Admin"
+					typeEndpoint: "WEB",
+					accountId: user._id.toString(),
+					fullName: user.fullName
 				}
 			}, process.env.JWT_PORTAL_KEY);
 			const data = {
@@ -127,7 +133,26 @@ class AuthLogic extends BaseLogic {
 		}
 	}
 
-	async verifyToken(ctx){
+	async verifyTokenMobile(ctx){
+		try {
+			const authString = ctx.meta.headers["authorization"];
+			if (!authString) {
+				return ResponseHelper.resErr(ResponseCode.SYS_STATUS_CODE.UNAUTHORIZED, "Unauthorized");
+			}
+			const token = authString.substring(7);
+			const decoded = await jwt.verify(token, process.env.JWT_MOBILE_KEY);
+			if (!decoded) {
+				return ResponseHelper.resErr(ResponseCode.SYS_STATUS_CODE.UNAUTHORIZED, "Unauthorized", 401);
+			}
+			const {exp, data} = decoded;
+			const {accountId, fullName} = data;
+			return ResponseHelper.resInfo(data);
+		} catch (error) {
+			return ResponseHelper.resErr(ResponseCode.SYS_STATUS_CODE.UNAUTHORIZED, "Unauthorized", 401);
+		}
+	}
+
+	async verifyTokenPortal(ctx){
 		try {
 			const authString = ctx.meta.headers["authorization"];
 			if (!authString) {
@@ -141,6 +166,81 @@ class AuthLogic extends BaseLogic {
 			const {exp, data} = decoded;
 			const {accountId, fullName} = data;
 			return ResponseHelper.resInfo(data);
+		} catch (error) {
+			return ResponseHelper.resErr(ResponseCode.SYS_STATUS_CODE.UNAUTHORIZED, "Unauthorized", 401);
+		}
+	}
+
+	async authorize(ctx) {
+		try {
+			const { route, accountId, actionName } = ctx.params.params;
+			// const actions = ["v3.ProductBiz.portalGetIndustry"];
+			// It check the `auth` property in action schema.
+			const actions = await this.userConnector.getActionsByUserId(ctx, accountId);
+			if (!actions.includes(actionName)) {
+				return ResponseHelper.resErr(ResponseCode.SYS_STATUS_CODE.UNAUTHORIZED, "Unauthorized", 401);
+			}
+			return ResponseHelper.resInfo(true);
+		} catch (error) {
+			return ResponseHelper.resErr(ResponseCode.SYS_STATUS_CODE.UNAUTHORIZED, "Unauthorized", 401);
+		}
+	}
+
+	/** TODO: FUNCTION ERROR - NOT PASS PHONE PARAM ALSO RUN */
+	async genOtp(ctx) {
+		try {
+			const { phone, status } = ctx.params;
+			const dateNow = new Date();
+			dateNow.setMinutes(dateNow.getMinutes() + 2);
+			const otp = await this.otpModel.create({
+				phone,
+				otp: FunctionHelper.randomString(6),
+				status,
+				timeExpired: new Date(dateNow)
+			});
+			return ResponseHelper.resInfo(true);
+		} catch (error) {
+			return ResponseHelper.resErr(ResponseCode.SYS_STATUS_CODE.UNAUTHORIZED, "Unauthorized", 401);
+		}
+	}
+
+	async verifyOtp(ctx) {
+		try {
+			const { phone, otp } = ctx.params;
+			const otpInDB = await this.otpModel.findOne({ phone, otp });
+			if (_.isEmpty(otpInDB)) {
+				return ResponseHelper.resErr(ResponseCode.SYS_STATUS_CODE.UNAUTHORIZED, "Unauthorized", 401);
+			}
+			if ((Date.now() - otpInDB.timeExpired.getTime()) > 12000) {
+				return ResponseHelper.resErr(ResponseCode.SYS_STATUS_CODE.UNAUTHORIZED, "Unauthorized", 401);
+			}
+
+			const profile = await this.customerConnector.findProfileByPhone(ctx, phone);
+			const token = jwt.sign({
+				exp: Math.floor(Date.now() / 1000) + (60 * 60),
+				data: {
+					accountId: profile.accountId,
+					fullName: profile.fullName
+				}
+			}, process.env.JWT_MOBILE_KEY);
+			const data = {
+				token
+			};
+			return ResponseHelper.resInfo(data);
+		} catch (error) {
+			return ResponseHelper.resErr(ResponseCode.SYS_STATUS_CODE.UNAUTHORIZED, "Unauthorized", 401);
+		}
+	}
+
+	async authorizeMobile(ctx) {
+		try {
+			const { route, accountId, actionName } = ctx.params.params;
+			/** TODO: SET CONFIGURATION FOR ACTIONS AT DB */
+			const actionsMobile = ["v3.AccountBiz.mobileCustomerFindByPhone"];
+			if (!actionsMobile.includes(actionName)) {
+				return ResponseHelper.resErr(ResponseCode.SYS_STATUS_CODE.UNAUTHORIZED, "Unauthorized", 401);
+			}
+			return ResponseHelper.resInfo(true);
 		} catch (error) {
 			return ResponseHelper.resErr(ResponseCode.SYS_STATUS_CODE.UNAUTHORIZED, "Unauthorized", 401);
 		}

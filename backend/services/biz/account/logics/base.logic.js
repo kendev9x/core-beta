@@ -8,6 +8,7 @@ class BaseLogic {
 		this.mainProcess = mainProcess;
 		this.productTemplateModel = this.mainProcess.models.ProductTemplateModel;
 		this.entityModel = this.mainProcess.models.EntityModel;
+		this.roleModel = this.mainProcess.models.RoleModel;
 	}
 
 	/** Processing result return to publish actions

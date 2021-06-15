@@ -1,6 +1,6 @@
 const {NovaHelpers} = require("../../../../libs");
 const {Response} = require("../io");
-const {BamLogic} = require("../logics");
+const {CashWalletLogic} = require("../logics");
 // return await NovaHelpers.MongoFuncHelper.$save(this.model, ent);
 
 /**
@@ -10,7 +10,7 @@ const {BamLogic} = require("../logics");
 class MobilePublish {
 	constructor(mainProcess) {
 		this.mainProcess = mainProcess;
-		this.bamLogic = new BamLogic(mainProcess);
+		this.cashWalletLogic = new CashWalletLogic(mainProcess);
 	}
 }
 

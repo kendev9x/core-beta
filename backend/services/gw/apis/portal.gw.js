@@ -1,6 +1,8 @@
 "use strict";
 const ApiGateway = require("moleculer-web");
 const BaseGw = require("./base.gw");
+const ResponseCode = require("../../../defined/response-code");
+const {resErr} = require("../../../libs/helpers/response.helper");
 const { NovaHelpers } = require("../../../libs");
 const { PortalRoutes } = require("./routes/");
 
@@ -27,8 +29,8 @@ class PortalGw extends BaseGw {
 			},
 			methods: {
 				async authenticate(ctx, route, req) {
-					const functionPath = NovaHelpers.RequestHelper.genPathByServiceAndActionName(_config, process.env.BIZ_AUTH_NAME, "verifyToken");
-
+					const functionPath = NovaHelpers.RequestHelper
+						.genPathByServiceAndActionName(_config, process.env.BIZ_AUTH_NAME, "portalVerifyToken");
 					const result = await ctx.call(functionPath, {params: {route: ctx.span.name}});
 					if (result.code !== 200) {
 						throw result;
@@ -38,14 +40,14 @@ class PortalGw extends BaseGw {
 				async authorize(ctx, route, req) {
 					// Get the authenticated user.
 					const user = ctx.meta.user;
-
-					// query roles by accountId
-
-					const actions = ["v3.ProductBiz.portalGetIndustry"];
-					// It check the `auth` property in action schema.
-					if (!actions.includes(req.$action.name)) {
-						throw new ApiGateway.Errors.UnAuthorizedError("NO_RIGHTS", null);
+					const {accountId, fullName} = user || {};
+					const functionPath = NovaHelpers.RequestHelper
+						.genPathByServiceAndActionName(_config, process.env.BIZ_AUTH_NAME, "portalAuthorize");
+					const result = await ctx.call(functionPath, {params: {route: ctx.span.name, accountId, actionName: req.$action.name}});
+					if (result.code !== 200) {
+						throw result;
 					}
+					return result;
 				}
 			},
 			actions: {},

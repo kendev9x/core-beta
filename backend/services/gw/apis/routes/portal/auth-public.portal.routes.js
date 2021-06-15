@@ -12,7 +12,7 @@ class AuthMobileRoutes extends BaseRoute {
 		return {
 			"POST /auth/genToken":
 				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
-					this.config, process.env.BIZ_AUTH_NAME, "genToken"),
+					this.config, process.env.BIZ_AUTH_NAME, "portalGenToken")
 		};
 	}
 

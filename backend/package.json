@@ -44,6 +44,7 @@
   "dependencies": {
     "@elastic/elasticsearch": "^7.10.0",
     "automapper": "^1.0.0",
+    "bcryptjs": "^2.4.3",
     "cqrs-domain": "^2.14.79",
     "dotenv": "^8.2.0",
     "eslint": "^5.16.0",

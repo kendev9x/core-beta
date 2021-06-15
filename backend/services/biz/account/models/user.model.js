@@ -3,12 +3,21 @@ const {NovaHelpers} = require("../../../../libs");
 const {APP_SETTING} = require("../defined");
 
 const fields = {
-	lastTimeLogin: { type: Date },
-	extendSystem: {},
+	userName: String,
+	password: String,
+	fullName: String,
+	avatar: String,
+	gender: String,
+	isAdmin: String,
+	isBam: String,
+	industryIds: Array,
+	lastTimeLogin: Date,
 	isActive: { type: Boolean, default: true },
 	isDelete: { type: Boolean, default: false },
-	createdBy: { type: String },
-	updatedBy: { type: String }
+	createdBy: String,
+	updatedBy: String,
+	createdAt: Date,
+	updatedAt: Date
 };
 
 /**
@@ -28,7 +37,7 @@ class CustomerModel {
 		this.schema.set("toObject", { getters: true });
 		this.schema.set("toJSON", { getters: true });
 		/** Add encryption plugin */
-		this.model = this.dbConnection.model(APP_SETTING.DB_COLLECTION.CUSTOMERS, this.schema);
+		this.model = this.dbConnection.model(APP_SETTING.DB_COLLECTION.USERS, this.schema);
 	}
 
 	/** Search by phone encrypted */

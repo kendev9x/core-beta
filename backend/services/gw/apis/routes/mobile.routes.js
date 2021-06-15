@@ -8,7 +8,6 @@ class MobileRoutes {
 		this.productRoute = new ProductRoute(config, broker);
 		this.accountRoute = new AccountRoute(config, broker);
 		this.authPublicRoute = new AuthPublicRoute(config, broker);
-
 	}
 
 	register() {

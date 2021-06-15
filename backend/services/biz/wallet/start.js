@@ -6,7 +6,7 @@ const mongoosePaginate = require("mongoose-paginate-v2");
 const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 
 const {
-	BamCashModel, BamBonusModel, CoreSQLModel
+	CashWalletModel, BonusWalletModel, CoreSQLModel
 } = require("./models");
 
 const BaseBis = require("../base.biz");
@@ -58,6 +58,54 @@ class StartWalletService extends BaseBis {
 						return await this.actionPublish.portal.getWalletByCustomerId(ctx);
 					}
 				},
+				getWalletById: {
+					rest: {
+						method: "GET"
+					},
+					params: {
+						customerId: "string",
+						groupWalletId: "string",
+					},
+					async handler(ctx) {
+						return await this.actionPublish.portal.getWalletById(ctx);
+					}
+				},
+				getListWallet: {
+					rest: {
+						method: "GET"
+					},
+					params: {
+						// customerId: "string",
+						// code: "string",
+						// skip: "number",
+						// take: "number",
+					},
+					async handler(ctx) {
+						return await this.actionPublish.portal.getListWallet(ctx);
+					}
+				},
+				getTransactionByWalletId: {
+					rest: {
+						method: "GET"
+					},
+					params: {
+						walletId: "string",
+					},
+					async handler(ctx) {
+						return await this.actionPublish.portal.getTransactionByWalletId(ctx);
+					}
+				},
+				getTransactionByCustomerId: {
+					rest: {
+						method: "GET"
+					},
+					params: {
+						customerId: "string",
+					},
+					async handler(ctx) {
+						return await this.actionPublish.portal.getTransactionByCustomerId(ctx);
+					}
+				},
 			},
 			events: {},
 			methods: {},
@@ -77,8 +125,8 @@ class StartWalletService extends BaseBis {
 			/** Init models and install plugins use for model*/
 			const plugins = [mongoosePaginate, aggregatePaginate];
 			const models = {
-				BamCashModel: new BamCashModel(dbConnection, plugins, this.logger),
-				BamBonusModel: new BamBonusModel(dbConnection, plugins, this.logger),
+				CashWalletModel: new CashWalletModel(dbConnection, plugins, this.logger),
+				BonusWalletModel: new BonusWalletModel(dbConnection, plugins, this.logger),
 				CoreSQLModel: new CoreSQLModel(plugins, this.logger),
 			};
 			/** Init logic process class */

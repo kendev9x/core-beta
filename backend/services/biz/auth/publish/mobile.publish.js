@@ -21,14 +21,25 @@ class MobilePublish {
 		return this.apiKey.genKey(ctx);
 	}
 
-	async internalAuthenticate(ctx){
+	async authenticate(ctx){
 		// console.log("call authenticate success", ctx.meta.headers["x-api-key"]);
 		return await this.apiKey.validateApiKey(ctx);
 	}
 
-	async internalAuthorization(ctx){
-		console.log("call authorization success", ctx.meta.headers["x-api-key"]);
-		//if else guest || customer
+	async verifyToken(ctx) {
+		return await this.apiKey.verifyTokenMobile(ctx);
+	}
+
+	async authorize(ctx){
+		return this.apiKey.authorizeMobile(ctx);
+	}
+
+	async genOtp(ctx) {
+		return this.apiKey.genOtp(ctx);
+	}
+
+	async verifyOtp(ctx) {
+		return this.apiKey.verifyOtp(ctx);
 	}
 }
 

@@ -6,7 +6,14 @@ const mongoosePaginate = require("mongoose-paginate-v2");
 const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 
 const {
-	CustomerModel
+	CustomerModel,
+	UserModel,
+	GroupRoleModel,
+	RoleModel,
+	PermissionModel,
+	ActionModel,
+	PageModel,
+	ProfileModel
 } = require("./models");
 
 const BaseBis = require("../base.biz");
@@ -76,6 +83,30 @@ class StartAccountService extends BaseBis {
 						return this.actionPublish.portal.getListCustomer(ctx);
 					}
 				},
+				internalUserFindByUserAndPass: {
+					rest: {
+						method: "POST"
+					},
+					async handler(ctx) {
+						return this.actionPublish.internal.findUserByUserAndPass(ctx);
+					}
+				},
+				internalUserGetActionsByUserId: {
+					rest: {
+						method: "POST"
+					},
+					async handler(ctx) {
+						return this.actionPublish.internal.getActionsByUserId(ctx);
+					}
+				},
+				internalProfileFindByPhone: {
+					rest: {
+						method: "POST"
+					},
+					async handler(ctx) {
+						return this.actionPublish.internal.findProfileByPhone(ctx);
+					}
+				},
 			},
 			events: {},
 			methods: {},
@@ -95,7 +126,14 @@ class StartAccountService extends BaseBis {
 			/** Init models and install plugins use for model*/
 			const plugins = [mongoosePaginate, aggregatePaginate];
 			const models = {
-				CustomerModel: new CustomerModel(dbConnection, plugins, this.logger)
+				CustomerModel: new CustomerModel(dbConnection, plugins, this.logger),
+				UserModel: new UserModel(dbConnection, plugins, this.logger),
+				GroupRoleModel: new GroupRoleModel(dbConnection, plugins, this.logger),
+				RoleModel: new RoleModel(dbConnection, plugins, this.logger),
+				PermissionModel: new PermissionModel(dbConnection, plugins, this.logger),
+				PageModel: new PageModel(dbConnection, plugins, this.logger),
+				ActionModel: new ActionModel(dbConnection, plugins, this.logger),
+				ProfileModel: new ProfileModel(dbConnection, plugins, this.logger),
 			};
 			/** Init logic process class */
 			this.actionPublish = _publish.init({

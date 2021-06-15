@@ -1,5 +1,12 @@
 const DB_COLLECTION = {
-	CUSTOMER: "sys_customer",
+	USERS: "users",
+	CUSTOMERS: "customers",
+	PROFILES: "profiles",
+	GROUP_ROLES: "group-roles",
+	ROLES: "roles",
+	PERMISSIONS: "permissions",
+	PAGES: "pages",
+	ACTIONS: "actions"
 };
 const DEFAULT_LANGUAGE_CODE = "vi";
 

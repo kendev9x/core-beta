@@ -4,7 +4,7 @@ const uuid = require("uuid");
 // const decodeApikey = NovaHelpers.EncryptHelper.decryptBase64(ctx.meta.headers["apiKey"]);
 const apiKey = {
 	// eslint-disable-next-line indent
-    "publicKey": "0b9ca335",
+	"publicKey": "0b9ca335",
 	"appName" : "nova-id",
 	"appVersion" : "1.1.0",
 	"uuid" : "jkshdfoso19231kjsdfosidfj",

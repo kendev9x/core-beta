@@ -6,7 +6,7 @@ const mongoosePaginate = require("mongoose-paginate-v2");
 const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 
 const {
-	AuthLogModel, ApiKeyModel, DeviceInfoModel
+	AuthLogModel, ApiKeyModel, DeviceInfoModel, OtpModel
 } = require("./models");
 
 const BaseBis = require("../base.biz");
@@ -31,7 +31,7 @@ class StartAuthService extends BaseBis {
 			},
 			dependencies: [],
 			actions: {
-				genKey: {
+				mobileGenKey: {
 					rest: {
 						method: "GET"
 					},
@@ -39,7 +39,7 @@ class StartAuthService extends BaseBis {
 						return await this.actionPublish.mobile.genKey(ctx);
 					}
 				},
-				genToken: {
+				portalGenToken: {
 					rest: {
 						method: "POST"
 					},
@@ -47,7 +47,7 @@ class StartAuthService extends BaseBis {
 						return await this.actionPublish.portal.genToken(ctx);
 					}
 				},
-				verifyToken: {
+				portalVerifyToken: {
 					rest: {
 						method: "POST"
 					},
@@ -55,14 +55,54 @@ class StartAuthService extends BaseBis {
 						return await this.actionPublish.portal.verifyToken(ctx);
 					}
 				},
-				internalAuthenticate: {
+				mobileVerifyToken: {
+					rest: {
+						method: "POST"
+					},
 					async handler(ctx) {
-						return await this.actionPublish.mobile.internalAuthenticate(ctx);
+						return await this.actionPublish.mobile.verifyToken(ctx);
 					}
 				},
-				internalAuthorization: {
+				mobileAuthorize: {
+					rest: {
+						method: "POST"
+					},
 					async handler(ctx) {
-						return await this.actionPublish.mobile.internalAuthorization(ctx);
+						return await this.actionPublish.mobile.authorize(ctx);
+					}
+				},
+				portalAuthorize: {
+					rest: {
+						method: "POST"
+					},
+					async handler(ctx) {
+						return await this.actionPublish.portal.authorize(ctx);
+					}
+				},
+				mobileGenOtp: {
+					rest: {
+						method: "POST"
+					},
+					async handler(ctx) {
+						return await this.actionPublish.mobile.genOtp(ctx);
+					}
+				},
+				mobileVerifyOtp: {
+					rest: {
+						method: "POST"
+					},
+					async handler(ctx) {
+						return await this.actionPublish.mobile.verifyOtp(ctx);
+					}
+				},
+				mobileAuthenticate: {
+					async handler(ctx) {
+						return await this.actionPublish.mobile.authenticate(ctx);
+					}
+				},
+				mobileAuthorization: {
+					async handler(ctx) {
+						return await this.actionPublish.mobile.authorize(ctx);
 					}
 				}
 			},
@@ -87,6 +127,7 @@ class StartAuthService extends BaseBis {
 				AuthLogModel: new AuthLogModel(dbConnection, plugins, this.logger),
 				ApiKeyModel: new ApiKeyModel(dbConnection, plugins, this.logger),
 				DeviceInfoModel: new DeviceInfoModel(dbConnection, plugins, this.logger),
+				OtpModel: new OtpModel(dbConnection, plugins, this.logger),
 			};
 			/** Init logic process class */
 			this.actionPublish = _publish.init({

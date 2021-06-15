@@ -20,17 +20,16 @@ class PortalPublish {
 	}
 
 	async verifyToken(ctx) {
-		return this.authLogic.verifyToken(ctx);
+		return this.authLogic.verifyTokenPortal(ctx);
 	}
 
-	async internalAuthenticate(ctx){
+	async authorize(ctx) {
+		return this.authLogic.authorize(ctx);
+	}
+
+	async authenticate(ctx){
 		// console.log("call authenticate success", ctx.meta.headers["x-api-key"]);
 		return await this.authLogic.validateApiKey(ctx);
-	}
-
-	async internalAuthorization(ctx){
-		console.log("call authorization success", ctx.meta.headers["x-api-key"]);
-		//if else guest || customer
 	}
 }
 

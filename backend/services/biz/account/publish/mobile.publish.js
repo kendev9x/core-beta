@@ -23,7 +23,7 @@ class MobilePublish {
 	 * */
 	getByPhone(ctx) {
 		const params = ctx.params;
-		return this.customerLogic.getByPhone(params.phone);
+		return this.customerLogic.findProfileByPhone(params.phone);
 	}
 }
 

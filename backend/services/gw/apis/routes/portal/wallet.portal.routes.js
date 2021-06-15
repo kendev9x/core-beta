@@ -10,15 +10,27 @@ class WalletPortalRoutes extends BaseRoute {
 	/** Register all url endpoint published for account service use at Mobile App */
 	registerAlias() {
 		return {
-			"POST /wallet-bam-cash/upload": "multipart:" + 
+			"POST /wallet-cash/upload": "multipart:" + 
 				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_WALLET_NAME, "uploadBamCashs"),
-			"POST /wallet-bam-bonus/upload": "multipart:" + 
+			"POST /wallet-bonus/upload": "multipart:" + 
 				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_WALLET_NAME, "uploadBamBonus"),
 			"GET /wallet/:customerId": 
 				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_WALLET_NAME, "getWalletByCustomerId"),
+			"GET /wallet": 
+				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+					this.config, process.env.BIZ_WALLET_NAME, "getWalletById"),
+			"GET /wallets": 
+				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+					this.config, process.env.BIZ_WALLET_NAME, "getListWallet"),
+			"GET /transactions/:walletId": 
+				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+					this.config, process.env.BIZ_WALLET_NAME, "getTransactionByWalletId"),
+			"GET /customer/transactions/:customerId": 
+				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+					this.config, process.env.BIZ_WALLET_NAME, "getTransactionByCustomerId"),
 					
 		};
 	}

@@ -10,9 +10,15 @@ class AuthMobileRoutes extends BaseRoute {
 	/** Register all url endpoint published for account service use at Mobile App */
 	registerAlias() {
 		return {
-			"GET /auth/genkey":
+			"GET /auth/genKey":
 				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
-					this.config, process.env.BIZ_AUTH_NAME, "genKey"),
+					this.config, process.env.BIZ_AUTH_NAME, "mobileGenKey"),
+			"POST /auth/genOtp":
+				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+					this.config, process.env.BIZ_AUTH_NAME, "mobileGenOtp"),
+			"POST /auth/verifyOtp":
+				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+					this.config, process.env.BIZ_AUTH_NAME, "mobileVerifyOtp")
 		};
 	}
 
@@ -26,7 +32,7 @@ class AuthMobileRoutes extends BaseRoute {
 			],
 			use: [],
 			mergeParams: true,
-			authentication: false,
+			authentication: true,
 			authorization: false,
 			autoAliases: true,
 			aliases: this.registerAlias(),

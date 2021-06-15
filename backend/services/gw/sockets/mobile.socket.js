@@ -40,7 +40,7 @@ module.exports = {
 				// Enable authentication. Implement the logics into `authenticate` method. More info: https://moleculer.services/docs/0.14/moleculer-web.html#Authentication
 				authentication: false,
 
-				// Enable authorization. Implement the logics into `authorize` method. More info: https://moleculer.services/docs/0.14/moleculer-web.html#Authorization
+				// Enable authorize. Implement the logics into `authorize` method. More info: https://moleculer.services/docs/0.14/moleculer-web.html#Authorization
 				authorization: false,
 
 				// The auto-alias feature allows you to declare your route alias directly in your gw.

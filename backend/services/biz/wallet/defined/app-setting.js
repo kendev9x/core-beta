@@ -1,5 +1,5 @@
 const DB_COLLECTION = {
-	BAM_LIMIT: "bam_limits", BAM_BONUS: "bam_bonus",
+	CASH_WALLET: "cash_wallets", BONUS_WALLET: "bonus_wallets",
 };
 const DEFAULT_LANGUAGE_CODE = "vi";
 

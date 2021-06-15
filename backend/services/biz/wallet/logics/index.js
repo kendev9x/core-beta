@@ -1,5 +1,7 @@
-const BamLogic = require("./bam-cash.logic");
-const BamBonusLogic = require("./bam-bonus.logic");
+const CashWalletLogic = require("./cash-wallet.logic");
+const BonusWalletLogic = require("./bonus-wallet.logic");
+const WalletLogic = require("./wallet.logic");
+
 module.exports = {
-	BamLogic, BamBonusLogic
+	CashWalletLogic, BonusWalletLogic, WalletLogic
 };

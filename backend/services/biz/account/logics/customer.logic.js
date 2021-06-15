@@ -8,6 +8,7 @@ class CustomerLogic extends BaseLogic {
 		super(mainProcess);
 		this.models = mainProcess.models;
 		this.customerModel = this.models.CustomerModel;
+		this.profileModel = this.models.ProfileModel;
 	}
 
 	/** Logic: Get all customer
@@ -60,6 +61,14 @@ class CustomerLogic extends BaseLogic {
 		});
 	}
 
+	async findProfileByPhone(phone) {
+		try {
+			const result = await this.profileModel.findOne({"addresses.phoneNumber": phone});
+			return super.resInfo(result);
+		} catch (err) {
+			super.resErr(ResponseCode.SYS_STATUS_CODE.INTERNAL_SERVER_ERROR, err);
+		}
+	}
 }
 
 module.exports = CustomerLogic;

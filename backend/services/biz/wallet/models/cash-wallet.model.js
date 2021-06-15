@@ -3,19 +3,32 @@ const {NovaHelpers} = require("../../../../libs");
 const {APP_SETTING} = require("../defined");
 
 const fields = {
-	lastTimeLogin: { type: Date },
-	extendSystem: {},
+	customerId: { type: String },
+	businessCode: { type: String }, // system will use there for reset password
+	walletCode: { type: String },//bamWalletCode
+	userId:  { type: String},
+	customerName: { type: String },
+	gender: { type: String },
+	phone: { type: String },
+	identityType: { type: String },
+	identityNumber: { type: String },
+	company: { type: String },
+	workPlace: { type: String },
+	position: { type: String },
+	email: { type: String },
+	level: { type: String },
+	quarterLimit: { type: Number },
+	supervisor: { type: String },
+	effectiveDate: { type: Date },
 	isActive: { type: Boolean, default: true },
 	isDelete: { type: Boolean, default: false },
-	createdBy: { type: String },
-	updatedBy: { type: String }
 };
 
 /**
- CustomerModel: Processing Customer data model for logic
+ ApiKeyModel: Processing ApiKey data model for logic
  */
-class CustomerModel {
-	/** CustomerModel connection db created when service start
+class CashWalletModel {
+	/** ApiKeyModel connection db created when service start
 	 * @param dbConnection connection db created when service start
 	 * @param plugins is array plugin use to add to schema
 	 * @param logger
@@ -28,27 +41,27 @@ class CustomerModel {
 		this.schema.set("toObject", { getters: true });
 		this.schema.set("toJSON", { getters: true });
 		/** Add encryption plugin */
-		this.model = this.dbConnection.model(APP_SETTING.DB_COLLECTION.CUSTOMERS, this.schema);
+		this.model = this.dbConnection.model(APP_SETTING.DB_COLLECTION.CASH_WALLET, this.schema);
 	}
 
 	/** Search by phone encrypted */
-	async getByPhone(phone) {
+	async getByAgent(agent) {
 		const filter = {
-			phone: phone
+			user_agent: agent
 		};
 		return NovaHelpers.MongoFuncHelper.$findOne(this.model, filter);
 	}
 
-	/** Create a Customer
-	 * @param ent Customer info
-	 * @output object Customer created
+	/** Create a ApiKey
+	 * @param ent ApiKey info
+	 * @output object ApiKey created
 	 */
-	async create(ent) {
-		return await NovaHelpers.MongoFuncHelper.$save(this.model, ent);
+	async create(ent, filter) {
+		return await NovaHelpers.MongoFuncHelper.$findOneAndUpdate(this.model, ent, filter);
 	}
 
-	/** Updating a Customer
-	 * @param ent Customer info
+	/** Updating a ApiKey
+	 * @param ent ApiKey info
 	 * @output object result updating
 	 */
 	async update(ent) {
@@ -58,8 +71,8 @@ class CustomerModel {
 		return await NovaHelpers.MongoFuncHelper.$updateOne(this.model, filter, ent);
 	}
 
-	/** Get a Customer
-	 * @param _id Customer id
+	/** Get a ApiKey
+	 * @param _id ApiKey id
 	 * @param isWithoutCheckDelete
 	 * @output object result
 	 */
@@ -67,7 +80,7 @@ class CustomerModel {
 		return await NovaHelpers.MongoFuncHelper.$getById(this.model, _id, isWithoutCheckDelete);
 	}
 
-	/** Get a Customer
+	/** Get a ApiKey
 	 * @param filter object contains filter condition props
 	 * @param isWithoutCheckDelete
 	 * @output object result updating
@@ -76,23 +89,23 @@ class CustomerModel {
 		return await NovaHelpers.MongoFuncHelper.$findOne(this.model, filter, isWithoutCheckDelete);
 	}
 
-	/** Get all Customer -- just use for test
+	/** Get all ApiKey -- just use for test
 	 * @param filter object contains filter condition props
 	 * @param sort object contains sorting props
 	 * @param select object contains selecting field
-	 * @output array Customer
+	 * @output array ApiKey
 	 */
 	async getAll(filter, sort = {}, select = {}) {
 		return await NovaHelpers.MongoFuncHelper.$getAll(this.model, filter, sort, select);
 	}
 
-	/** Get list Customer
+	/** Get list ApiKey
 	 * @param filter object contains filter condition props
 	 * @param sort object contains sorting props
 	 * @param skip number skip records
 	 * @param limit number max records will get
 	 * @param select object contains selecting field
-	 * @output array Customer
+	 * @output array ApiKey
 	 */
 	async list(filter, sort = {createdAt: -1}, skip = 0, limit = 20, select = {}) {
 		if (!filter) {
@@ -101,12 +114,12 @@ class CustomerModel {
 		return await NovaHelpers.MongoFuncHelper.$list(this.model, filter, sort, skip, limit, select);
 	}
 
-	/** Get list Customer
+	/** Get list ApiKey
 	 * @param filter object contains filter condition props
 	 * @param sort object contains sorting props
 	 * @param pageIndex number current page
 	 * @param pageSize number max records will get
-	 * @output array Customer
+	 * @output array ApiKey
 	 */
 	async listPaging(filter, sort = {createdAt: -1}, pageIndex = 0, pageSize = 20) {
 		if (!filter) {
@@ -115,8 +128,8 @@ class CustomerModel {
 		return await NovaHelpers.MongoFuncHelper.$listPaging(this.model, filter, sort, pageIndex, pageSize);
 	}
 
-	/** Set is active or in-active a Customer
-	 * @param _id Customer id
+	/** Set is active or in-active a ApiKey
+	 * @param _id ApiKey id
 	 * @param isActive value will updating
 	 * @output object result updating
 	 */
@@ -124,8 +137,8 @@ class CustomerModel {
 		return await NovaHelpers.MongoFuncHelper.$setIsActive(this.mode, _id, isActive);
 	}
 
-	/** Set is delete or in-delete a Customer
-	 * @param _id Customer id
+	/** Set is delete or in-delete a ApiKey
+	 * @param _id ApiKey id
 	 * @param isDelete value will updating
 	 * @output object result updating
 	 */
@@ -134,4 +147,4 @@ class CustomerModel {
 	}
 }
 
-module.exports = CustomerModel;
+module.exports = CashWalletModel;
