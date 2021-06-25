@@ -5,14 +5,20 @@ const {APP_SETTING} = require("../defined");
 const fields = {
 	customerId: { type: String },
 	businessCode: { type: String }, // system will use there for reset password
-	customerName: { type: String },
 	walletCode: { type: String },//bamWalletCode
-	phone: { type: String },
-	identityType: { type: String },
-	identityNumber: { type: String },
-	propertyCode: { type: String },
-	bonus: { type: Number },
+	walletId: { type: String },
+	amount: { type: Number },
+	ticketCode: {type: String},
 	effectiveDate: { type: Date },
+	content: { type: String },
+	status:  { type: String},
+	extends: {
+		customerName: { type: String },
+		phone: { type: String },
+		identityType: { type: String },
+		identityNumber: { type: String },
+		propertyCode: { type: String }
+	},
 	isActive: { type: Boolean, default: true },
 	isDelete: { type: Boolean, default: false },
 };
@@ -41,11 +47,16 @@ class BonusWalletModel {
 	}
 
 
-	async create(ent, filter) {
+	async findOneAndUpdate(ent, filter) {
 		return await NovaHelpers.MongoFuncHelper.$findOneAndUpdate(this.model, ent, filter);
 	}
 
-
+	async create(ent) {
+		return await NovaHelpers.MongoFuncHelper.$save(this.model, ent);
+	}
+	async updateOne(filter, ent) {
+		return await NovaHelpers.MongoFuncHelper.$updateSet(this.model, filter, ent);
+	}
 	async update(ent) {
 		const filter = {
 			_id: ent._id,

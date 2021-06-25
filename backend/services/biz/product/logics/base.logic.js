@@ -1,12 +1,15 @@
 const _ = require("lodash");
 const {APP_SETTING} = require("../defined");
-const { FunctionHelper } = require("../../../../libs/helpers");
+const { FunctionHelper, RequestHelper } = require("../../../../libs/helpers");
 
 class BaseLogic {
 	constructor(mainProcess) {
 		this.mainProcess = mainProcess;
+		this.industryModel = this.mainProcess.models.IndustryModel;
 		this.productTemplateModel = this.mainProcess.models.ProductTemplateModel;
 		this.entityModel = this.mainProcess.models.EntityModel;
+		this.relationTypeModel = this.mainProcess.models.RelationTypeModel;
+		this.relationModel = this.mainProcess.models.RelationModel;
 	}
 
 	createSearchingObject(object) {
@@ -242,6 +245,36 @@ class BaseLogic {
 		return obj;
 	}
 
+	buildSkuCodeUnique() {
+		const date = `${new Date().getFullYear()}${new Date().getMonth() + 1}${new Date().getDate()}`;
+		const genNum = FunctionHelper.generateRandomNumber(5, "", date, "-");
+		return FunctionHelper.generateRandomStringCustom("A", 6,
+			{}, "SKU-", genNum, "");
+	}
+
+	getIndexEsByIndustry(industry) {
+		if (!industry) {
+			return null;
+		}
+		const industryDataSetting = APP_SETTING.INDUSTRIES.find((x) => x.id === industry || x.code === industry);
+		if (!industryDataSetting) {
+			return -1;
+		}
+		return industryDataSetting.esIndex;
+	}
+
+	buildSelectField(params) {
+		if (params.select && _.isArray(params.select)) {
+			const selectField = {};
+			params.select.map((filedName) => {
+				selectField[filedName.toString()] = 1;
+				return filedName;
+			});
+			return selectField;
+		}
+		return {};
+	}
+
 	async getListTemplateIdByIndustry(industry) {
 
 		let industryValue = null;
@@ -297,24 +330,6 @@ class BaseLogic {
 		return queryCheckExistName;
 	}
 
-	buildSkuCodeUnique() {
-		const date = `${new Date().getFullYear()}${new Date().getMonth() + 1}${new Date().getDate()}`;
-		const genNum = FunctionHelper.generateRandomNumber(5, "", date, "-");
-		return FunctionHelper.generateRandomStringCustom("A", 6,
-			{}, "SKU-", genNum, "");
-	}
-
-	getIndexEsByIndustry(industry) {
-		if (!industry) {
-			return null;
-		}
-		const industryDataSetting = APP_SETTING.INDUSTRIES.find((x) => x.id === industry || x.code === industry);
-		if (!industryDataSetting) {
-			return -1;
-		}
-		return industryDataSetting.esIndex;
-	}
-
 	async mappingToEntity(context, result) {
 		let templateIds = result.map((x) => x.templateId);
 		templateIds = [...new Set(templateIds)].find((x) => x !== undefined);
@@ -335,7 +350,7 @@ class BaseLogic {
 				});
 			}
 			if (listEntId.length > 0) {
-				const entities = this.entityModel.findByListId(listEntId);
+				const entities = this.getListEntity(context, listEntId);
 				pAll.push(entities);
 			}
 			product.template = listTemplate.find((x) => x._id.toString() === product.templateId);
@@ -357,6 +372,474 @@ class BaseLogic {
 		});
 		return result;
 	}
+
+	async getIndustry(industryParam) {
+		const industryObj = await this.industryModel.findOne({
+			$or: [
+				{_id: FunctionHelper.convertToMongoId(industryParam)},
+				{code: FunctionHelper.getRegexStringEqualMongo(industryParam)}
+			]
+		});
+		return industryObj || {};
+	}
+
+	async getRelationType(relationTypeParam) {
+		return await this.relationTypeModel
+			.findOne(
+				{
+					name: FunctionHelper.getRegexStringEqualMongo(relationTypeParam)
+				}) || {};
+	}
+
+	async setRemoveEntity(_id, currentAccount) {
+		if (!_id) {
+			return null;
+		}
+		const listRelationParentAffected = await this.relationModel.getAll({
+			"parent.id": _id
+		});
+		const listRelationChildAffected = await this.relationModel.getAll({
+			"child.id": _id
+		});
+		if (listRelationParentAffected && listRelationParentAffected.length > 0) {
+			listRelationParentAffected.map(async (relation) => {
+				relation.isDelete = true;
+				relation.updatedBy = currentAccount.userName;
+				await this.relationModel.updateOne({_id: relation._id}, relation);
+				const childEntIds = relation.child.map((x) => x.id);
+				if (!childEntIds && childEntIds.length < 1) {
+					return relation;
+				}
+				const listChildEnt = await this.entityModel.getAll({_id: {$in: childEntIds}});
+				if (!listChildEnt && listChildEnt.length < 1) {
+					return relation;
+				}
+				listChildEnt.map(async (childEnt) => {
+					childEnt.isDelete = true;
+					childEnt.updatedBy = currentAccount.userName;
+					await this.entityModel.updateOne({_id: childEnt._id}, childEnt);
+					return childEnt;
+				});
+				return relation;
+			});
+		}
+		if (listRelationChildAffected && listRelationChildAffected.length > 0) {
+			listRelationChildAffected.map(async (relation) => {
+				await this.relationModel.updateOne({_id: relation._id},
+					{
+						$pull: {child: {id: _id}},
+						updatedBy: currentAccount.userName
+					});
+				return relation;
+			});
+		}
+		return await this.entityModel.updateOne({_id},
+			{$set: {isDelete: true, updatedBy: currentAccount.userName}});
+	}
+
+	async buildFilter(params, langCode, isPortalCall = false) {
+		const filter = {
+			isDelete: false
+		};
+		if (!isPortalCall) {
+			filter.isActive = true;
+		}
+		if (params.type) {
+			filter.type = FunctionHelper.getRegexStringEqualMongo(params.type);
+		}
+		if (params.ids) {
+			filter.ids = { $in: params.ids };
+		}
+		if (params.types) {
+			filter.types = {$in: params.types};
+		}
+		if (params.keyword) {
+			const nameSearch = {};
+			nameSearch[`name.${langCode}`] = FunctionHelper.getRegexStringContainWithMongo(params.keyword);
+			const searchInfo = {};
+			searchInfo[`data.searchInfo.name.${langCode}`] = FunctionHelper.getRegexStringContainWithMongo(params.keyword);
+			const codeSearch = {
+				code: FunctionHelper.getRegexStringEqualMongo(params.keyword)
+			};
+			filter.$or = [nameSearch, searchInfo, codeSearch];
+		}
+		if (params.data && _.isObject(params.data) && !_.isEmpty(params.data)) {
+			filter.$and = [];
+			const keys = _.keys(params.data);
+			keys.map((key) => {
+				if (_.isUndefined(key) || _.isEmpty(key)) {
+					return key;
+				}
+				const objFilterPush = {};
+				objFilterPush[key] = params.data[key];
+				filter.$and.push(objFilterPush);
+				return key;
+			});
+		}
+		if (params.filter && !_.isEmpty(params.filter)) {
+			const keys = _.keys(params.filter);
+			keys.map((key) => {
+				if (!key || !params.filter[key.toString()]) {
+					return key;
+				}
+				filter[`${key}.${langCode}`] = params.filter[key.toString()];
+				return key;
+			});
+		}
+		return filter;
+	}
+
+	async createSubEntProject(listEnt, entType, currUser = {}) {
+		if (_.isUndefined(listEnt) || !_.isArray(listEnt) || _.isUndefined(entType)) {
+			return false;
+		}
+		const listEntityCreate = listEnt.map((ent) => {
+			if (!ent.data || !_.isObject(ent.data)) {
+				ent.data = {
+					searchInfo: this.createSearchingObject({name: ent.name})
+				};
+			} else {
+				ent.data.searchInfo = this.createSearchingObject({name: ent.name});
+			}
+			ent.type = entType.toUpperCase();
+			ent.createdBy = currUser.defaultUser;
+			delete ent.id;
+			return ent;
+		});
+		const listEntCreated = await this.entityModel.createMany(listEntityCreate);
+		if (!listEntCreated || !_.isArray(listEntCreated)) {
+			return [];
+		}
+		return listEntCreated.map((x) => x._doc);
+	}
+
+	async editSubEntProject(listEnt, entType, currUser = {}, listEntUpsert = []) {
+		if (_.isUndefined(listEnt) || !_.isArray(listEnt) || _.isUndefined(entType)) {
+			return false;
+		}
+		const listEntObj = Promise.all(
+			listEnt.map(async (ent) => {
+				if (ent._id) {
+					const existEnt = await this.entityModel.getById(ent._id);
+					if (existEnt) {
+						existEnt.articleId = ent.articleId;
+						existEnt.name = ent.name;
+						existEnt.data = ent.data;
+						existEnt.updatedBy = currUser.defaultUser;
+						if (!existEnt.data || !_.isObject(existEnt.data)) {
+							existEnt.data = {
+								searchInfo: this.createSearchingObject({name: existEnt.name})
+							};
+						} else {
+							existEnt.data.searchInfo = this.createSearchingObject({name: existEnt.name});
+						}
+						await this.entityModel.updateOne({_id: ent._id}, existEnt);
+						listEntUpsert.push(existEnt);
+						return existEnt;
+					}
+				}
+				ent.type = entType.toUpperCase();
+				ent.createdBy = currUser.defaultUser;
+				if (!ent.data || !_.isObject(ent.data)) {
+					ent.data = {
+						searchInfo: this.createSearchingObject({name: ent.name})
+					};
+				} else {
+					ent.data.searchInfo = this.createSearchingObject({name: ent.name});
+				}
+				delete ent.id;
+				const entCreated = await this.entityModel.create(ent);
+				listEntUpsert.push(entCreated);
+				return entCreated;
+			})
+		);
+		await listEntObj;
+		return listEntUpsert;
+	}
+
+	async buildRelationParams(listEntParam, entityTypeName, arrayReturn) {
+		if (!listEntParam || !_.isArray(listEntParam) || listEntParam.length < 1) {
+			return arrayReturn;
+		}
+		listEntParam.map((entParam) => {
+			arrayReturn.push({
+				parentCode: entParam.parentCode,
+				parentType: entParam.parentType,
+				childCodes: listEntParam.filter((x) => x.parentCode === entParam.parentCode).map((k) => k.code) || [],
+				childType: entityTypeName,
+				relationType: `${entParam.parentType}-${entityTypeName}`.toUpperCase()
+			});
+			return entParam;
+		});
+		arrayReturn = [...new Set(arrayReturn.map((o) => JSON.stringify(o)))].map((s) => JSON.parse(s));
+		return arrayReturn;
+	}
+
+	async getRelationTree(parentId, arrayReturn) {
+		try {
+			if (!parentId || FunctionHelper.isEmpty(parentId)) {
+				return arrayReturn;
+			}
+			const relations = await this.relationModel.getAll({
+				"parent.id": parentId,
+				"child.id": {$exists: true}, /** Make sure only processing all data have child id (is correct data) */
+				isDelete: false
+			});
+			if (!relations || !_.isArray(relations) || relations.length < 1) {
+				return arrayReturn;
+			}
+			relations.map((relation) => {
+				arrayReturn.push({
+					relationId: relation._id,
+					parent: relation.parent,
+					childs: relation.child,
+					type: relation.relationType
+				});
+				return relation;
+			});
+			const relationChildIds = relations.map((x) => x.child.map((k) => k.id));
+			if (!relationChildIds || !_.isArray(relationChildIds) || relationChildIds.length < 1) {
+				return arrayReturn;
+			}
+			await Promise.all(
+				relationChildIds.map(async (childId) => {
+					await this.getRelationTree(childId, arrayReturn);
+				})
+			);
+			arrayReturn = [...new Set(arrayReturn.map((o) => JSON.stringify(o)))].map((s) => JSON.parse(s));
+			return arrayReturn;
+		} catch (e) {
+			throw Error(e.message);
+		}
+	}
+
+	/** ONLY USE FOR ATTRIBUTE TYPE PICKLIST ENTITY */
+	async processEntityByAttrObj(attrObj, lang = "vi") {
+		if (!attrObj || !_.isObject(attrObj)) {
+			return attrObj;
+		}
+		if (!attrObj.value || !_.isObject(attrObj.value) || Object.keys(attrObj.value) < 1) {
+			return attrObj;
+		}
+		let entIds = [];
+		if (!_.isArray(attrObj.value[lang])) {
+			entIds.push(attrObj.value[lang]);
+		} else {
+			entIds = attrObj.value[lang];
+		}
+		if (!entIds || entIds.length < 1) {
+			return attrObj;
+		}
+		const entities = await this.getListEntity(entIds);
+		if (!entities || entities.length < 1) {
+			return attrObj;
+		}
+		const entReturn = [];
+		if (!_.isArray(attrObj.value[lang])) {
+			attrObj.value[lang] = entities.find((ent) => ent._id.toString() === attrObj.value[lang]);
+		} else {
+			attrObj.value[lang].map((attr) => {
+				const entFind = entities.find((ent) => ent._id.toString() === attr);
+				entReturn.push(entFind);
+				return attr;
+			});
+			attrObj.value[lang] = entReturn;
+		}
+		return attrObj;
+	}
+
+	async processAttributeRef(ctx, mainEntInfo, langCode = "vi") {
+		if (!mainEntInfo || !mainEntInfo.data || !_.isObject(mainEntInfo.data)) {
+			return mainEntInfo;
+		}
+		const keys = Object.keys(mainEntInfo.data);
+		if (!_.isArray(keys) || keys.length < 1) {
+			return mainEntInfo;
+		}
+		await Promise.all(keys.map(async (keyAttr) => {
+			if (!mainEntInfo.data[keyAttr] || !mainEntInfo.data[keyAttr].type) {
+				return keyAttr;
+			}
+			if (mainEntInfo.data[keyAttr].type === "plent" && !_.isArray(mainEntInfo.data[keyAttr].value[langCode])) {
+				const entityData = await this.entityModel.getById(mainEntInfo.data[keyAttr].value[langCode]);
+				if (entityData) {
+					mainEntInfo.data[keyAttr].value[langCode] = entityData;
+				}
+			}
+			if (mainEntInfo.data[keyAttr].type === "plent" && _.isArray(mainEntInfo.data[keyAttr].value[langCode])) {
+				const listEntIds = [];
+				mainEntInfo.data[keyAttr].value[langCode].map((entId) => {
+					listEntIds.push(entId);
+					return entId;
+				});
+				const listEntData = await this.entityModel.getAll({_id: {$in: listEntIds}});
+				if (listEntData) {
+					const entMaps = [];
+					mainEntInfo.data[keyAttr].value[langCode].map((value) => {
+						const entityData = listEntData.find((k) => k._id.toString() === value);
+						if (entityData) {
+							entMaps.push(entityData);
+						}
+						return value;
+					});
+					mainEntInfo.data[keyAttr].value[langCode] = entMaps;
+				}
+			}
+			return keyAttr;
+		}));
+		return mainEntInfo;
+	}
+
+	async processRelationEntity(relations, mainEntId) {
+		if (!relations || !_.isArray(relations)) {
+			return relations;
+		}
+		const entIds = [];
+		relations.map((relation) => {
+			if (relation.parent && relation.parent.id !== mainEntId) {
+				entIds.push(relation.parent.id);
+			}
+			if (relation.child && relation.child.values && _.isArray(relation.child.values)) {
+				relation.child.values.map((childObj) => {
+					if (childObj.id && !_.isEmpty(childObj.id) && childObj.id !== "") {
+						entIds.push(childObj.id);
+					}
+					return childObj;
+				});
+			}
+			return relation;
+		});
+		if (entIds.length < 1) {
+			return relations;
+		}
+		const entities = await this.getListEntity(entIds);
+		if (!entities || entities.length < 1) {
+			return relations;
+		}
+		relations.map((relation) => {
+			relation.parent.info = entities.find((k) => k._id.toString() === relation.parent.id);
+			if (relation.child.values.length < 1) {
+				return relation;
+			}
+			relation.child.values.map((childObj) => {
+				childObj.info = entities.find((k) => k._id.toString() === childObj.id);
+				return childObj;
+			});
+			return relation;
+		});
+		return relations;
+	}
+
+	async getListEntity(ids) {
+		if (!ids || !_.isArray(ids)) {
+			return [];
+		}
+		const entities = this.entityModel.getAll({_id: {$in: ids}});
+		if (!entities || entities.length < 1) {
+			return [];
+		}
+		return entities;
+	}
+
+	/** PRIVATE FUNCTIONS USE FOR ENTITY LOGIC OR ANOTHER LOGICS AT SAME SERVICE*/
+
+	/** PRIVATE FUNC: GET ENTITIES BY LIST ID
+	 * @param context
+	 * @param ids: entity id
+	 * @param sortObj: sorting object as {createdAt: -1}
+	 * @param formatData: true or false - format to clean data
+	 * @output Promise<T> List Entity
+	 */
+	async funcGetListEntity(context, ids = [], sortObj = {}, formatData = false) {
+		if (FunctionHelper.isEmpty(ids)) {
+			return [];
+		}
+		const langCode = RequestHelper.getLanguageCode(context);
+		const filter = {
+			_id: {$in: FunctionHelper.convertToMongoId(ids)},
+			isActive: true,
+			isDelete: false
+		};
+		let data =  await this.entityModel.getAll(filter, sortObj);
+		if (formatData) {
+			data = await this.entityDto.planeData(context, data, langCode);
+		}
+		return data;
+	}
+
+	/** PRIVATE FUNC: GET ENTITIES BY TYPE
+	 * @param context
+	 * @param type: entity type code
+	 * @param sortObj: sorting object as {createdAt: -1}
+	 * @param formatData: true or false - format to clean data
+	 * @output Promise<T> List Entity
+	 */
+	async funcGetEntitiesByType(context, type = [], sortObj = {}, formatData = false) {
+		const params = RequestHelper.getParamsByMethodType(context);
+		const langCode = RequestHelper.getLanguageCode(context);
+		if (FunctionHelper.isEmpty(params.type)) {
+			return [];
+		}
+		const filter = {
+			type: {$in: FunctionHelper.getRegexStringEqualMongo(type)}
+		};
+		let result = await this.entityModel.getAll(filter, sortObj);
+		if (formatData) {
+			result = await this.entityDto.planeData(context, result, langCode);
+		}
+		return result;
+	}
+
+	/** PRIVATE FUNC: GET ENTITIES BY TYPE
+	 * @param context
+	 * @param id: entity id
+	 * @param formatData: true or false - format to clean data
+	 * @output Promise<T> Entity Object
+	 */
+	async funcGetEntityById(context, id, formatData = false) {
+		const params = RequestHelper.getParamsByMethodType(context);
+		const langCode = RequestHelper.getLanguageCode(context);
+		if (FunctionHelper.isEmpty(id)) {
+			return [];
+		}
+		let entityObj = await this.entityModel.getById(params.id);
+		if (!entityObj || _.isEmpty(entityObj)) {
+			return {};
+		}
+		const relations = await this.relationModel.getAll(
+			{$or: [{"parent.id": params.id}, {"child.id": {$in: [params.id]}}]}
+		);
+		if (relations && relations.length > 0) {
+			entityObj.relations = relations.map((x) => ({
+				_id: x._id,
+				child: x.child,
+				parent: x.parent,
+				industry: x.industry,
+				type: x.relationType.name
+			}));
+		}
+		if (formatData) {
+			entityObj = await this.entityDto.planeData(context, entityObj, langCode);
+		}
+		return entityObj;
+	}
+
+	async funcGetRelationTypeById(context, id) {
+		if (!id) {
+			return {};
+		}
+		return await this.relationTypeModel.getById(id);
+	}
+
+	async funcGetRelationTypeByCode(context, code) {
+		if (!code) {
+			return {};
+		}
+		return await this.relationTypeModel.findOne({
+			code: FunctionHelper.getRegexStringEqualMongo(code)
+		});
+	}
+
 }
 
 module.exports = BaseLogic;

@@ -6,7 +6,7 @@ const mongoosePaginate = require("mongoose-paginate-v2");
 const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 
 const {
-	CashWalletModel, BonusWalletModel, CoreSQLModel
+	CashWalletModel, BonusWalletModel, CoreSQLModel, TicketModel
 } = require("./models");
 
 const BaseBis = require("../base.biz");
@@ -47,6 +47,22 @@ class StartWalletService extends BaseBis {
 						return await this.actionPublish.portal.uploadBamBonus(ctx);
 					}
 				},
+				createBamTicket: {
+					rest: {
+						method: "POST"
+					},
+					async handler(ctx) {
+						return await this.actionPublish.mobile.createBamTicket(ctx);
+					}
+				},
+				rejectTicket:{
+					rest: {
+						method: "POST"
+					},
+					async handler(ctx) {
+						return await this.actionPublish.portal.rejectTicket(ctx);
+					}
+				},
 				getWalletByCustomerId: {
 					rest: {
 						method: "GET"
@@ -58,13 +74,24 @@ class StartWalletService extends BaseBis {
 						return await this.actionPublish.portal.getWalletByCustomerId(ctx);
 					}
 				},
-				getWalletById: {
+				getWalletByGroupId: {
 					rest: {
 						method: "GET"
 					},
 					params: {
 						customerId: "string",
 						groupWalletId: "string",
+					},
+					async handler(ctx) {
+						return await this.actionPublish.portal.getWalletByGroupId(ctx);
+					}
+				},
+				getWalletById: {
+					rest: {
+						method: "GET"
+					},
+					params: {
+						walletId: "string",
 					},
 					async handler(ctx) {
 						return await this.actionPublish.portal.getWalletById(ctx);
@@ -128,6 +155,7 @@ class StartWalletService extends BaseBis {
 				CashWalletModel: new CashWalletModel(dbConnection, plugins, this.logger),
 				BonusWalletModel: new BonusWalletModel(dbConnection, plugins, this.logger),
 				CoreSQLModel: new CoreSQLModel(plugins, this.logger),
+				TicketModel: new TicketModel(dbConnection, plugins, this.logger)
 			};
 			/** Init logic process class */
 			this.actionPublish = _publish.init({

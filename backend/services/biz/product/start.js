@@ -12,11 +12,12 @@ const {
 	EntityTypeModel,
 	EntityModel,
 	RelationTypeModel,
-	RelationModel
+	RelationModel,
+	ProductCustomerModel
 } = require("./models");
-const BaseBis = require("../base.biz");
+const BaseBiz = require("../base.biz");
 
-class StartProductService extends BaseBis {
+class StartProductService extends BaseBiz {
 	constructor(broker) {
 		super(broker, {name: process.env.BIZ_PRODUCT_NAME});
 		/** Get config of service */
@@ -45,7 +46,7 @@ class StartProductService extends BaseBis {
 				 * Mobile app: Get all industry
 				 * @param {ctx}: context obj
 				 */
-				mobileGetIndustry: {
+				mobileIndustryGetAll: {
 					rest: {
 						method: "GET",
 					},
@@ -57,7 +58,7 @@ class StartProductService extends BaseBis {
 				 * Mobile app: Get all industry
 				 * @param {ctx}: context obj
 				 */
-				mobileGetProductShowcase: {
+				mobileProductGetShowcase: {
 					rest: {
 						method: "GET",
 					},
@@ -72,7 +73,7 @@ class StartProductService extends BaseBis {
 				 * Mobile app: Get detail product by id
 				 * @param {ctx}: context obj
 				 */
-				mobileGetProductDetailById: {
+				mobileProductGetDetailById: {
 					rest: {
 						method: "GET",
 					},
@@ -111,24 +112,48 @@ class StartProductService extends BaseBis {
 				 * Portal: Get all industry
 				 * @param {ctx}: context obj
 				 */
-				portalGetIndustry: {
+				portalIndustryGetAll: {
 					rest: {
 						method: "GET"
 					},
 					handler(ctx) {
-						return this.actionPublish.portal.getAll(ctx);
+						return this.actionPublish.portal.industryGetAll(ctx);
 					}
 				},
 				/**
 				 * Portal: Get all industry
 				 * @param {ctx}: context obj
 				 */
-				portalGetListProduct: {
+				portalProductGetList: {
 					rest: {
 						method: "GET"
 					},
 					handler(ctx) {
-						return this.actionPublish.portal.getListProductPaging(ctx);
+						return this.actionPublish.portal.productGetListPaging(ctx);
+					}
+				},
+				/**
+				 * Portal: Get all industry
+				 * @param {ctx}: context obj
+				 */
+				portalProductTemplateGetList: {
+					rest: {
+						method: "GET"
+					},
+					handler(ctx) {
+						return this.actionPublish.portal.productTemplateGetListPaging(ctx);
+					}
+				},
+				/**
+				 * Portal: Get all industry
+				 * @param {ctx}: context obj
+				 */
+				portalProductTemplateGetDetail: {
+					rest: {
+						method: "GET"
+					},
+					handler(ctx) {
+						return this.actionPublish.portal.productTemplateGetDetail(ctx);
 					}
 				},
 			},
@@ -157,7 +182,8 @@ class StartProductService extends BaseBis {
 				EntityModel: new EntityModel(dbConnection, plugins, this.logger),
 				EntityTypeModel: new EntityTypeModel(dbConnection, plugins, this.logger),
 				RelationModel: new RelationModel(dbConnection, plugins, this.logger),
-				RelationTypeModel: new RelationTypeModel(dbConnection, plugins, this.logger)
+				RelationTypeModel: new RelationTypeModel(dbConnection, plugins, this.logger),
+				ProductCustomerModel: new ProductCustomerModel(dbConnection, plugins, this.logger)
 			};
 			/** Init logic process class */
 			this.actionPublish = _publish.init({

@@ -1,5 +1,5 @@
 const request = require("request-promise");
-const { FunctionHelper } = require("../../libs/helpers");
+const {FunctionHelper} = require("../../libs/helpers");
 let _NID_URL_ENDPOINT = "https://nvpstage.novaland.com.vn/api/v2";
 if (process.env.ENVIROMENT === "DEV") {
 	_NID_URL_ENDPOINT = "https://nvpstage.novaland.com.vn/api/v2";
@@ -19,14 +19,14 @@ class NidConnector {
 		this.logger = mainProcess.logger;
 	}
 
-	getToken(tryTime = 0) {
+	getToken(tryTime = 0, userName = '', password = '') {
 		return new Promise((res, rej) => {
 			const requestObj = {
 				method: "POST",
 				uri: _NID_URL_ENDPOINT_GET_TOKEN,
 				body: {
-					userName: _NID_USERNAME,
-					password: _NID_PASSWORD
+					userName: userName || _NID_USERNAME,
+					password: password || _NID_PASSWORD
 				},
 				headers: {
 					"Content-Type": "application/json",
@@ -60,43 +60,38 @@ class NidConnector {
 
 	/** CALL API TO NVP
 	 * @param apiAction as: /account/getById
-	 * @param method as: GET, POST, PUT, DELETE 
+	 * @param method as: GET, POST, PUT, DELETE
 	 * @param paramBody as: {prop1: ..., prop2: ...} }
+	 * @param tokenV1
 	 * @output PROMISE<T> as {code, data, message}*/
-	callApi(apiAction, method, paramBody) {
-		return new Promise((res, rej) => {
+	async callApi(apiAction, method, paramBody, tokenV1 = "") {
+		try {
 			const uri = `${_NID_URL_ENDPOINT}/${apiAction}`;
 			if (FunctionHelper.isEmpty(apiAction) || FunctionHelper.isEmpty(method)) {
-				return rej({code: 403, message: "Bad request"});
+				return {code: 403, message: "Bad request"};
 			}
-			this.getToken()
-				.then((resultToken) => {
-					const requestObj = {
-						method,
-						uri,
-						body: paramBody,
-						headers: {
-							"Content-Type": "application/json",
-							Authorization: `Bearer ${resultToken.token}`,
-							TypeEndPoint: "WEB"
-						},
-						json: true,
-						strictSSL: false
-					};
-					request(requestObj)
-						.then((result) => {
-							this.logger.info(JSON.stringify(result));
-							res(result);
-						}).catch((err) => {
-							this.logger.error(JSON.stringify(err));
-							rej(err);
-						});
-				})
-				.catch((e) => {
-					this.logger.error(e);
-					rej(e);
-				});
-		});
+			if (!tokenV1) {
+				const resultToken = await this.getToken();
+				tokenV1 = resultToken.token;
+			}
+
+			const requestObj = {
+				method,
+				uri,
+				body: paramBody,
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${tokenV1}`,
+					TypeEndPoint: "WEB"
+				},
+				json: true,
+				strictSSL: false
+			};
+			const result = await request(requestObj);
+			return result;
+		} catch (err) {
+			this.logger.error(err);
+		}
 	}
 }
 

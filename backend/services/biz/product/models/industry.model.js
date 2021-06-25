@@ -38,7 +38,8 @@ class IndustryModel {
 	constructor(dbConnection, plugins = [], logger = {}) {
 		this.logger = logger;
 		this.dbConnection = dbConnection;
-		this.schema = mongoose.Schema(fields, plugins).set("minimize", false);
+		this.schema = mongoose.Schema(fields);
+		plugins.map((plugin) => this.schema.plugin(plugin));
 		this.schema.set("minimize", false);
 		this.schema.set("toObject", { getters: true });
 		this.schema.set("toJSON", { getters: true });

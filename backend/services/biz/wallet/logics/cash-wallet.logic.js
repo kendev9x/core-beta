@@ -71,11 +71,14 @@ class CashWalletLogic extends BaseLogic {
 								 let limit = rawData[15].replace(",", "");
 								 limit = limit.replace(",", "");
 								 const bamInfo = {
-									userId: rawData[4], customerName: rawData[5], gender: rawData[6]
-									, phone: rawData[7], identityType: rawData[8], identityNumber: rawData[9]
-									, company: rawData[10], workPlace: rawData[11], position: rawData[12]
-									, email: rawData[13], level: rawData[14], quarterLimit: parseInt(limit)
-									, supervisor: rawData[16], effectiveDate: dateObject, businessCode: rawData[2]
+									 extends:{
+										customerName: rawData[5], gender: rawData[6]
+										, phone: rawData[7], identityType: rawData[8], identityNumber: rawData[9]
+										, company: rawData[10], workPlace: rawData[11], position: rawData[12]
+										, email: rawData[13], level: rawData[14]
+										, supervisor: rawData[16]
+									 }, amount: parseInt(limit), userId: rawData[4],  effectiveDate: dateObject,
+									 businessCode: rawData[2], content: "Nạp hạn mức", status: "APPROVED"
 								};
 								uploadedUsers.push(bamInfo);
 							}
@@ -87,7 +90,7 @@ class CashWalletLogic extends BaseLogic {
 						for (let index = 0; index < uploadedUsers.length; index++) {
 							const user = uploadedUsers[index];
 
-							const customerId = await bamCashLogic.getCustomerId(user.phone, user.identityType, user.identityNumber);
+							const customerId = await bamCashLogic.getCustomerId(user.extends.phone, user.extends.identityType, user.extends.identityNumber);
 							console.log("customerId", customerId);
 							if (customerId) {
 								user.customerId = customerId;
@@ -104,24 +107,26 @@ class CashWalletLogic extends BaseLogic {
 										console.log("duplicateWallet ---> no need create transaction");
 									} else {
 										console.log("create transaction");
-										await  model.create(user, filter);
-										await coreSql.createTransaction(cashWallet._id, user.businessCode, "BUDGET", user.quarterLimit);
+										await  model.findOneAndUpdate(user, filter);
+										await coreSql.createTransaction(cashWallet._id, user.businessCode, "BUDGET", user.amount, "0000000000", "Upload hạn mức cho BAM "+ user.extends.customerName);
 									}
 					
 								} else {
-									console.log("chưa có ví thì tạo ví cho", user.customerName);
+									console.log("chưa có ví thì tạo ví cho", user.extends.customerName);
 									// tạo ví
-									const result = await coreSql.createWallet(user.customerId, user.customerName)
+									const result = await coreSql.createWallet(user.customerId, user.extends.customerName);
 									if (result && result.recordset && result.output.result === 1) {
 										console.log("wallets", result.recordset);
 										const wallets = result.recordset;
 										if (wallets && wallets.length == 2) {
 											//khi có wallet code thì lưu thông tin upload vào mongodb 
 											user.walletCode = wallets[1].code;
+											user.walletId = wallets[1]._id;
+
 											const filter = {customerId: user.customerId, businessCode: user.businessCode, walletCode: user.walletCode, effectiveDate: user.effectiveDate};
-											await  model.create(user, filter);
+											await  model.findOneAndUpdate(user, filter);
 											cashWallet = wallets[1];
-											await coreSql.createTransaction(cashWallet._id, user.businessCode, "BUDGET", user.quarterLimit);
+											await coreSql.createTransaction(cashWallet._id, user.businessCode, "BUDGET", user.amount, "0000000000", "Upload hạn mức cho BAM "+ user.extends.customerName);
 
 										}
 									}

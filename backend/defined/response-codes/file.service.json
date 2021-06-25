@@ -1,0 +1,34 @@
+{
+	"MISSING_FILE_NAME": {
+		"CODE": 100301,
+		"MESSAGE": {
+			"VI": "Thiếu tham số tên tập tin",
+			"EN": "MISSING FILE NAME"
+		},
+		"STATUS_CODE": 400
+	},
+	"FILE_NOT_FOUND": {
+		"CODE": 100302,
+		"MESSAGE": {
+			"VI": "Không tìm thấy tập tin",
+			"EN": "FILE NOT FOUND"
+		},
+		"STATUS_CODE": 400
+	},
+	"VALIDATION_FAILED": {
+		"CODE": 100303,
+		"MESSAGE": {
+			"VI": "Không tìm thấy tập tin",
+			"EN": "FILE NOT FOUND"
+		},
+		"STATUS_CODE": 400
+	},
+	"SAVE_FILE_FAILED": {
+		"CODE": 100304,
+		"MESSAGE": {
+			"VI": "Lưu file thất bại",
+			"EN": "SAVE FILE FAILED"
+		},
+		"STATUS_CODE": 500
+	}
+}

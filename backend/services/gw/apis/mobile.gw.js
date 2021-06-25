@@ -20,6 +20,14 @@ class MobileGw extends BaseGw {
 				port: _config.SERVICE_PORT,
 				ip: _config.defaultExposeIP,
 				rateLimit: _config.rateLimit,
+				cors: {
+					origin: "*",
+					methods: ["GET", "OPTIONS", "POST", "PUT", "DELETE"],
+					allowedHeaders: "*",
+					exposedHeaders: [],
+					credentials: false,
+					maxAge: 3600
+				},
 				routes: this.mobileRoutes.register(),
 				onError(req, res, err) {
 					this.onGlobalError(req, res, err);
@@ -40,7 +48,6 @@ class MobileGw extends BaseGw {
 				},
 
 				async authorize(ctx, route, req, res) {
-					// Get the authenticated user. return this.verifyTokenMobile(ctx);
 					const functionPathAuthor = NovaHelpers.RequestHelper
 						.genPathByServiceAndActionName(_config, process.env.BIZ_AUTH_NAME, "mobileVerifyToken");
 					const user = await ctx.call(functionPathAuthor);

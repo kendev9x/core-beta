@@ -1,0 +1,50 @@
+{
+  "ITEM_NOT_FOUND": {
+    "CODE": 100007,
+    "MESSAGE": {
+      "VI": "Không tìm thấy dữ liệu",
+      "EN": "ITEM NOT FOUND"
+    },
+    "STATUS_CODE": 400
+  },
+  "SAVING_FAILED": {
+    "CODE": 101000,
+    "MESSAGE": {
+      "VI": "Lưu dữ liệu không thành công!",
+      "EN": "SAVING FAILED"
+    },
+    "STATUS_CODE": 505
+  },
+  "MISSING_PARAM": {
+    "CODE": 100001,
+    "MESSAGE": {
+      "VI": "Thiếu tham số",
+      "EN": "MISSING PARAM"
+    },
+    "STATUS_CODE": 400
+  },
+  "EXISTED": {
+    "CODE": 100005,
+    "MESSAGE": {
+      "VI": "Dữ liệu đã tồn tại",
+      "EN": "EXISTED NAME"
+    },
+    "STATUS_CODE": 400
+  },
+  "USER_NOT_FOUND": {
+    "CODE": 101001,
+    "MESSAGE": {
+      "VI": "Không tìm thấy thông tin người dùng",
+      "EN": "USER NOT FOUND"
+    },
+    "STATUS_CODE": 400
+  },
+  "USER_HAVE_NOT_PERMISSION": {
+    "CODE": 101002,
+    "MESSAGE": {
+      "VI": "Bạn không có quyền truy cập",
+      "EN": "USER HAVE NOT PERMISSION"
+    },
+    "STATUS_CODE": 413
+  }
+}

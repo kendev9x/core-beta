@@ -1,7 +1,7 @@
 const _ = require("lodash");
 const BaseLogic = require("./base.logic");
 const {APP_SETTING} = require("../defined");
-const { RequestHelper, ResponseHelper, MongoFuncHelper } = require("../../../../libs/helpers");
+const { RequestHelper, ResponseHelper, FunctionHelper } = require("../../../../libs/helpers");
 
 class IndustryLogic extends BaseLogic {
 	constructor(mainProcess) {
@@ -43,15 +43,15 @@ class IndustryLogic extends BaseLogic {
 			query.filter.$and.splice(1, 1);
 		}
 		if (params.keyword) {
-			const languageCode = super.getLanguageCode(context);
+			const languageCode = RequestHelper.getLanguageCode(context);
 			const nameSearch = {};
-			nameSearch[`name.${languageCode}`] = new RegExp(`${params.keyword}`, "i");
+			nameSearch[`name.${languageCode}`] = FunctionHelper.getRegexStringContainWithMongo(params.keyword);
 			const searchInfo = {};
-			searchInfo[`searchInfo.name.${languageCode}`] = new RegExp(`${params.keyword}`, "i");
+			searchInfo[`searchInfo.name.${languageCode}`] = FunctionHelper.getRegexStringContainWithMongo(params.keyword);
 			const searchSkuInfo = {};
-			searchSkuInfo[`skus.name.${languageCode}`] = new RegExp(`${params.keyword}`, "i");
+			searchSkuInfo[`skus.name.${languageCode}`] = FunctionHelper.getRegexStringContainWithMongo(params.keyword);
 			const productCodeSearch = {
-				productCode: new RegExp(`${params.keyword}`, "i")
+				productCode: FunctionHelper.getRegexStringEqualMongo(params.keyword)
 			};
 			if (isUsePortal) {
 				query.filter.$and.push({$or: [nameSearch, searchInfo, searchSkuInfo, productCodeSearch]});
@@ -204,7 +204,7 @@ class IndustryLogic extends BaseLogic {
 		const conditionObj = {};
 		switch (fieldConfigFilter.type) {
 			case "_id":
-				valueMap = MongoFuncHelper.convertToMongoId(paramsValue);
+				valueMap = FunctionHelper.convertToMongoId(paramsValue);
 				break;
 			case "number":
 				valueMap = parseInt(paramsValue, 10);
@@ -213,7 +213,7 @@ class IndustryLogic extends BaseLogic {
 				valueMap = _.isArray(paramsValue) ? paramsValue : [paramsValue];
 				break;
 			case "arrayId":
-				valueMap = MongoFuncHelper.convertToMongoId(paramsValue);
+				valueMap = FunctionHelper.convertToMongoId(paramsValue);
 				break;
 			case "bool":
 				valueMap = JSON.parse(paramsValue);
@@ -231,7 +231,7 @@ class IndustryLogic extends BaseLogic {
 		const conditionObj = {};
 		switch (fieldConfigFilter.type) {
 			case "_id":
-				valueMap = MongoFuncHelper.convertToMongoId(paramsValue);
+				valueMap = FunctionHelper.convertToMongoId(paramsValue);
 				break;
 			case "number":
 				valueMap = parseInt(paramsValue, 10);
@@ -240,7 +240,7 @@ class IndustryLogic extends BaseLogic {
 				valueMap = _.isArray(paramsValue) ? paramsValue : [paramsValue];
 				break;
 			case "arrayId":
-				valueMap = MongoFuncHelper.convertToMongoId(paramsValue);
+				valueMap = FunctionHelper.convertToMongoId(paramsValue);
 				break;
 			case "bool":
 				valueMap = JSON.parse(paramsValue);

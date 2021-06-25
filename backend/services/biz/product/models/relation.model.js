@@ -47,7 +47,8 @@ class RelationModel {
 	constructor(dbConnection, plugins = [], logger = {}) {
 		this.logger = logger;
 		this.dbConnection = dbConnection;
-		this.schema = mongoose.Schema(fields, plugins).set("minimize", false);
+		this.schema = mongoose.Schema(fields);
+		plugins.map((plugin) => this.schema.plugin(plugin));
 		this.schema.set("minimize", false);
 		this.schema.set("toObject", { getters: true });
 		this.schema.set("toJSON", { getters: true });
@@ -136,7 +137,7 @@ class RelationModel {
 	 * @output object result updating
 	 */
 	async setIsActive(_id, isActive) {
-		return await NovaHelpers.MongoFuncHelper.$setIsActive(this.mode, _id, isActive);
+		return await NovaHelpers.MongoFuncHelper.$setIsActive(this.model, _id, isActive);
 	}
 
 	/** Set is delete or in-delete a Relation
@@ -145,7 +146,7 @@ class RelationModel {
 	 * @output object result updating
 	 */
 	async setIsDelete(_id, isDelete) {
-		return await NovaHelpers.MongoFuncHelper.$setIsDelete(this.mode, _id, isDelete);
+		return await NovaHelpers.MongoFuncHelper.$setIsDelete(this.model, _id, isDelete);
 	}
 
 	/** Get a Relation by code

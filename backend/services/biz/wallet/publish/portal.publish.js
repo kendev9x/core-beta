@@ -1,6 +1,6 @@
 const {NovaHelpers} = require("../../../../libs");
 const {Response} = require("../io");
-const {CashWalletLogic, BonusWalletLogic, WalletLogic} = require("../logics");
+const {CashWalletLogic, BonusWalletLogic, WalletLogic, TicketLogic} = require("../logics");
 /**
  Mobile Publish: Processing logic industry for mobile app
  @param {mainProcess} props: logger...
@@ -11,6 +11,7 @@ class PortalPublish {
 		this.cashWalletLogic = new CashWalletLogic(mainProcess);
 		this.bonusWalletLogic = new BonusWalletLogic(mainProcess);
 		this.walletLogic = new WalletLogic(mainProcess);
+		this.ticketLogic = new TicketLogic(mainProcess);
 
 	}
 
@@ -24,9 +25,14 @@ class PortalPublish {
 	async uploadBamBonus(ctx) {
 		return this.bonusWalletLogic.uploadBamBonus(ctx);
 	}
-
+	async rejectTicket(ctx) {
+		return this.ticketLogic.rejectTicket(ctx);
+	}
 	async getWalletByCustomerId(ctx) {
 		return this.walletLogic.getWalletByCustomerId(ctx);
+	}
+	async getWalletByGroupId(ctx) {
+		return this.walletLogic.getWalletByGroupId(ctx);
 	}
 	async getWalletById(ctx) {
 		return this.walletLogic.getWalletById(ctx);

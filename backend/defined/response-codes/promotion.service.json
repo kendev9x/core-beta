@@ -1,0 +1,108 @@
+{
+	"MISSING_PARAM": {
+		"code": 400,
+		"message": {
+			"vi": "Tham số không chính xác",
+			"en": "Missing params",
+			"cn": "Missing params"
+		}
+	},
+	"EXISTS_VOUCHER_CODE": {
+		"code": 400,
+		"message": {
+			"vi": "Mã voucher đã tồn tại, vui lòng nhập mã khác",
+			"en": "Voucher code existed, please enter others code",
+			"cn": "Voucher code existed, please enter others code"
+		}
+	},
+	"EXISTS_CODE": {
+		"code": 400,
+		"message": {
+			"vi": "Mã đã tồn tại, vui lòng mã khác",
+			"en": "Code existed, please enter others Code",
+			"cn": "Code existed, please enter others Code"
+		}
+	},
+	"DATA_NOT_EXIST": {
+		"code": 400,
+		"message": {
+			"vi": "Dữ liệu không tồn tại",
+			"en": "Data not exist",
+			"cn": "Data not exist"
+		}
+	},
+	"SUBMIT_ERROR": {
+		"code": 500,
+		"message": {
+			"vi": "Có lỗi phát xảy ra, vui lòng thử lại sau",
+			"en": "Have error occurs, please try again later",
+			"cn": "Have error occurs, please try again later"
+		}
+	},
+	"UPDATE_FAIL_PROMOTION_PUBLISHED": {
+		"code": 404,
+		"message": {
+			"vi": "Không thể cập nhật ưu đãi đã được phát hành!",
+			"en": "Update failed because this promotion published",
+			"cn": "Update failed because this promotion published"
+		}
+	},
+	"MERCHANT": {
+		"SUCCESS": {
+			"code": 200,
+			"message": "Success"
+		},
+		"VOUCHER_CODE_INVALID": {
+			"code": 1,
+			"message": "Mã voucher không hợp lệ"
+		},
+		"DUPLICATE_TRANSID": {
+			"code": 2,
+			"message": "transId đã tồn tại"
+		},
+		"TRANSID_NOTFOUND": {
+			"code": 3,
+			"message": "transId không tồn tại"
+		},
+		"TRANSID_CONFIRMED": {
+			"code": 4,
+			"message": "Giao dịch đã được confirm"
+		},
+		"TRANSID_CANCELED": {
+			"code": 5,
+			"message": "Giao dịch đã hủy"
+		},
+		"MISSING_PARAM": {
+			"code": 6,
+			"message": "Tham số không hợp lệ"
+		},
+		"VOUCHER_NOT_EXIT": {
+			"code": 7,
+			"message": "Voucher/Coupon không tồn tại"
+		},
+		"QR_CODE_INVALID": {
+			"code": 8,
+			"message": "QR Code không đúng format"
+		},
+		"REFUND_FAIL": {
+			"code": 9,
+			"message": "Refund transaction thất bại"
+		},
+		"ACCOUNTID_NOTFOUND": {
+			"code": 10,
+			"message": "Account not found"
+		},
+		"DUPLICATE_VOUCHER_CODE": {
+			"code": 11,
+			"message": "Trùng mã voucher"
+		},
+		"NOT_ENOUGH_POINT": {
+			"code": 12,
+			"message": "Không đủ điểm để sử dụng"
+		},
+		"POINT_MUST_IS_NUMBER": {
+			"code": 13,
+			"message": "Point phải là số > 0"
+		}
+	}
+}

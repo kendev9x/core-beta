@@ -10,9 +10,18 @@ class ProductPortalRoutes extends BaseRoute {
 	/** Register all url endpoint published for product service use at Web Portal */
 	registerAlias() {
 		return {
-			"GET /industry":
+			"GET /product/industry":
 				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
-					this.config, process.env.BIZ_PRODUCT_NAME, "portalGetIndustry")
+					this.config, process.env.BIZ_PRODUCT_NAME, "portalIndustryGetAll"),
+			"GET /product/":
+				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+					this.config, process.env.BIZ_PRODUCT_NAME, "portalProductGetList"),
+			"GET /product/template":
+				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+					this.config, process.env.BIZ_PRODUCT_NAME, "portalProductTemplateGetList"),
+			"GET /product/template/:id":
+				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+					this.config, process.env.BIZ_PRODUCT_NAME, "portalProductTemplateGetDetail")
 		};
 	}
 

@@ -1,14 +1,14 @@
 const SqlDriver = require("mssql");
 
 const _configConnection = {
-	server: "127.0.0.1",
-	user: "novaID2021",
-	password: "novaid@1234",
-	database: "NID-WALLET",
+	server: process.env.SQL_HOST_WALLET || "127.0.0.1",
+	user: process.env.SQL_USER_WALLET || "novaID2021",
+	password: process.env.SQL_PASSWORD_WALLET || "novaid@1234",
+	database: process.env.SQL_DB_WALLET || "NID-WALLET",
 	options: {
-		port: 1433,
+		port: process.env.SQL_PORT_WALLET || 1433,
 		trustServerCertificate: true,
-		instanceName: "SQLEXPRESS"
+		instanceName: process.env.SQL_INSTANCE_WALLET === "NULL" ? null : process.env.SQL_INSTANCE_WALLET
 	}
 };
 
@@ -31,3 +31,4 @@ class SqlDb {
 }
 
 module.exports = SqlDb;
+

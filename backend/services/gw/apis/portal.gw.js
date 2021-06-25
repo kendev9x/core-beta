@@ -1,8 +1,6 @@
 "use strict";
 const ApiGateway = require("moleculer-web");
 const BaseGw = require("./base.gw");
-const ResponseCode = require("../../../defined/response-code");
-const {resErr} = require("../../../libs/helpers/response.helper");
 const { NovaHelpers } = require("../../../libs");
 const { PortalRoutes } = require("./routes/");
 
@@ -19,6 +17,14 @@ class PortalGw extends BaseGw {
 				port: _config.SERVICE_PORT,
 				ip: _config.defaultExposeIP,
 				rateLimit: _config.rateLimit,
+				cors: {
+					origin: "*",
+					methods: ["GET", "OPTIONS", "POST", "PUT", "DELETE"],
+					allowedHeaders: "*",
+					exposedHeaders: [],
+					credentials: false,
+					maxAge: 3600
+				},
 				routes: this.portalRoutes.register(),
 				onError(req, res, err) {
 					this.onGlobalError(req, res, err);

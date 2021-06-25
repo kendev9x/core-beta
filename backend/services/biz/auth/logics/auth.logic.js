@@ -9,6 +9,8 @@ const jwt = require('jsonwebtoken');
 const { ResponseHelper, FunctionHelper } = require("../../../../libs/helpers");
 const UserConnector = require("../connectors/user.connector");
 const CustomerConnector = require("../connectors/customer.connector");
+const NidConnector = require("../../../../connectors/nid/nid.connector");
+const PortalTokenConnector = require("../connectors/portal-token.connector");
 
 class AuthLogic extends BaseLogic {
 	constructor(mainProcess) {
@@ -20,6 +22,8 @@ class AuthLogic extends BaseLogic {
 		this.deviceInfoLogic = new DeviceInfoLogic(mainProcess);
 		this.userConnector = new UserConnector(mainProcess);
 		this.customerConnector = new CustomerConnector(mainProcess);
+		this.portalTokenConnector = new PortalTokenConnector(mainProcess);
+		this.nidConnector = new NidConnector(mainProcess);
 	}
 
 	async validateApiKey(ctx){
@@ -30,18 +34,19 @@ class AuthLogic extends BaseLogic {
 		if (!apiKeyEncoded) {
 			return ResponseHelper.resErr(ResponseCode.SYS_STATUS_CODE.BAD_REQUEST, "Api key invalid", 400);
 		}
-		let decodeApiKeyParam = NovaHelpers.EncryptHelper.decryptBase64(apiKeyEncoded).toString();
-		const decodeApiKey = JSON.parse(decodeApiKeyParam);
+		let decodeApiKey = NovaHelpers.EncryptHelper.decryptBase64(apiKeyEncoded).toString();
+		decodeApiKey = decodeApiKey.replace(/['"]+/g, "");
+		const arr = decodeApiKey.split(".");
 
 		const { route } = ctx.params.params;
 		const authLog = {
-			client_id: decodeApiKeyParam,
+			client_id: decodeApiKey,
 			session: apiKeyEncoded,
 			action: route
 		};
 
 		const apiKey = await this.apiKeyModel.findOne({id: "authenticate_key"});
-		if (!decodeApiKey || !apiKey|| decodeApiKey.publicKey !== apiKey.prefix) {
+		if (!decodeApiKey || !apiKey || arr.length !== 2 || arr[0] !== apiKey.prefix) {
 			authLog.message = "Api key invalid";
 			await this.authLogLogic.createAuthLog(authLog);
 			return ResponseHelper.resErr(ResponseCode.SYS_STATUS_CODE.BAD_REQUEST, "Api key invalid", 400);
@@ -49,7 +54,7 @@ class AuthLogic extends BaseLogic {
 		authLog.message = "Authenticate success";
 
 		const timing = apiKey.timing;
-		let filter = {client_id: decodeApiKeyParam,
+		let filter = {client_id: decodeApiKey,
 			createdAt: {$gte: new Date(new Date().getTime() - 1000 * 60),  $lt: new Date()}
 		};
 		const logs = await this.authLogLogic.getLogs(filter);
@@ -116,7 +121,6 @@ class AuthLogic extends BaseLogic {
 			const token = jwt.sign({
 				exp: Math.floor(Date.now() / 1000) + (60 * 60),
 				data: {
-					typeEndpoint: "WEB",
 					accountId: user._id.toString(),
 					fullName: user.fullName
 				}
@@ -124,6 +128,14 @@ class AuthLogic extends BaseLogic {
 			const data = {
 				token
 			};
+			const resultToken = await this.nidConnector.getToken(0, userName, password);
+			const portalTokens = {
+				accountId: user._id.toString(),
+				userName,
+				tokenV1: resultToken.token,
+				tokenV2: token
+			};
+			await this.portalTokenConnector.createPortalToken(ctx, portalTokens);
 			return ResponseHelper.resInfo(data);
 		} catch (error) {
 			// console.log('error', error.message);
@@ -162,8 +174,11 @@ class AuthLogic extends BaseLogic {
 			if (!decoded) {
 				return ResponseHelper.resErr(ResponseCode.SYS_STATUS_CODE.UNAUTHORIZED, "Unauthorized", 401);
 			}
-			const {exp, data} = decoded;
+			const {exp, data = {}} = decoded;
 			const {accountId, fullName} = data;
+			// get tokenV1 by accountId & tokenv2 from portal_tokens
+			const tokenV1 = await this.portalTokenConnector.getPortalTokenV1ByTokenV2(ctx, token);
+			data.tokenV1 = tokenV1;
 			return ResponseHelper.resInfo(data);
 		} catch (error) {
 			return ResponseHelper.resErr(ResponseCode.SYS_STATUS_CODE.UNAUTHORIZED, "Unauthorized", 401);
@@ -177,7 +192,7 @@ class AuthLogic extends BaseLogic {
 			// It check the `auth` property in action schema.
 			const actions = await this.userConnector.getActionsByUserId(ctx, accountId);
 			if (!actions.includes(actionName)) {
-				return ResponseHelper.resErr(ResponseCode.SYS_STATUS_CODE.UNAUTHORIZED, "Unauthorized", 401);
+				return ResponseHelper.resErr(ResponseCode.SYS_STATUS_CODE.FORBIDDEN, "Forbidden", 403);
 			}
 			return ResponseHelper.resInfo(true);
 		} catch (error) {
@@ -189,11 +204,16 @@ class AuthLogic extends BaseLogic {
 	async genOtp(ctx) {
 		try {
 			const { phone, status } = ctx.params;
+			if (!phone || !status) {
+				return ResponseHelper.resErr(ResponseCode.SYS_STATUS_CODE.BAD_REQUEST, "Missing params", 400);
+			} else if (!NovaHelpers.FunctionHelper.isPhoneNumber(phone)) {
+				return ResponseHelper.resErr(ResponseCode.SYS_STATUS_CODE.BAD_REQUEST, "Phone is invalid", 400);
+			}
 			const dateNow = new Date();
 			dateNow.setMinutes(dateNow.getMinutes() + 2);
 			const otp = await this.otpModel.create({
 				phone,
-				otp: FunctionHelper.randomString(6),
+				otp: FunctionHelper.randomStringNumber(6),
 				status,
 				timeExpired: new Date(dateNow)
 			});

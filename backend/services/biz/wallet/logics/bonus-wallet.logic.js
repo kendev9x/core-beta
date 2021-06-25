@@ -66,11 +66,13 @@ class BonusWalletLogic extends BaseLogic {
 								 const dateObject = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
 								 let bonus = rawData[9].replace(",", "");
 								 bonus = bonus.replace(",", "");
-
 								 const bamInfo = {
-									 businessCode: rawData[2], effectiveDate: dateObject
-									, customerName: rawData[3], phone: rawData[5], identityType: rawData[6]
-									, identityNumber: rawData[7], propertyCode: rawData[8] , bonus: parseInt(bonus)
+									businessCode: rawData[2], effectiveDate: dateObject, status: "APPROVED",
+									amount: parseInt(bonus),content: "Nạp bonus",
+									extends: {
+										customerName: rawData[3], phone: rawData[5], identityType: rawData[6]
+										, identityNumber: rawData[7], propertyCode: rawData[8] 
+									 }									
 								};
 								uploadedUsers.push(bamInfo);				
 							}
@@ -80,7 +82,7 @@ class BonusWalletLogic extends BaseLogic {
 						console.log("uploadedUsers", uploadedUsers.length);
 						for (let index = 0; index < uploadedUsers.length; index++) {
 							const user = uploadedUsers[index];
-							const customerId = await bonusWalletLogic.getCustomerId(user.phone, user.identityType, user.identityNumber);
+							const customerId = await bonusWalletLogic.getCustomerId(user.extends.phone, user.extends.identityType, user.extends.identityNumber);
 							console.log("customerId", customerId);
 							if (customerId) {
 								user.customerId = customerId;
@@ -95,24 +97,25 @@ class BonusWalletLogic extends BaseLogic {
 									if (duplicateWallet && !_.isEmpty(duplicateWallet)) {
 										console.log("duplicateWallet ---> no need create transaction");
 									} else {
-										await  model.create(user, filter);
+										await  model.findOneAndUpdate(user, filter);
 										console.log("create transaction");
-										await coreSql.createTransaction(bonusWallet._id, user.businessCode, "BUDGET", user.bonus);
+										await coreSql.createTransaction(bonusWallet._id, user.businessCode, "BUDGET", user.amount, "0000000001", "Upload bonus cho BAM "+ user.extends.customerName);
 									}
 								} else {
-									console.log("chưa có ví thì tạo ví cho", user.customerName);
+									console.log("chưa có ví thì tạo ví cho", user.extends.customerName);
 									// tạo ví
-									const result = await coreSql.createWallet(user.customerId, user.customerName);
+									const result = await coreSql.createWallet(user.customerId, user.extends.customerName);
 									if (result && result.recordset && result.output.result === 1) {
 									// console.log("wallets", result.recordset);
 										const wallets = result.recordset;
 										if (wallets && wallets.length == 2) {
 											//khi có wallet code thì lưu thông tin upload vào mongodb 
 											user.walletCode = wallets[0].code;
+											user.walletId = wallets[0]._id;
 											const filter = {customerId: user.customerId, businessCode: user.businessCode, walletCode: user.walletCode, effectiveDate: user.effectiveDate};
-											await  model.create(user, filter);
+											await  model.findOneAndUpdate(user, filter);
 											bonusWallet = wallets[0];
-											await coreSql.createTransaction(bonusWallet._id, user.businessCode, "BUDGET", user.bonus);
+											await coreSql.createTransaction(bonusWallet._id, user.businessCode, "BUDGET", user.amount, "0000000001", "Upload bonus cho BAM "+ user.extends.customerName);
 										}
 									}
 								}

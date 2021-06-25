@@ -33,14 +33,14 @@ class WalletLogic extends BaseLogic {
 		}
 	}
 
-    async getWalletById(context) {
+	async getWalletByGroupId(context) {
 		try {
 			const params = RequestHelper.getParamsByMethodType(context);
 			if (!params || !params.customerId || !params.groupWalletId) {
 				return ResponseHelper.resErr(400, "Bad request", 400);
 			}
 
-			const walletExisted = await this.coreSql.getWalletById(params.groupWalletId, params.customerId);
+			const walletExisted = await this.coreSql.getWalletByGroupId(params.groupWalletId, params.customerId);
 			if (walletExisted) {
 				return ResponseHelper.resInfo(walletExisted);
 			}
@@ -50,10 +50,27 @@ class WalletLogic extends BaseLogic {
 		}
 	}
 
-    async getListWallet(context) {
+	async getWalletById(context) {
 		try {
 			const params = RequestHelper.getParamsByMethodType(context);
-            const {code, customerId, skip, take} = params;
+			if (!params || !params.walletId) {
+				return ResponseHelper.resErr(400, "Bad request", 400);
+			}
+
+			const walletExisted = await this.coreSql.getWalletById(params.walletId);
+			if (walletExisted) {
+				return ResponseHelper.resInfo(walletExisted);
+			}
+			return ResponseHelper.resInfo(walletExisted);
+		} catch (e) {
+			return ResponseHelper.resErr(506, "Process Failed", 507);
+		}
+	}
+
+	async getListWallet(context) {
+		try {
+			const params = RequestHelper.getParamsByMethodType(context);
+			const {code, customerId, skip, take} = params;
 			const walletExisted = await this.coreSql.getListWallet(code, customerId, skip, take);
 			if (walletExisted) {
 				return ResponseHelper.resInfo(walletExisted);

@@ -13,6 +13,7 @@ class BasePortalRoutes {
 	 */
 	onBeforeCallBase(ctx, route, req, res) {
 		ctx.meta.headers = req.headers;
+		ctx.meta.url = req.url;
 		this.trackingRequest(ctx, route, req, res, this.logger);
 	}
 
@@ -22,7 +23,7 @@ class BasePortalRoutes {
 	onAfterCallBase(ctx, route, req, res, data) {
 		this.trackingResponse(ctx, route, req, res, data, this.logger);
 		/** Checking and mapping code logic to status response */
-		if (data.statusCode) {
+		if (data && data.statusCode) {
 			res.statusCode = data.statusCode;
 			delete data.statusCode;
 		}
@@ -71,7 +72,7 @@ class BasePortalRoutes {
 			/** Call log user activities */
 			const userAct = {
 				isFull: true,
-				username: ctx.meta.userName || "ADMIN",
+				username: ctx.meta.userName || "ANONYMOUS",
 				service: req.$action.service.name,
 				action: req.$action.name,
 				url: req.originalUrl,

@@ -1,7 +1,7 @@
 const { NovaHelpers } = require("../../../../../libs");
 const BaseRoute = require("./base.mobile.routes");
 
-class AuthMobileRoutes extends BaseRoute {
+class AuthPublicMobileRoutes extends BaseRoute {
 	constructor(config, broker) {
 		super(config, broker);
 		this.config = config;
@@ -12,13 +12,7 @@ class AuthMobileRoutes extends BaseRoute {
 		return {
 			"GET /auth/genKey":
 				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
-					this.config, process.env.BIZ_AUTH_NAME, "mobileGenKey"),
-			"POST /auth/genOtp":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
-					this.config, process.env.BIZ_AUTH_NAME, "mobileGenOtp"),
-			"POST /auth/verifyOtp":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
-					this.config, process.env.BIZ_AUTH_NAME, "mobileVerifyOtp")
+					this.config, process.env.BIZ_AUTH_NAME, "mobileGenKey")
 		};
 	}
 
@@ -32,7 +26,7 @@ class AuthMobileRoutes extends BaseRoute {
 			],
 			use: [],
 			mergeParams: true,
-			authentication: true,
+			authentication: false,
 			authorization: false,
 			autoAliases: true,
 			aliases: this.registerAlias(),
@@ -69,4 +63,4 @@ class AuthMobileRoutes extends BaseRoute {
 	}
 }
 
-module.exports = AuthMobileRoutes;
+module.exports = AuthPublicMobileRoutes;

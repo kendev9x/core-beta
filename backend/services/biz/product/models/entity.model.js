@@ -45,7 +45,8 @@ class EntityModel {
 	constructor(dbConnection, plugins = [], logger = {}) {
 		this.logger = logger;
 		this.dbConnection = dbConnection;
-		this.schema = mongoose.Schema(fields, plugins).set("minimize", false);
+		this.schema = mongoose.Schema(fields);
+		plugins.map((plugin) => this.schema.plugin(plugin));
 		this.schema.set("minimize", false);
 		this.schema.set("toObject", { getters: true });
 		this.schema.set("toJSON", { getters: true });
@@ -158,8 +159,12 @@ class EntityModel {
 	 * @param listId array entity id
 	 * @output object result updating
 	 */
-	async findByListId(listId) {
+	async getByListId(listId) {
 		return await NovaHelpers.MongoFuncHelper.$findByListId(listId);
+	}
+
+	async createMany(listEnt) {
+		return await NovaHelpers.MongoFuncHelper.$saveMany(this.model, listEnt);
 	}
 }
 

@@ -1,5 +1,5 @@
 const DB_COLLECTION = {
-	CASH_WALLET: "cash_wallets", BONUS_WALLET: "bonus_wallets",
+	CASH_WALLET: "cash_wallets", BONUS_WALLET: "bonus_wallets", TICKET: "tickets"
 };
 const DEFAULT_LANGUAGE_CODE = "vi";
 

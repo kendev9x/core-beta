@@ -3,6 +3,7 @@ const jsonDiff = require("json-diff");
 const _ = require("lodash");
 const mongoose = require("mongoose");
 const dateFrm = require("dateformat");
+const locationResource = require("../../defined/locations");
 
 /** Functions Helpers
  *
@@ -345,7 +346,10 @@ class FunctionHelper {
 		return Array.isArray(inputValue) && inputValue.length < 1;
 	}
 
-	randomString(length) {
+	/** Random a string contains only number
+	 * @param length
+	 * @output string number */
+	randomStringNumber(length) {
 		const result = [];
 		const characters = "0123456789";
 		const charactersLength = characters.length;
@@ -353,6 +357,107 @@ class FunctionHelper {
 			result.push(characters.charAt(Math.floor(Math.random() * charactersLength)));
 		}
 		return result.join("");
+	}
+
+	/** Check string is valid phone format
+	 * @param value
+	 * @output true || false */
+	isPhoneNumber(value) {
+		const vnf_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
+		return vnf_regex.test(value || "");
+	}
+
+	/** Get full string address
+	 * @param province
+	 * @param district
+	 * @param ward
+	 * @param address
+	 * @output address full */
+	getFullTextAddress(province, district, ward, address) {
+		let provinceText = province;
+		let districtText = district;
+		let wardText = address;
+		if (province && _.isNumber(province) && parseInt(province, 10) > 0) {
+			const provinceObj = locationResource.LIST_PROVINCE.find((x) => x.id === province);
+			provinceText = provinceObj ? provinceObj.name : "";
+		}
+		if (district && _.isNumber(district) && parseInt(district, 10) > 0) {
+			const districtObj = locationResource.LIST_DISTRICT.find((x) => x.id === district);
+			districtText = districtObj ? districtObj.name : "";
+		}
+		if (ward && _.isNumber(ward) && parseInt(ward, 10) > 0) {
+			const wardObj = locationResource.LIST_WARD.find((x) => x.id === ward);
+			wardText = wardObj ? wardObj.name : "";
+		}
+		let fullAddress = "";
+		if (!address || address.length < 1) {
+			fullAddress = `${wardText}, ${districtText}, ${provinceText}`;
+			return fullAddress;
+		}
+		fullAddress = `${address}, ${wardText}, ${districtText}, ${provinceText}`;
+		return fullAddress;
+	}
+
+	/** Get full string address by location object
+	 * @param locationDataObj
+	 * @output address full */
+	getFullTextAddressByLocation(locationDataObj) {
+		if (!locationDataObj) {
+			return "";
+		}
+		let province = locationDataObj.province && locationDataObj.province.value ? locationDataObj.province.value.vi : "";
+		let district = locationDataObj.district && locationDataObj.district.value ? locationDataObj.district.value.vi : "";
+		let ward = locationDataObj.ward && locationDataObj.ward.value ? locationDataObj.ward.value.vi : "";
+		const address = locationDataObj.address && locationDataObj.address.value ? locationDataObj.address.value.vi : "";
+		if (province && _.isNumber(province) && parseInt(province, 10) > 0) {
+			const provinceObj = locationResource.LIST_PROVINCE.find((x) => x.id === province);
+			province = provinceObj ? provinceObj.name : "";
+		}
+		if (district && _.isNumber(district) && parseInt(district, 10) > 0) {
+			const districtObj = locationResource.LIST_DISTRICT.find((x) => x.id === district);
+			district = districtObj ? districtObj.name : "";
+		}
+		if (ward && _.isNumber(ward) && parseInt(ward, 10) > 0) {
+			const wardObj = locationResource.LIST_WARD.find((x) => x.id === ward);
+			ward = wardObj ? wardObj.name : "";
+		}
+		let fullAddress = "";
+		if (!address || address.length < 1) {
+			fullAddress = `${ward}, ${district}, ${province}`;
+			return fullAddress;
+		}
+		fullAddress = `${address}, ${ward}, ${district}, ${province}`;
+		return fullAddress;
+	}
+
+	/** Get regex filter equal from string without lower or upper for MONGO
+	 * @param str
+	 * @output regex */
+	getRegexStringEqualMongo(str) {
+		if (this.isEmpty(str)) {
+			return str;
+		}
+		return new RegExp(`^${str}$`, "i");
+	}
+
+	/** Get regex filter start with from string without lower or upper for MONGO
+	 * @param str
+	 * @output regex */
+	getRegexStringStartWithMongo(str) {
+		if (this.isEmpty(str)) {
+			return str;
+		}
+		return new RegExp(`^${str}`, "i");
+	}
+
+	/** Get regex filter contain with from string without lower or upper for MONGO
+	 * @param str
+	 * @output regex */
+	getRegexStringContainWithMongo(str) {
+		if (this.isEmpty(str)) {
+			return str;
+		}
+		return new RegExp(`${str}`, "i");
 	}
 }
 

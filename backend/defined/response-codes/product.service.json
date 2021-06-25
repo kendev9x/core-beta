@@ -1,0 +1,186 @@
+{
+  "MISSING_PARAM": {
+    "CODE": 100001,
+    "MESSAGE": {
+      "VI": "Thiếu tham số",
+      "EN": "MISSING PARAM"
+    },
+    "STATUS_CODE": 400
+  },
+  "MISSING_PARAM_NAME": {
+    "CODE": 100002,
+    "MESSAGE": {
+      "VI": "Thiếu tham số: name",
+      "EN": "MISSING PARAM NAME"
+    },
+    "STATUS_CODE": 400
+  },
+  "MISSING_PARAM_INDUSTRY": {
+    "CODE": 100003,
+    "MESSAGE": {
+      "VI": "Thiếu tham số: industry",
+      "EN": "MISSING PARAM INDUSTRY"
+    },
+    "STATUS_CODE": 400
+  },
+  "MISSING_PARAM_FIELDS": {
+    "CODE": 100004,
+    "MESSAGE": {
+      "VI": "Thiếu tham số: fields",
+      "EN": "MISSING PARAM FIELDS"
+    },
+    "STATUS_CODE": 400
+  },
+  "EXIST_NAME": {
+    "CODE": 100005,
+    "MESSAGE": {
+      "VI": "Tên đã tồn tại",
+      "EN": "EXISTED NAME"
+    },
+    "STATUS_CODE": 400
+  },
+  "DATA_FIELDS_INVALID": {
+    "CODE": 100006,
+    "MESSAGE": {
+      "VI": "Sai định dạng tham số: fields",
+      "EN": "DATA FIELDS INVALID"
+    },
+    "STATUS_CODE": 400
+  },
+  "ITEM_NOT_FOUND": {
+    "CODE": 100007,
+    "MESSAGE": {
+      "VI": "Không tìm thấy dữ liệu",
+      "EN": "ITEM NOT FOUND"
+    },
+    "STATUS_CODE": 400
+  },
+  "MISSING_PARAM_PRICE": {
+    "CODE": 100008,
+    "MESSAGE": {
+      "VI": "Thiếu tham số: price",
+      "EN": "MISSING PARAM PRICE"
+    },
+    "STATUS_CODE": 400
+  },
+  "MISSING_PARAM_QUANTITY": {
+    "CODE": 100009,
+    "MESSAGE": {
+      "VI": "Thiếu tham số: quantity",
+      "EN": "MISSING PARAM QUANTITY"
+    },
+    "STATUS_CODE": 400
+  },
+  "MISSING_PARAM_TEMPLATE": {
+    "CODE": 100010,
+    "MESSAGE": {
+      "VI": "Thiếu tham số: template",
+      "EN": "MISSING PARAM TEMPLATE"
+    },
+    "STATUS_CODE": 400
+  },
+  "MISSING_TEMPLATE_REVISION": {
+    "CODE": 100011,
+    "MESSAGE": {
+      "VI": "Thiếu tham số: template revision",
+      "EN": "MISSING PARAM TEMPLATE REVISION"
+    },
+    "STATUS_CODE": 400
+  },
+  "INVALID_PRICE": {
+    "CODE": 100012,
+    "MESSAGE": {
+      "VI": "Sai định dạng: price",
+      "EN": "INVALID PRICE"
+    },
+    "STATUS_CODE": 400
+  },
+  "INVALID_QUANTITY": {
+    "CODE": 100013,
+    "MESSAGE": {
+      "VI": "Sai định dạng: quantity",
+      "EN": "INVALID QUANTITY"
+    },
+    "STATUS_CODE": 400
+  },
+  "MISSING_PARAM_RELATION": {
+    "CODE": 100014,
+    "MESSAGE": {
+      "VI": "Kiểm tra tham số: Relation",
+      "EN": "MISSING PARAM RELATION"
+    },
+    "STATUS_CODE": 400
+  },
+  "INDUSTRY_NOT_FOUND": {
+    "CODE": 100015,
+    "MESSAGE": {
+      "VI": "Không tìm thấy dữ liệu Industry",
+      "EN": "INDUSTRY NOT FOUND"
+    },
+    "STATUS_CODE": 400
+  },
+  "MISSING_PARAM_PARENT_ID": {
+    "CODE": 100016,
+    "MESSAGE": {
+      "VI": "Thiếu tham số parent id",
+      "EN": "MISSING PARAM PARENT ID"
+    },
+    "STATUS_CODE": 400
+  },
+  "PARENT_NOT_FOUND": {
+    "CODE": 100017,
+    "MESSAGE": {
+      "VI": "Dữ liệu cha không tìm thấy",
+      "EN": "PARENT ITEM NOT FOUND"
+    },
+    "STATUS_CODE": 400
+  },
+  "CHILD_ITEMS_EMPTY": {
+    "CODE": 100018,
+    "MESSAGE": {
+      "VI": "Tham số danh sách con rỗng",
+      "EN": "CHILD ITEMS EMPTY"
+    },
+    "STATUS_CODE": 400
+  },
+  "CHILD_ITEM_NOT_FOUND": {
+    "CODE": 100019,
+    "MESSAGE": {
+      "VI": "Dữ liệu con không tìm thấy",
+      "EN": "CHILD ITEM NOT FOUND"
+    },
+    "STATUS_CODE": 400
+  },
+  "SAVING_ERROR": {
+    "CODE": 100020,
+    "MESSAGE": {
+      "VI": "Lưu dữ liệu thất bại",
+      "EN": "SAVING DATA ERROR"
+    },
+    "STATUS_CODE": 500
+  },
+  "MISSING_TYPE_IN_RELATION": {
+    "CODE": 100021,
+    "MESSAGE": {
+      "VI": "Thiếu thông tin relation type",
+      "EN": "Relation type is missing"
+    },
+    "STATUS_CODE": 500
+  },
+  "MISSING_TYPE_IN_PARENT_RELATION": {
+    "CODE": 100022,
+    "MESSAGE": {
+      "VI": "Thiếu thông tin type trong dữ liệu parent",
+      "EN": "MISSING TYPE IN PARENT RELATION"
+    },
+    "STATUS_CODE": 500
+  },
+  "MISSING_TYPE_IN_CHILD_RELATION": {
+    "CODE": 100023,
+    "MESSAGE": {
+      "VI": "Thiếu thông tin type trong dữ liệu child",
+      "EN": "MISSING TYPE IN CHILD RELATION"
+    },
+    "STATUS_CODE": 500
+  }
+}

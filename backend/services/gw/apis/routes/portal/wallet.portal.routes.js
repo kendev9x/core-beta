@@ -16,10 +16,17 @@ class WalletPortalRoutes extends BaseRoute {
 			"POST /wallet-bonus/upload": "multipart:" + 
 				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_WALLET_NAME, "uploadBamBonus"),
+			"POST /ticket/reject":  
+				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+					this.config, process.env.BIZ_WALLET_NAME, "rejectTicket"),
+					
 			"GET /wallet/:customerId": 
 				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_WALLET_NAME, "getWalletByCustomerId"),
 			"GET /wallet": 
+				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+					this.config, process.env.BIZ_WALLET_NAME, "getWalletByGroupId"),
+			"GET /wallet-pocket": 
 				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_WALLET_NAME, "getWalletById"),
 			"GET /wallets": 

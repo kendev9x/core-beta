@@ -1,0 +1,42 @@
+{
+  "MISSING_PARAM": {
+    "CODE": 200001,
+    "MESSAGE": {
+      "vi": "Thiếu tham số",
+      "en": "The request failed because it missed an required parameter or parameter value"
+    },
+    "STATUS_CODE": 400
+  },
+  "INVALID_PARAM": {
+    "CODE": 200002,
+    "MESSAGE": {
+      "vi": "Thao tác được yêu cầu không thành công vì thông số hoặc giá trị thông số không hợp lệ",
+      "en": "The request failed because it contained an invalid parameter or parameter value"
+    },
+    "STATUS_CODE": 400
+  },
+  "NOT_FOUND": {
+    "CODE": 200003,
+    "MESSAGE": {
+      "vi": "Thao tác được yêu cầu không thành công vì không tìm thấy tài nguyên được liên kết với yêu cầu",
+      "en": "The requested operation failed because a resource associated with the request could not be found"
+    },
+    "STATUS_CODE": 404
+  },
+  "DUPLICATE": {
+    "CODE": 200004,
+    "MESSAGE": {
+      "vi": "Thao tác được yêu cầu không thành công vì nó đã cố gắng tạo một tài nguyên đã tồn tại",
+      "en": "The requested operation failed because it tried to create a resource that already exists"
+    },
+    "STATUS_CODE": 409
+  },
+  "INTERNAL_ERROR": {
+    "CODE": 5,
+    "MESSAGE": {
+      "vi": "Yêu cầu không thành công do lỗi hệ thống",
+      "en": "The request failed due to an internal error"
+    },
+    "STATUS_CODE": 500
+  }
+}

@@ -6,20 +6,27 @@ const fields = {
 	customerId: { type: String },
 	businessCode: { type: String }, // system will use there for reset password
 	walletCode: { type: String },//bamWalletCode
+	walletId: { type: String },
 	userId:  { type: String},
-	customerName: { type: String },
-	gender: { type: String },
-	phone: { type: String },
-	identityType: { type: String },
-	identityNumber: { type: String },
-	company: { type: String },
-	workPlace: { type: String },
-	position: { type: String },
-	email: { type: String },
-	level: { type: String },
-	quarterLimit: { type: Number },
-	supervisor: { type: String },
 	effectiveDate: { type: Date },
+	ticketCode: {type: String},
+	amount: { type: Number },
+	content:  { type: String},
+	status:  { type: String},
+	extends: {
+		customerName: { type: String },
+		gender: { type: String },
+		phone: { type: String },
+		identityType: { type: String },
+		identityNumber: { type: String },
+		company: { type: String },
+		workPlace: { type: String },
+		position: { type: String },
+		email: { type: String },
+		level: { type: String },
+		supervisor: { type: String },
+	},
+
 	isActive: { type: Boolean, default: true },
 	isDelete: { type: Boolean, default: false },
 };
@@ -56,19 +63,15 @@ class CashWalletModel {
 	 * @param ent ApiKey info
 	 * @output object ApiKey created
 	 */
-	async create(ent, filter) {
+	async findOneAndUpdate(ent, filter) {
 		return await NovaHelpers.MongoFuncHelper.$findOneAndUpdate(this.model, ent, filter);
 	}
 
-	/** Updating a ApiKey
-	 * @param ent ApiKey info
-	 * @output object result updating
-	 */
-	async update(ent) {
-		const filter = {
-			_id: ent._id,
-		};
-		return await NovaHelpers.MongoFuncHelper.$updateOne(this.model, filter, ent);
+	async create(ent) {
+		return await NovaHelpers.MongoFuncHelper.$save(this.model, ent);
+	}
+	async updateOne(filter, ent) {
+		return await NovaHelpers.MongoFuncHelper.$updateSet(this.model, filter, ent);
 	}
 
 	/** Get a ApiKey

@@ -146,7 +146,7 @@ class ElasticConnector {
 		}
 	}
 
-	async deleteALl(numIndexEs) {
+	async deleteAll(numIndexEs) {
 		try {
 			const esIndex = this.getIndex(numIndexEs);
 			if (!esIndex) {

@@ -19,13 +19,14 @@ class MobilePublish {
 	 */
 	industryGetAll(ctx) {
 		return new Promise((res, rej) => {
-			this.industryLogic.getAllIndustry(ctx)
+			this.industryLogic.getAll(ctx)
 				.then((resInfo) => {
 					const {data} = resInfo;
 					if (!data) {
 						return res(resInfo);
 					}
-					resInfo.data = NovaHelpers.MapperHelper.mapListObj(data, Response.MobileIndustryResponse);
+					resInfo.data = NovaHelpers.MapperHelper
+						.mapListObj(data, Response.MobileIndustryResponse);
 					res(resInfo);
 				})
 				.catch((err) => {

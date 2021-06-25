@@ -1,0 +1,20 @@
+{
+  "TICKET": {
+    "MISSING_PARAM": {
+      "CODE": 100002,
+      "MESSAGE": {
+        "VI": "Thiếu tham số",
+        "EN": "MISSING PARAM"
+      },
+      "STATUS_CODE": 400
+    },
+    "BALANCE_INSURFICENT": {
+      "CODE": 100003,
+      "MESSAGE": {
+        "VI": "Số dư không đủ",
+        "EN": "Balance is not surficent"
+      },
+      "STATUS_CODE": 400
+    }
+  }
+}

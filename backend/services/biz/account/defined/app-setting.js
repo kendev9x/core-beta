@@ -6,7 +6,8 @@ const DB_COLLECTION = {
 	ROLES: "roles",
 	PERMISSIONS: "permissions",
 	PAGES: "pages",
-	ACTIONS: "actions"
+	ACTIONS: "actions",
+	PORTAL_TOKEN: "portal_tokens",
 };
 const DEFAULT_LANGUAGE_CODE = "vi";
 

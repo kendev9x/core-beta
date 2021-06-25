@@ -13,7 +13,8 @@ const {
 	PermissionModel,
 	ActionModel,
 	PageModel,
-	ProfileModel
+	ProfileModel,
+	PortalTokenModel
 } = require("./models");
 
 const BaseBis = require("../base.biz");
@@ -107,6 +108,22 @@ class StartAccountService extends BaseBis {
 						return this.actionPublish.internal.findProfileByPhone(ctx);
 					}
 				},
+				internalPortalTokenCreate: {
+					rest: {
+						method: "POST"
+					},
+					async handler(ctx) {
+						return this.actionPublish.internal.createPortalToken(ctx);
+					}
+				},
+				internalPortalGetTokenV1ByTokenV2: {
+					rest: {
+						method: "POST"
+					},
+					async handler(ctx) {
+						return this.actionPublish.internal.getPortalTokenV1ByTokenV2(ctx);
+					}
+				},
 			},
 			events: {},
 			methods: {},
@@ -134,6 +151,7 @@ class StartAccountService extends BaseBis {
 				PageModel: new PageModel(dbConnection, plugins, this.logger),
 				ActionModel: new ActionModel(dbConnection, plugins, this.logger),
 				ProfileModel: new ProfileModel(dbConnection, plugins, this.logger),
+				PortalTokenModel: new PortalTokenModel(dbConnection, plugins, this.logger),
 			};
 			/** Init logic process class */
 			this.actionPublish = _publish.init({

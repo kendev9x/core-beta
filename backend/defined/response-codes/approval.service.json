@@ -1,0 +1,66 @@
+{
+  "MISSING_ITEM_TYPE": {
+    "CODE": 102001,
+    "MESSAGE": {
+      "VI": "Thiếu tham số: itemType",
+      "EN": "MISSING PARAM ITEM TYPE"
+    },
+    "STATUS_CODE": 400
+  },
+  "ITEM_WAS_SEND_APPROVE": {
+    "CODE": 102002,
+    "MESSAGE": {
+      "VI": "Dữ liệu này đã được gửi chờ phê duyệt",
+      "EN": "This item was sent to approves. Please waiting!"
+    },
+    "STATUS_CODE": 400
+  },
+  "MISSING_PARAM_MAIN_ID": {
+    "CODE": 102003,
+    "MESSAGE": {
+      "VI": "Thiếu tham số mainId",
+      "EN": "MISSING PARAM MAIN ID!"
+    },
+    "STATUS_CODE": 400
+  },
+  "APPROVAL_CONFIG_NOT_FOUND": {
+    "CODE": 102004,
+    "MESSAGE": {
+      "VI": "Cấu hình cho việc phê duyệt chưa được tạo",
+      "EN": "APPROVAL CONFIG NOT FOUND"
+    },
+    "STATUS_CODE": 400
+  },
+  "APPROVER_CONFIG_LEVEL_NOT_FOUND": {
+    "CODE": 102005,
+    "MESSAGE": {
+      "VI": "Cấu hình cấp phê duyệt không tìm thấy",
+      "EN": "APPROVER CONFIG LEVELS NOT FOUND"
+    },
+    "STATUS_CODE": 400
+  },
+  "APPROVER_NOT_FOUND": {
+    "CODE": 102006,
+    "MESSAGE": {
+      "VI": "Không tìm thấy thông tin người phê duyệt",
+      "EN": "APPROVER NOT FOUND"
+    },
+    "STATUS_CODE": 400
+  },
+  "YOU_APPROVED_OR_NOT_PERMISSION": {
+    "CODE": 102007,
+    "MESSAGE": {
+      "VI": "Bạn đã phê duyệt trên dữ liệu này hoặc bạn không có quyền",
+      "EN": "YOU APPROVED OR NOT PERMISSION"
+    },
+    "STATUS_CODE": 400
+  },
+  "MISSING_NEXT_APPROVER": {
+    "CODE": 102008,
+    "MESSAGE": {
+      "VI": "Không tìm thấy thông tin người duyệt kế tiếp",
+      "EN": "MISSING NEXT APPROVER"
+    },
+    "STATUS_CODE": 400
+  }
+}

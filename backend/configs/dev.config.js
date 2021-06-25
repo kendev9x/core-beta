@@ -2,7 +2,7 @@ const os = require("os");
 
 const DevConfig = {
 	namespace: "NOVA-BE-DEV",
-	nodeID: (process.env.NODEID ? process.env.NODEID + "-" : "") + os.hostname().toLowerCase(),
+	nodeID: (process.env.NODEID ? process.env.NODEID : "") + os.hostname().toLowerCase(),
 	// Add manual -- not default
 	versionEndpoint: "v3",
 	defaultPathEndpoint: "/api/v3",
@@ -65,20 +65,20 @@ const DevConfig = {
 		this.logger.warn("Log the error:", err);
 		throw err; // Throw further
 	},
-	metrics: {
-		enabled: true,
-		reporter: {
-			type: "Prometheus",
-			options: {
-				port: process.env.GW_METRICS_PORT,
-				path: "/metrics",
-				defaultLabels: registry => ({
-					namespace: registry.broker.namespace,
-					nodeID: registry.broker.nodeID
-				})
-			}
-		}
-	},
+	// metrics: {
+	// 	enabled: true,
+	// 	reporter: {
+	// 		type: "Prometheus",
+	// 		options: {
+	// 			port: process.env.GW_METRICS_PORT,
+	// 			path: "/metrics",
+	// 			defaultLabels: registry => ({
+	// 				namespace: registry.broker.namespace,
+	// 				nodeID: registry.broker.nodeID
+	// 			})
+	// 		}
+	// 	}
+	// },
 	tracing: {
 		enabled: true,
 		exporter: {
@@ -91,6 +91,7 @@ const DevConfig = {
 			}
 		}
 	},
+	internalServices: false,
 	middlewares: [],
 	// Register custom REPL commands.
 	replCommands: null,

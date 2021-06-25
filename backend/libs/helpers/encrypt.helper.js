@@ -71,7 +71,29 @@ class EncryptHelper {
 			console.log('invalid object decryptBase64Object');
 			return null;
 		}
-		
+
+	}
+
+	desEcbEncrypt(plaintext, key) {
+		key = new Buffer(key.substr(0, 8));
+		const cipher = crypto.createCipheriv("des-ecb", key, new Buffer(0));
+		cipher.setAutoPadding(true);
+		let ciph = cipher.update(plaintext, "utf8", "base64");
+		ciph += cipher.final("base64");
+		return ciph;
+	}
+
+	desEcbDecrypt(plaintext, key) {
+		try {
+			key = new Buffer(key.substr(0, 8));
+			const cipher = crypto.createDecipheriv("des-ecb", key, new Buffer(0));
+			cipher.setAutoPadding(true);
+			let ciph = cipher.update(plaintext, "base64", "utf8");
+			ciph += cipher.final("utf8");
+			return ciph;
+		} catch (e) {
+			return false;
+		}
 	}
 }
 

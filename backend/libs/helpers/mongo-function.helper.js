@@ -31,10 +31,11 @@ class MongoFuncHelper {
 	}
 
 	/** Since upsert creates a document if not finds a document, you don't need to create another one manually.
-	 * 
-	 * @param {*} model current model working 
-	 * @param {*} entParam object entity model need to create or update 
-	 * @returns 
+	 *
+	 * @param {*} model current model working
+	 * @param {*} entParam object entity model need to create or update
+	 * @param filter
+	 * @returns
 	 */
 	async $findOneAndUpdate(model, entParam, filter = {}) {
 		const options = { upsert: true, new: true,useFindAndModify: false, setDefaultsOnInsert: true };
@@ -57,7 +58,13 @@ class MongoFuncHelper {
 	 * @param isWithOutCheckDelete type boolean
 	 * @param select object contains props name need to get*/
 	async $getById(model, _id, isWithOutCheckDelete = false, select = {}) {
-		const result = await model.findById(_id, select);
+		let id = "";
+		if (mongoose.isValidObjectId(_id)) {
+			id = _id;
+		} else {
+			id = this.convertToMongoId(_id);
+		}
+		const result = await model.findById(id, select);
 		if (!result || _.isEmpty(result)) {
 			return {};
 		}
@@ -151,6 +158,17 @@ class MongoFuncHelper {
 		return data ? data : {};
 	}
 
+	async $getLastItem(model){
+		let result = await model.findOne({}).sort({_id: -1});
+		if (!result || _.isEmpty(result)) {
+			return {};
+		}
+		const data = result.toObject();
+		if (data && data.isDelete) {
+			return {};
+		}
+		return data ? data : {};
+	}
 	/** Get list entity model
 	 * @output array entity model
 	 * @param model is current model working
@@ -238,6 +256,10 @@ class MongoFuncHelper {
 		return await model.count(filter);
 	}
 
+	async $saveMany(model, listItem) {
+		return model.insertMany(listItem);
+	}
+
 	/** Convert value to mongoId
 	 * @output array _id or _id
 	 * @param params array value or string value*/
@@ -249,6 +271,8 @@ class MongoFuncHelper {
 		}
 		return params;
 	}
+
+
 }
 
 module.exports = MongoFuncHelper;

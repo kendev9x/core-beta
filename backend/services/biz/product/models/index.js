@@ -6,6 +6,7 @@ const EntityTypeModel = require("./entity-type.model");
 const EntityModel = require("./entity.model");
 const RelationTypeModel = require("./relation-type.model");
 const RelationModel = require("./relation.model");
+const ProductCustomerModel = require("./product-customer.model");
 
 module.exports = {
 	IndustryModel,
@@ -15,5 +16,6 @@ module.exports = {
 	EntityTypeModel,
 	EntityModel,
 	RelationTypeModel,
-	RelationModel
+	RelationModel,
+	ProductCustomerModel
 };

@@ -44,7 +44,7 @@ class RequestHelper {
 		return {
 			userName: context.meta.userName,
 			userId: context.meta.userId,
-			info: user._doc || {}
+			info: user._doc || user
 		};
 	}
 

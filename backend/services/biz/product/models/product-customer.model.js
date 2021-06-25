@@ -33,7 +33,8 @@ class ProductCustomerModel {
 	constructor(dbConnection, plugins = [], logger = {}) {
 		this.logger = logger;
 		this.dbConnection = dbConnection;
-		this.schema = mongoose.Schema(fields, plugins).set("minimize", false);
+		this.schema = mongoose.Schema(fields);
+		plugins.map((plugin) => this.schema.plugin(plugin));
 		this.schema.set("minimize", false);
 		this.schema.set("toObject", { getters: true });
 		this.schema.set("toJSON", { getters: true });
@@ -57,6 +58,15 @@ class ProductCustomerModel {
 			_id: ent._id,
 		};
 		return await NovaHelpers.MongoFuncHelper.$updateOne(this.model, filter, ent);
+	}
+
+	/** Updating a product-customer data
+	 * @output object result updating
+	 * @param filterObj
+	 * @param setObj
+	 */
+	async updateSet(filterObj, setObj) {
+		return await NovaHelpers.MongoFuncHelper.$updateOne(this.model, filterObj, setObj);
 	}
 
 	/** Get a product-customer data

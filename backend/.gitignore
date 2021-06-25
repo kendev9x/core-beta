@@ -63,3 +63,4 @@ typings/
 # JetBrains IDE
 .idea
 /package-lock.json
+/services/biz/promotion/

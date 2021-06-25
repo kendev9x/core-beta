@@ -4,8 +4,11 @@ const {APP_SETTING} = require("../defined");
 
 const fields = {
 	name: {},
+	component: String,
+	path: String,
 	children: Array,
 	order: Number,
+	showMenu: { type: Boolean, default: true },
 	isActive: { type: Boolean, default: true },
 	isDelete: { type: Boolean, default: false },
 	createdBy: String,

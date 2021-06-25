@@ -79,12 +79,28 @@ class CoreSQLModel {
 			return null;
 		}
 	}
-	async getWalletById(walletId, customerId) {
+	async getWalletByGroupId(walletId, customerId) {
 		try {
 			const dbConnection = await this.sqlDB.createConnection();
 			const result = await dbConnection.request()
 				.input("id", SqlDriver.BigInt, walletId)
 				.input("customerId", SqlDriver.NVarChar(25), customerId)
+				.execute("WALLET_GET_BY_GROUP_ID");
+			this.sqlDB.closeConnection();
+			if (result.recordset) {
+				return result.recordset;
+			}
+			return result;
+		} catch (err) {
+			this.logger.error(JSON.stringify(err));
+			return null;
+		}
+	}
+	async getWalletById(walletId) {
+		try {
+			const dbConnection = await this.sqlDB.createConnection();
+			const result = await dbConnection.request()
+				.input("id", SqlDriver.BigInt, walletId)
 				.execute("WALLET_GET_BY_ID");
 			this.sqlDB.closeConnection();
 			if (result.recordset) {
@@ -96,8 +112,7 @@ class CoreSQLModel {
 			return null;
 		}
 	}
-
-	async createTransaction(walletId, businessCode, transactionType, amount){
+	async createTransaction(walletId, businessCode, transactionType, amount, ticketCode, content){
 		try {
 			console.log("createTransaction", walletId, businessCode, transactionType, amount);
 			const dbConnection = await this.sqlDB.createConnection();
@@ -106,6 +121,8 @@ class CoreSQLModel {
 				.input("businessCode", SqlDriver.NVarChar(50), businessCode)
 				.input("transTypeCode", SqlDriver.NVarChar(50), transactionType)
 				.input("amount", SqlDriver.BigInt, amount)
+				.input("ticketCode",  SqlDriver.NVarChar(50), ticketCode)
+				.input("content",  SqlDriver.NVarChar(50), content)
 				.output("result", SqlDriver.Int)
 				.output("message", SqlDriver.NVarChar(100))
 				.execute("TRANS_CREATE");

@@ -6,6 +6,7 @@ const RoleModel = require("./role.model");
 const PermissionModel = require("./permission.model");
 const ActionModel = require("./action.model");
 const ProfileModel = require("./profile.model");
+const PortalTokenModel = require("./portal-tokens.model");
 
 module.exports = {
 	UserModel,
@@ -15,5 +16,6 @@ module.exports = {
 	RoleModel,
 	PermissionModel,
 	ActionModel,
-	ProfileModel
+	ProfileModel,
+	PortalTokenModel
 };
