@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "My Moleculer-based microservices project",
   "scripts": {
-    "dev": "moleculer-runner --repl --config configs/dev.config.js --envfile .run.env services/gw/apis/*.gw.js services/gw/sockets/*.socket.js services/biz/**/start.js",
+    "dev": "moleculer-runner --repl --hot --config configs/dev.config.js --envfile .run.env services/gw/apis/*.gw.js services/gw/sockets/*.socket.js services/biz/**/start.js",
     "staging": "moleculer-runner --repl --hot --config configs/staging.config.js --envfile .run.env services/gw/apis/*.gw.js services/gw/sockets/*.socket.js services/biz/**/start.js",
     "uat": "moleculer-runner --repl --hot --config configs/uat.config.js --envfile .run.env services/gw/apis/*.gw.js services/gw/sockets/*.socket.js services/biz/**/start.js",
     "prod": "moleculer-runner --repl --hot --config configs/prod.config.js --envfile .run.env services/gw/apis/*.gw.js services/gw/sockets/*.socket.js services/biz/**/start.js",

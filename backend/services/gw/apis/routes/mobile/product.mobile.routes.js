@@ -13,13 +13,13 @@ class ProductMobileRoutes extends BaseRoute {
 		return {
 			"GET /industry":
 				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
-					this.config, process.env.BIZ_PRODUCT_NAME, "mobileGetIndustry"),
+					this.config, process.env.BIZ_PRODUCT_NAME, "mobileIndustryGetAll"),
 			"GET /product/showcase":
 				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
-					this.config, process.env.BIZ_PRODUCT_NAME, "mobileGetProductShowcase"),
+					this.config, process.env.BIZ_PRODUCT_NAME, "mobileProductGetShowcase"),
 			"GET /product/:id":
 				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
-					this.config, process.env.BIZ_PRODUCT_NAME, "mobileGetProductDetailById"),
+					this.config, process.env.BIZ_PRODUCT_NAME, "mobileProductGetDetailById"),
 			"GET /product/sql":
 				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_PRODUCT_NAME, "mobileTestingSql"),
@@ -40,7 +40,7 @@ class ProductMobileRoutes extends BaseRoute {
 			use: [],
 			mergeParams: true,
 			authentication: true,
-			authorization: true,
+			authorization: false,
 			autoAliases: true,
 			aliases: this.registerAlias(),
 			bodyParsers: {
@@ -61,7 +61,6 @@ class ProductMobileRoutes extends BaseRoute {
 			onBeforeCall(ctx, route, req, res) {
 				ctx.meta.headers = req.headers;
 				sef.onBeforeCallBase(ctx, route, req, res);
-				console.log("KEN");
 			},
 
 			/** BASE FUNCTIONS PRE-PROCESS RESPONSE

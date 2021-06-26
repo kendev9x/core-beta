@@ -77,9 +77,6 @@ class StartProductService extends BaseBiz {
 					rest: {
 						method: "GET",
 					},
-					params: {
-						id: "string",
-					},
 					handler(ctx) {
 						return this.actionPublish.mobile.productDetail(ctx);
 					}

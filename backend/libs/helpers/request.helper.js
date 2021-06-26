@@ -10,19 +10,29 @@ class RequestHelper {
 	 * @param context
 	 * @output object params*/
 	getParamsByMethodType(context) {
-		let params = {};
-		if (context.params.query && (!context.params.body
-			|| _.isEmpty(context.params.body))
-			&& (!context.params.params || _.isEmpty(context.params.params))) {
-			params = context.params.query;
-		} else if (context.params.body && _.isEmpty(context.params.params)) {
-			params = context.params.body;
-		} else if (context.params.params) {
-			params = context.params.params;
-		} else if (context.params) {
-			params = context.params;
+		/** If set config mergeParam = true at setting routes */
+		if (context.params && !context.params.query && !context.params.body && !context.params.params) {
+			return context.params;
 		}
-		params = _.isUndefined(params) ? {} : params;
+		/** Else will check and get params via method type */
+		let params = {};
+		if (context.meta.method) {
+			switch (context.meta.method) {
+				case "GET": {
+					params = {...context.params.query, ...context.params.params};
+					break;
+				}
+				case "POST" || "PUT" || "DELETE" || "OPTIONS": {
+					params = context.params.body;
+					break;
+				}
+			}
+		}
+		if (params && !_.isEmpty(params)) {
+			return params;
+		}
+		/** Try for get params if case method type is not set, merge all to a object params */
+		params = {...context.params.query, ...context.params.body, ...context.params.params};
 		return params;
 	}
 
