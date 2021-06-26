@@ -1,0 +1,388 @@
+{
+	"info": {
+		"_postman_id": "f6262b3a-cd83-47e5-bc04-433a1f788569",
+		"name": "CoreBeta",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "File Gateway",
+			"item": [
+				{
+					"name": "File Gateway: Upload File",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data;boundary=SOME_BOUNDARY",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwMWU5Y2YwNjBjYjRlMzUzMDEzOTcyMzswMzAyMjAyMDtNT0JJTEUiLCJleHAiOjE2NDA1ODA0MjcsImlhdCI6MTY0MDU4MDQyN30.XYf75VCoWmmEXeO4JHoxCCvf3298na3xpoizCFo-tmQ",
+								"type": "text"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "vi",
+								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "IjBiOWNhMzM2LjJmMjljNzFjLWU3NGUtNDczNC05M2NiLTk0MmRhN2FmMDViZSI=",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/tan.nguyenthanh/Pictures/Buffet.png"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": [],
+									"disabled": true
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": [],
+									"disabled": true
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": [],
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:9003/api/v3/upload",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "9003",
+							"path": [
+								"api",
+								"v3",
+								"upload"
+							],
+							"query": [
+								{
+									"key": "project",
+									"value": "5ec780dcb234ea5650a21b7e",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "File Gateway: Get File Orginal",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "IjBiOWNhMzM2LjJmMjljNzFjLWU3NGUtNDczNC05M2NiLTk0MmRhN2FmMDViZSI=",
+								"type": "text"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:9003/api/v3/20210625-042745-2937-Buffet.png",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "9003",
+							"path": [
+								"api",
+								"v3",
+								"20210625-042745-2937-Buffet.png"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "File Gatway: Get thumbnail file",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "IjBiOWNhMzM2LjJmMjljNzFjLWU3NGUtNDczNC05M2NiLTk0MmRhN2FmMDViZSI=",
+								"type": "text"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:9003/api/v3/thumbnail/1x@20210625-041827-7937-Buffet.png",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "9003",
+							"path": [
+								"api",
+								"v3",
+								"thumbnail",
+								"1x@20210625-041827-7937-Buffet.png"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Mobile Gateway",
+			"item": [
+				{
+					"name": "Auth Service",
+					"item": [
+						{
+							"name": "Gen API Key",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "eyJwdWJsaWNLZXkiOiIwYjljYTMzNiIsImFwcE5hbWUiOiJub3ZhLWlkIiwiYXBwVmVyc2lvbiI6IjEuMS4wIiwidXVpZCI6Imprc2hkZm9zbzE5MjMxa2pzZGZvc2lkZmoiLCJvc1ZlcnNpb24iOjYsIm9zIjoiYW5kcm9pZCJ9",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:9002/api/v3/auth/genkey",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "9002",
+									"path": [
+										"api",
+										"v3",
+										"auth",
+										"genkey"
+									]
+								},
+								"description": "Add x-api-key to headers\r\nx-api-key: base64 object \r\n{\r\n    \"publicKey\":\"0b9ca336\",\r\n    \"appName\":\"nova-id\",\r\n    \"appVersion\":\"1.1.0\",\r\n    \"uuid\":\"jkshdfoso19231kjsdfosidfj\",\r\n    \"osVersion\":6,\r\n    \"os\":\"android\"\r\n}"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Product Service",
+					"item": [
+						{
+							"name": "Industry: Get All",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "MGI5Y2EzMzYuYjE3NDBkOTMtMjU0Yy00ZjUyLWI5MjYtODYwMzBkNzkwZjY1",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"ken\": \"tan\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:9002/api/v3/industry",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "9002",
+									"path": [
+										"api",
+										"v3",
+										"industry"
+									],
+									"query": [
+										{
+											"key": "abc",
+											"value": "123",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Product: Get List Showcase",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "MGI5Y2EzMzYuY2ZlOWU0MzQtMmFkNS00M2ViLTg3YTAtNjU1OGUzNzk3ZDdk",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:9002/api/v3/product/showcase",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "9002",
+									"path": [
+										"api",
+										"v3",
+										"product",
+										"showcase"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Product: Get Product Detail",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "MGI5Y2EzMzYuY2ZlOWU0MzQtMmFkNS00M2ViLTg3YTAtNjU1OGUzNzk3ZDdk",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:9002/api/v3/product/5fe408f75b23418a921ab1e1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "9002",
+									"path": [
+										"api",
+										"v3",
+										"product",
+										"5fe408f75b23418a921ab1e1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Portal Gateway",
+			"item": []
+		}
+	]
+}
