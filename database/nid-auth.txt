@@ -1,0 +1,13 @@
+db: nid-auth
+collection: api-keys
+{
+    "_id" : ObjectId("60dffe825d8c314cca7e6f27"),
+    "code" : "authenticate_key",
+    "prefix" : "0b9ca336",
+    "name" : "MOBILE APP",
+    "timing" : 60,
+    "isActive" : true,
+    "isDelete" : false,
+    "createdBy" : "administrator",
+    "updatedBy" : "administrator"
+}
