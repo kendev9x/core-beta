@@ -45,7 +45,7 @@ class AuthLogic extends BaseLogic {
 			action: route
 		};
 
-		const apiKey = await this.apiKeyModel.findOne({id: "authenticate_key"});
+		const apiKey = await this.apiKeyModel.findOne({code: "authenticate_key"});
 		if (!decodeApiKey || !apiKey || arr.length !== 2 || arr[0] !== apiKey.prefix) {
 			authLog.message = "Api key invalid";
 			await this.authLogLogic.createAuthLog(authLog);
@@ -84,7 +84,7 @@ class AuthLogic extends BaseLogic {
 				return ResponseHelper.resInfo(data);
 			}
 			const decodeApiKey = NovaHelpers.EncryptHelper.decryptBase64Object(apiKeyEncoded);
-			const authenticatePrefixKey = await this.apiKeyModel.findOne({id: "authenticate_key"});
+			const authenticatePrefixKey = await this.apiKeyModel.findOne({code: "authenticate_key"});
 
 			if (!decodeApiKey || !authenticatePrefixKey || decodeApiKey.publicKey !== authenticatePrefixKey.prefix) {
 				return ResponseHelper.resErr(ResponseCode.SYS_STATUS_CODE.BAD_REQUEST, "Api key invalid", 400);
