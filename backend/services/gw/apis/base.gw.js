@@ -1,5 +1,5 @@
 const Service = require("moleculer").Service;
-const { NovaHelpers } = require("../../../libs");
+const { CoreHelpers } = require("../../../libs");
 
 /**
  * Base GW use for all GW service

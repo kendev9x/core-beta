@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const {APP_SETTING} = require("../defined");
-const {NovaHelpers} = require("../../../../libs");
+const {CoreHelpers} = require("../../../../libs");
 const { Schema } = require("mongoose");
 const {Mixed} = Schema.Types;
 
@@ -67,7 +67,7 @@ class ProductTemplateModel {
 	 * @output object ProductTemplate created
 	 */
 	async create(ent) {
-		return await NovaHelpers.MongoFuncHelper.$save(this.model, ent);
+		return await CoreHelpers.MongoFuncHelper.$save(this.model, ent);
 	}
 
 	/** Updating a ProductTemplate
@@ -78,7 +78,7 @@ class ProductTemplateModel {
 		const filter = {
 			_id: ent._id,
 		};
-		return await NovaHelpers.MongoFuncHelper.$updateOne(this.model, filter, ent);
+		return await CoreHelpers.MongoFuncHelper.$updateOne(this.model, filter, ent);
 	}
 
 	/** Get a ProductTemplate
@@ -87,7 +87,7 @@ class ProductTemplateModel {
 	 * @output object result
 	 */
 	async getById(_id, isWithoutCheckDelete = false) {
-		return await NovaHelpers.MongoFuncHelper.$getById(this.model, _id, isWithoutCheckDelete);
+		return await CoreHelpers.MongoFuncHelper.$getById(this.model, _id, isWithoutCheckDelete);
 	}
 
 	/** Get a ProductTemplate
@@ -96,7 +96,7 @@ class ProductTemplateModel {
 	 * @output object result updating
 	 */
 	async findOne(filter, isWithoutCheckDelete = false) {
-		return await NovaHelpers.MongoFuncHelper.$findOne(this.model, filter, isWithoutCheckDelete);
+		return await CoreHelpers.MongoFuncHelper.$findOne(this.model, filter, isWithoutCheckDelete);
 	}
 
 	/** Get all ProductTemplate -- just use for test
@@ -106,7 +106,7 @@ class ProductTemplateModel {
 	 * @output array ProductTemplate
 	 */
 	async getAll(filter, sort = {}, select = {}) {
-		return await NovaHelpers.MongoFuncHelper.$getAll(this.model, filter, sort, select);
+		return await CoreHelpers.MongoFuncHelper.$getAll(this.model, filter, sort, select);
 	}
 
 	/** Get list ProductTemplate
@@ -121,7 +121,7 @@ class ProductTemplateModel {
 		if (!filter) {
 			filter = {};
 		}
-		return await NovaHelpers.MongoFuncHelper.$list(this.model, filter, sort, skip, limit, select);
+		return await CoreHelpers.MongoFuncHelper.$list(this.model, filter, sort, skip, limit, select);
 	}
 
 	/** Get list ProductTemplate
@@ -135,7 +135,7 @@ class ProductTemplateModel {
 		if (!filter) {
 			filter = {};
 		}
-		return await NovaHelpers.MongoFuncHelper.$listPaging(this.model, filter, sort, pageIndex, pageSize);
+		return await CoreHelpers.MongoFuncHelper.$listPaging(this.model, filter, sort, pageIndex, pageSize);
 	}
 
 	/** Set is active or in-active a ProductTemplate
@@ -144,7 +144,7 @@ class ProductTemplateModel {
 	 * @output object result updating
 	 */
 	async setIsActive(_id, isActive) {
-		return await NovaHelpers.MongoFuncHelper.$setIsActive(this.model, _id, isActive);
+		return await CoreHelpers.MongoFuncHelper.$setIsActive(this.model, _id, isActive);
 	}
 
 	/** Set is delete or in-delete a ProductTemplate
@@ -153,7 +153,7 @@ class ProductTemplateModel {
 	 * @output object result updating
 	 */
 	async setIsDelete(_id, isDelete) {
-		return await NovaHelpers.MongoFuncHelper.$setIsDelete(this.model, _id, isDelete);
+		return await CoreHelpers.MongoFuncHelper.$setIsDelete(this.model, _id, isDelete);
 	}
 
 	/** Get a ProductTemplate by code
@@ -161,7 +161,7 @@ class ProductTemplateModel {
 	 * @output object result updating
 	 */
 	async getByCode(code) {
-		return await NovaHelpers.MongoFuncHelper.$getByCode(this.model, code);
+		return await CoreHelpers.MongoFuncHelper.$getByCode(this.model, code);
 	}
 
 	/** Set is delete a revision for a template
@@ -180,7 +180,7 @@ class ProductTemplateModel {
 				"revisions.$.isDelete": isDelete
 			}
 		};
-		return await NovaHelpers.MongoFuncHelper.$updateSet(filterObj, setObj);
+		return await CoreHelpers.MongoFuncHelper.$updateSet(filterObj, setObj);
 	}
 }
 

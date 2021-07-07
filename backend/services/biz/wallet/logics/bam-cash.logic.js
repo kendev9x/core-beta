@@ -1,7 +1,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 const _ = require("lodash");
 const ResponseCode = require("../../../../defined/response-code");
-const {NovaHelpers} = require("../../../../libs");
+const {CoreHelpers} = require("../../../../libs");
 const BaseLogic = require("./base.logic");
 const XlsxStreamReader = require("xlsx-stream-reader");
 const { ResponseHelper } = require("../../../../libs/helpers");
@@ -103,16 +103,16 @@ class BamLogic extends BaseLogic {
 									console.log("create transaction");
 									await coreSql.createTransaction(bonusWallet._id, user.businessCode, "BUDGET", user.quarterLimit);
 								}
-					
+
 							} else {
 								console.log("chưa có ví thì tạo ví cho", user.customerName);
 								// tạo ví
-								const result = await coreSql.createWallet(user.idNova, user.customerName)
+								const result = await coreSql.createWallet(user.idNova, user.customerName);
 								if (result && result.recordset && result.output.result === 1) {
 									console.log("wallets", result.recordset);
 									const wallets = result.recordset;
 									if (wallets && wallets.length == 2) {
-									//khi có wallet code thì lưu thông tin upload vào mongodb 
+									//khi có wallet code thì lưu thông tin upload vào mongodb
 										user.walletCode = wallets[1].code;
 										const filter = {idNova: user.idNova, businessCode: user.businessCode, walletCode: user.walletCode, effectiveDate: user.effectiveDate};
 										await  model.create(user, filter);

@@ -1,6 +1,6 @@
 const _ = require("lodash");
 const ResponseCode = require("../../../../defined/response-code");
-const { NovaHelpers } = require("../../../../libs");
+const { CoreHelpers } = require("../../../../libs");
 const BaseLogic = require("./base.logic");
 const AuthLogLogic = require("./auth-log.logic");
 const DeviceInfoLogic = require("./device-info.logic");
@@ -34,7 +34,7 @@ class AuthLogic extends BaseLogic {
 		if (!apiKeyEncoded) {
 			return ResponseHelper.resErr(ResponseCode.SYS_STATUS_CODE.BAD_REQUEST, "Api key invalid", 400);
 		}
-		let decodeApiKey = NovaHelpers.EncryptHelper.decryptBase64(apiKeyEncoded).toString();
+		let decodeApiKey = CoreHelpers.EncryptHelper.decryptBase64(apiKeyEncoded).toString();
 		decodeApiKey = decodeApiKey.replace(/['"]+/g, "");
 		const arr = decodeApiKey.split(".");
 
@@ -80,10 +80,10 @@ class AuthLogic extends BaseLogic {
 			}
 			const clientExisted = await this.authLogLogic.getLogBySession(apiKeyEncoded);
 			if (clientExisted && !_.isEmpty(clientExisted)) {
-				data = {apiKey: NovaHelpers.EncryptHelper.encryptBase64Object(clientExisted.client_id)};
+				data = {apiKey: CoreHelpers.EncryptHelper.encryptBase64Object(clientExisted.client_id)};
 				return ResponseHelper.resInfo(data);
 			}
-			const decodeApiKey = NovaHelpers.EncryptHelper.decryptBase64Object(apiKeyEncoded);
+			const decodeApiKey = CoreHelpers.EncryptHelper.decryptBase64Object(apiKeyEncoded);
 			const authenticatePrefixKey = await this.apiKeyModel.findOne({code: "authenticate_key"});
 
 			if (!decodeApiKey || !authenticatePrefixKey || decodeApiKey.publicKey !== authenticatePrefixKey.prefix) {
@@ -91,7 +91,7 @@ class AuthLogic extends BaseLogic {
 			}
 			const postFix = uuid.v4().toString();
 			const apiKey = authenticatePrefixKey.prefix + "." + postFix;
-			const encodeApiKey = NovaHelpers.EncryptHelper.encryptBase64(apiKey);
+			const encodeApiKey = CoreHelpers.EncryptHelper.encryptBase64(apiKey);
 			data = {apiKey: encodeApiKey};
 
 			const authLog = {
@@ -206,7 +206,7 @@ class AuthLogic extends BaseLogic {
 			const { phone, status } = ctx.params;
 			if (!phone || !status) {
 				return ResponseHelper.resErr(ResponseCode.SYS_STATUS_CODE.BAD_REQUEST, "Missing params", 400);
-			} else if (!NovaHelpers.FunctionHelper.isPhoneNumber(phone)) {
+			} else if (!CoreHelpers.FunctionHelper.isPhoneNumber(phone)) {
 				return ResponseHelper.resErr(ResponseCode.SYS_STATUS_CODE.BAD_REQUEST, "Phone is invalid", 400);
 			}
 			const dateNow = new Date();

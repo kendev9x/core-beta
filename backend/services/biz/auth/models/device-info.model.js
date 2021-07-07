@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const {NovaHelpers} = require("../../../../libs");
+const {CoreHelpers} = require("../../../../libs");
 const {APP_SETTING} = require("../defined");
 
 const fields = {
@@ -35,7 +35,7 @@ class DeviceInfoModel {
 	 * @output object Device created
 	 */
 	async create(ent) {
-		return await NovaHelpers.MongoFuncHelper.$findOneAndUpdate(this.model, ent);
+		return await CoreHelpers.MongoFuncHelper.$findOneAndUpdate(this.model, ent);
 	}
 
 	/** Updating a Device
@@ -46,7 +46,7 @@ class DeviceInfoModel {
 		const filter = {
 			_id: ent._id,
 		};
-		return await NovaHelpers.MongoFuncHelper.$updateOne(this.model, filter, ent);
+		return await CoreHelpers.MongoFuncHelper.$updateOne(this.model, filter, ent);
 	}
 
 	/** Get a Device
@@ -55,7 +55,7 @@ class DeviceInfoModel {
 	 * @output object result
 	 */
 	async getById(_id, isWithoutCheckDelete = false) {
-		return await NovaHelpers.MongoFuncHelper.$getById(this.model, _id, isWithoutCheckDelete);
+		return await CoreHelpers.MongoFuncHelper.$getById(this.model, _id, isWithoutCheckDelete);
 	}
 
 	/** Get a Device
@@ -64,7 +64,7 @@ class DeviceInfoModel {
 	 * @output object result updating
 	 */
 	async findOne(filter, isWithoutCheckDelete = false) {
-		return await NovaHelpers.MongoFuncHelper.$findOne(this.model, filter, isWithoutCheckDelete);
+		return await CoreHelpers.MongoFuncHelper.$findOne(this.model, filter, isWithoutCheckDelete);
 	}
 
 	/** Get all Device -- just use for test
@@ -74,7 +74,7 @@ class DeviceInfoModel {
 	 * @output array Device
 	 */
 	async getAll(filter, sort = {}, select = {}) {
-		return await NovaHelpers.MongoFuncHelper.$getAll(this.model, filter, sort, select);
+		return await CoreHelpers.MongoFuncHelper.$getAll(this.model, filter, sort, select);
 	}
 
 	/** Get list Device
@@ -89,7 +89,7 @@ class DeviceInfoModel {
 		if (!filter) {
 			filter = {};
 		}
-		return await NovaHelpers.MongoFuncHelper.$list(this.model, filter, sort, skip, limit, select);
+		return await CoreHelpers.MongoFuncHelper.$list(this.model, filter, sort, skip, limit, select);
 	}
 }
 

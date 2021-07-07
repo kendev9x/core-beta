@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = require("mongoose");
-const {NovaHelpers} = require("../../../../libs");
+const {CoreHelpers} = require("../../../../libs");
 const {APP_SETTING} = require("../defined");
 
 const fields = {
@@ -79,7 +79,7 @@ class SystemSettingModel {
 	/** GET SETTING
 	 * @output Promise<T>: Setting Object */
 	async getSetting() {
-		const result = await NovaHelpers.MongoFuncHelper.$getAll(this.model);
+		const result = await CoreHelpers.MongoFuncHelper.$getAll(this.model);
 		if (result && result.length > 0) {
 			return result[0];
 		}
@@ -97,7 +97,7 @@ class SystemSettingModel {
 			{$project: {keyword: `$filter.${type}.keywords.values`}},
 			{$unwind: {path: "$keyword"}}
 		];
-		return await NovaHelpers.MongoFuncHelper
+		return await CoreHelpers.MongoFuncHelper
 			.$aggregatePaging(aggregateFilters, {pageSize, pageNumber});
 	}
 }

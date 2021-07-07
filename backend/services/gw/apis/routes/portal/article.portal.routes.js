@@ -1,4 +1,4 @@
-const { NovaHelpers } = require("../../../../../libs");
+const { CoreHelpers } = require("../../../../../libs");
 const BaseRoute = require("./base.portal.routes");
 
 class ProductPortalRoutes extends BaseRoute {
@@ -11,68 +11,68 @@ class ProductPortalRoutes extends BaseRoute {
 	registerAlias() {
 		return {
 			"POST /cms/articles/search":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config,
 					process.env.BIZ_ARTICLE_NAME,
 					"findAll"
 				),
 			"GET /cms/articles/:id":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config,
 					process.env.BIZ_ARTICLE_NAME,
 					"findArticlesById"
 				),
 			"POST /cms/articles/searchArticlesByIds":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config,
 					process.env.BIZ_ARTICLE_NAME,
 					"searchArticlesByIds"
 				),
 			"POST /cms/articles/findArticlesByTags":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config,
 					process.env.BIZ_ARTICLE_NAME,
 					"findArticlesByTags"
 				),
 			"GET /cms/articles/getArticles":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config,
 					process.env.BIZ_ARTICLE_NAME,
 					"getArticles"
 				),
 			"GET /cms/getAllArticles":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config,
 					process.env.BIZ_ARTICLE_NAME,
 					"getAllArticles"
 				),
 
 			"PUT /cms/articles/remove/:id":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config,
 					process.env.BIZ_ARTICLE_NAME,
 					"removeArticles"
 				),
 			"POST /cms/articles":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config,
 					process.env.BIZ_ARTICLE_NAME,
 					"createArticles"
 				),
 			"PUT /cms/articles/:id":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config,
 					process.env.BIZ_ARTICLE_NAME,
 					"updateArticles"
 				),
 			"PUT /cms/article/setIsActive":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config,
 					process.env.BIZ_ARTICLE_NAME,
 					"setIsActive"
 				),
 			"PUT /cms/article/setIsDelete":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config,
 					process.env.BIZ_ARTICLE_NAME,
 					"setIsDelete"

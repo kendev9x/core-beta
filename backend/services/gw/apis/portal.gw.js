@@ -1,7 +1,7 @@
 "use strict";
 const ApiGateway = require("moleculer-web");
 const BaseGw = require("./base.gw");
-const { NovaHelpers } = require("../../../libs");
+const { CoreHelpers } = require("../../../libs");
 const { PortalRoutes } = require("./routes/");
 
 class PortalGw extends BaseGw {
@@ -35,7 +35,7 @@ class PortalGw extends BaseGw {
 			},
 			methods: {
 				async authenticate(ctx, route, req) {
-					const functionPath = NovaHelpers.RequestHelper
+					const functionPath = CoreHelpers.RequestHelper
 						.genPathByServiceAndActionName(_config, process.env.BIZ_AUTH_NAME, "portalVerifyToken");
 					const result = await ctx.call(functionPath, {params: {route: ctx.span.name}});
 					if (result.code !== 200) {
@@ -47,7 +47,7 @@ class PortalGw extends BaseGw {
 					// Get the authenticated user.
 					const user = ctx.meta.user;
 					const {accountId, fullName} = user || {};
-					const functionPath = NovaHelpers.RequestHelper
+					const functionPath = CoreHelpers.RequestHelper
 						.genPathByServiceAndActionName(_config, process.env.BIZ_AUTH_NAME, "portalAuthorize");
 					const result = await ctx.call(functionPath, {params: {route: ctx.span.name, accountId, actionName: req.$action.name}});
 					if (result.code !== 200) {

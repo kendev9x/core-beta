@@ -1,4 +1,4 @@
-const { NovaHelpers } = require("../../../../../libs");
+const { CoreHelpers } = require("../../../../../libs");
 const BaseRoute = require("./base.portal.routes");
 
 class AccountPortalRoutes extends BaseRoute {
@@ -11,7 +11,7 @@ class AccountPortalRoutes extends BaseRoute {
 	registerAlias() {
 		return {
 			"GET /customer/":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_ACCOUNT_NAME, "portalCustomerGetAll")
 		};
 	}

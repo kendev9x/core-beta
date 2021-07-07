@@ -1,4 +1,4 @@
-const { NovaHelpers } = require("../../../../../libs");
+const { CoreHelpers } = require("../../../../../libs");
 const BaseRoute = require("./base.mobile.routes");
 
 class ProductMobileRoutes extends BaseRoute {
@@ -12,19 +12,19 @@ class ProductMobileRoutes extends BaseRoute {
 	registerAlias() {
 		return {
 			"GET /industry":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_PRODUCT_NAME, "mobileIndustryGetAll"),
 			"GET /product/showcase":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_PRODUCT_NAME, "mobileProductGetShowcase"),
 			"GET /product/:id":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_PRODUCT_NAME, "mobileProductGetDetailById"),
 			"GET /product/sql":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_PRODUCT_NAME, "mobileTestingSql"),
 			"POST /product/sql-sp":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_PRODUCT_NAME, "mobileTestingSqlBySP")
 		};
 	}

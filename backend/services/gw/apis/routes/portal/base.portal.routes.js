@@ -1,5 +1,5 @@
 const _ = require("lodash");
-const { NovaHelpers } = require("../../../../../libs");
+const { CoreHelpers } = require("../../../../../libs");
 
 class BasePortalRoutes {
 	constructor(config, broker) {

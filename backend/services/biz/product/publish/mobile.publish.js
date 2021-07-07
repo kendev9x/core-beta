@@ -1,4 +1,4 @@
-const {NovaHelpers} = require("../../../../libs");
+const {CoreHelpers} = require("../../../../libs");
 const {IndustryLogic, ProductLogic} = require("../logics");
 const {Response} = require("../io");
 
@@ -25,7 +25,7 @@ class MobilePublish {
 					if (!data) {
 						return res(resInfo);
 					}
-					resInfo.data = NovaHelpers.MapperHelper
+					resInfo.data = CoreHelpers.MapperHelper
 						.mapListObj(data, Response.MobileIndustryResponse);
 					res(resInfo);
 				})
@@ -47,7 +47,7 @@ class MobilePublish {
 					if (!data) {
 						return res(resInfo);
 					}
-					resInfo.data = NovaHelpers.MapperHelper.mapListObj(data, Response.MobileProductShowcaseResponse);
+					resInfo.data = CoreHelpers.MapperHelper.mapListObj(data, Response.MobileProductShowcaseResponse);
 					res(resInfo);
 				})
 				.catch((err) => {
@@ -68,7 +68,7 @@ class MobilePublish {
 					if (!data) {
 						return res(resInfo);
 					}
-					resInfo.data = NovaHelpers.MapperHelper.mapObj(data, Response.MobileProductShowcaseResponse);
+					resInfo.data = CoreHelpers.MapperHelper.mapObj(data, Response.MobileProductShowcaseResponse);
 					res(resInfo);
 				})
 				.catch((err) => {
@@ -90,7 +90,7 @@ class MobilePublish {
 				}).catch((err) => {
 					rej(err);
 				});
-		}); 
+		});
 	}
 
 	getListDataSqlBySP(ctx) {

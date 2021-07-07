@@ -1,4 +1,4 @@
-const { NovaHelpers } = require("../../../../../libs");
+const { CoreHelpers } = require("../../../../../libs");
 const BaseRoute = require("./base.portal.routes");
 
 class WalletPortalRoutes extends BaseRoute {
@@ -10,35 +10,35 @@ class WalletPortalRoutes extends BaseRoute {
 	/** Register all url endpoint published for account service use at Mobile App */
 	registerAlias() {
 		return {
-			"POST /wallet-cash/upload": "multipart:" + 
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+			"POST /wallet-cash/upload": "multipart:" +
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_WALLET_NAME, "uploadBamCashs"),
-			"POST /wallet-bonus/upload": "multipart:" + 
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+			"POST /wallet-bonus/upload": "multipart:" +
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_WALLET_NAME, "uploadBamBonus"),
-			"POST /ticket/reject":  
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+			"POST /ticket/reject":
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_WALLET_NAME, "rejectTicket"),
-					
-			"GET /wallet/:customerId": 
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+
+			"GET /wallet/:customerId":
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_WALLET_NAME, "getWalletByCustomerId"),
-			"GET /wallet": 
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+			"GET /wallet":
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_WALLET_NAME, "getWalletByGroupId"),
-			"GET /wallet-pocket": 
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+			"GET /wallet-pocket":
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_WALLET_NAME, "getWalletById"),
-			"GET /wallets": 
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+			"GET /wallets":
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_WALLET_NAME, "getListWallet"),
-			"GET /transactions/:walletId": 
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+			"GET /transactions/:walletId":
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_WALLET_NAME, "getTransactionByWalletId"),
-			"GET /customer/transactions/:customerId": 
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+			"GET /customer/transactions/:customerId":
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_WALLET_NAME, "getTransactionByCustomerId"),
-					
+
 		};
 	}
 

@@ -1,4 +1,4 @@
-const { NovaHelpers } = require("../../../../../libs");
+const { CoreHelpers } = require("../../../../../libs");
 const BaseRoute = require("./base.mobile.routes");
 
 class WalletMobileRoutes extends BaseRoute {
@@ -15,7 +15,7 @@ class WalletMobileRoutes extends BaseRoute {
 			// 	NovaHelpers.RequestHelper.genPathByServiceAndActionName(
 			// 		this.config, process.env.BIZ_PRODUCT_NAME, "mobileGetIndustry"),
 			"POST /wallet/bam/ticket":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_WALLET_NAME, "createBamTicket")
 		};
 	}

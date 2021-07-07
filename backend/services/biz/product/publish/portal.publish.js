@@ -1,4 +1,4 @@
-const {NovaHelpers} = require("../../../../libs");
+const {CoreHelpers} = require("../../../../libs");
 const {IndustryLogic, ProductLogic, ProductTemplateLogic} = require("../logics");
 const {Response} = require("../io");
 
@@ -26,7 +26,7 @@ class PortalPublish {
 					if (!data) {
 						return res(resInfo);
 					}
-					resInfo.data = NovaHelpers.MapperHelper
+					resInfo.data = CoreHelpers.MapperHelper
 						.mapListObj(data, Response.PortalIndustryResponse);
 					res(resInfo);
 				})

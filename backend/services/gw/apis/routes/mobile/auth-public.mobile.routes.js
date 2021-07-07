@@ -1,4 +1,4 @@
-const { NovaHelpers } = require("../../../../../libs");
+const { CoreHelpers } = require("../../../../../libs");
 const BaseRoute = require("./base.mobile.routes");
 
 class AuthPublicMobileRoutes extends BaseRoute {
@@ -11,7 +11,7 @@ class AuthPublicMobileRoutes extends BaseRoute {
 	registerAlias() {
 		return {
 			"GET /auth/genKey":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_AUTH_NAME, "mobileGenKey")
 		};
 	}

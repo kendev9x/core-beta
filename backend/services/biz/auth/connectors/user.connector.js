@@ -1,5 +1,5 @@
 const _ = require("lodash");
-const { NovaHelpers } = require("../../../../libs");
+const { CoreHelpers } = require("../../../../libs");
 
 class UserConnector {
 	constructor(mainProcess) {
@@ -11,7 +11,7 @@ class UserConnector {
 		if (!ctx || _.isEmpty(ctx)) {
 			return false;
 		}
-		const functionPath = NovaHelpers.RequestHelper
+		const functionPath = CoreHelpers.RequestHelper
 			.genPathByServiceAndActionName(this.mainProcess.config, process.env.BIZ_ACCOUNT_NAME, "internalUserFindByUserAndPass");
 		return await ctx.call(functionPath,
 			{
@@ -27,7 +27,7 @@ class UserConnector {
 		if (!ctx || _.isEmpty(ctx)) {
 			return false;
 		}
-		const functionPath = NovaHelpers.RequestHelper
+		const functionPath = CoreHelpers.RequestHelper
 			.genPathByServiceAndActionName(this.mainProcess.config, process.env.BIZ_ACCOUNT_NAME, "internalUserGetActionsByUserId");
 		return await ctx.call(functionPath,
 			{

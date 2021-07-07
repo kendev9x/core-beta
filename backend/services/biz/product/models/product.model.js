@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const {APP_SETTING} = require("../defined");
-const {NovaHelpers} = require("../../../../libs");
+const {CoreHelpers} = require("../../../../libs");
 const { Schema } = require("mongoose");
 const {Mixed} = Schema.Types;
 
@@ -82,7 +82,7 @@ class ProductModel {
 	 * @output object product created
 	 */
 	async create(ent) {
-		return await NovaHelpers.MongoFuncHelper.$save(this.model, ent);
+		return await CoreHelpers.MongoFuncHelper.$save(this.model, ent);
 	}
 
 	/** Updating a product
@@ -93,7 +93,7 @@ class ProductModel {
 		const filter = {
 			_id: ent._id,
 		};
-		return await NovaHelpers.MongoFuncHelper.$updateOne(this.model, filter, ent);
+		return await CoreHelpers.MongoFuncHelper.$updateOne(this.model, filter, ent);
 	}
 
 	/** Get a product
@@ -102,7 +102,7 @@ class ProductModel {
 	 * @output object result
 	 */
 	async getById(_id, isWithoutCheckDelete = false) {
-		return await NovaHelpers.MongoFuncHelper.$getById(this.model, _id, isWithoutCheckDelete);
+		return await CoreHelpers.MongoFuncHelper.$getById(this.model, _id, isWithoutCheckDelete);
 	}
 
 	/** Get a product
@@ -111,7 +111,7 @@ class ProductModel {
 	 * @output object result updating
 	 */
 	async findOne(filter, isWithoutCheckDelete = false) {
-		return await NovaHelpers.MongoFuncHelper.$findOne(this.model, filter, isWithoutCheckDelete);
+		return await CoreHelpers.MongoFuncHelper.$findOne(this.model, filter, isWithoutCheckDelete);
 	}
 
 	/** Get all product -- just use for test
@@ -121,7 +121,7 @@ class ProductModel {
 	 * @output array product
 	 */
 	async getAll(filter, sort = {}, select = {}) {
-		return await NovaHelpers.MongoFuncHelper.$getAll(this.model, filter, sort, select);
+		return await CoreHelpers.MongoFuncHelper.$getAll(this.model, filter, sort, select);
 	}
 
 	/** Get list product
@@ -136,7 +136,7 @@ class ProductModel {
 		if (!filter) {
 			filter = {};
 		}
-		return await NovaHelpers.MongoFuncHelper.$list(this.model, filter, sort, skip, limit, select);
+		return await CoreHelpers.MongoFuncHelper.$list(this.model, filter, sort, skip, limit, select);
 	}
 
 	/** Get list product
@@ -150,7 +150,7 @@ class ProductModel {
 		if (!filter) {
 			filter = {};
 		}
-		return await NovaHelpers.MongoFuncHelper.$listPaging(this.model, filter, sort, pageIndex, pageSize);
+		return await CoreHelpers.MongoFuncHelper.$listPaging(this.model, filter, sort, pageIndex, pageSize);
 	}
 
 	/** Get list product sku active have paging
@@ -176,7 +176,7 @@ class ProductModel {
 			{ $sort: sort },
 			{ $limit: limit },
 			{ $skip: skip }];
-		return await NovaHelpers.MongoFuncHelper.$aggregate(this.model, filters);
+		return await CoreHelpers.MongoFuncHelper.$aggregate(this.model, filters);
 	}
 
 	/** Get list product sku active
@@ -195,7 +195,7 @@ class ProductModel {
 				"skus.isShowcase": true
 			};
 		}
-		return await NovaHelpers.MongoFuncHelper.$aggregate(this.model,
+		return await CoreHelpers.MongoFuncHelper.$aggregate(this.model,
 			[
 				{$match: filter},
 				{
@@ -237,7 +237,7 @@ class ProductModel {
 			{ $skip: skip },
 			{ $limit: limit }
 		];
-		return await NovaHelpers.MongoFuncHelper.$aggregate(this.model, aggregateFilter);
+		return await CoreHelpers.MongoFuncHelper.$aggregate(this.model, aggregateFilter);
 	}
 
 	/** Get list showcase product spu mixed sku
@@ -267,7 +267,7 @@ class ProductModel {
 			},
 			{ $match: {$or: [{"skus.isActive": {$exists: false}}, skuFilter]} },
 		];
-		return await NovaHelpers.MongoFuncHelper.$aggregatePaging(this.model, aggregateFilter,
+		return await CoreHelpers.MongoFuncHelper.$aggregatePaging(this.model, aggregateFilter,
 			{page: pageIndex, limit: pageSize, sort});
 	}
 
@@ -277,7 +277,7 @@ class ProductModel {
 	 * @output object result updating
 	 */
 	async setIsActive(_id, isActive) {
-		return await NovaHelpers.MongoFuncHelper.$setIsActive(this.mode, _id, isActive);
+		return await CoreHelpers.MongoFuncHelper.$setIsActive(this.mode, _id, isActive);
 	}
 
 	/** Set is active or in-active a product sku
@@ -296,7 +296,7 @@ class ProductModel {
 				"skus.$.isActive": isActive
 			}
 		};
-		return await NovaHelpers.MongoFuncHelper.$updateSet(this.mode, filterObj, setObj);
+		return await CoreHelpers.MongoFuncHelper.$updateSet(this.mode, filterObj, setObj);
 	}
 
 	/** Set is delete or in-delete a product
@@ -305,7 +305,7 @@ class ProductModel {
 	 * @output object result updating
 	 */
 	async setIsDelete(_id, isDelete) {
-		return await NovaHelpers.MongoFuncHelper.$setIsDelete(this.mode, _id, isDelete);
+		return await CoreHelpers.MongoFuncHelper.$setIsDelete(this.mode, _id, isDelete);
 	}
 
 	/** Get a product by code
@@ -313,7 +313,7 @@ class ProductModel {
 	 * @output object result updating
 	 */
 	async getByCode(code) {
-		return await NovaHelpers.MongoFuncHelper.$getByCode(this.model, code);
+		return await CoreHelpers.MongoFuncHelper.$getByCode(this.model, code);
 	}
 }
 

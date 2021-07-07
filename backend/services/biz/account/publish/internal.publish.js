@@ -1,4 +1,4 @@
-const {NovaHelpers} = require("../../../../libs");
+const {CoreHelpers} = require("../../../../libs");
 const {CustomerLogic, UserLogic, PortalTokenLogic} = require("../logics");
 const {Response} = require("../io");
 
@@ -23,7 +23,7 @@ class InternalPublish {
 				if (!data) {
 					return result;
 				}
-				result.data = NovaHelpers.MapperHelper.mapListObj(data, {userName: "", fullName: ""});
+				result.data = CoreHelpers.MapperHelper.mapListObj(data, {userName: "", fullName: ""});
 				return result;
 			})
 			.catch((err) => err);

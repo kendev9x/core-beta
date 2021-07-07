@@ -1,5 +1,5 @@
 const _ = require("lodash");
-const { NovaHelpers } = require("../../../../../libs");
+const { CoreHelpers } = require("../../../../../libs");
 
 class BaseMobileRoutes {
 	constructor(config, broker) {
@@ -92,7 +92,7 @@ class BaseMobileRoutes {
 
 	checkNoSqlInjection(req, res) {
 		/** Check valid params input */
-		const paramCheck = NovaHelpers.RequestHelper.sanitizeParam(req);
+		const paramCheck = CoreHelpers.RequestHelper.sanitizeParam(req);
 		if (!paramCheck) {
 			/** Not valid throw error 400 Bad request */
 			res.end(JSON.stringify({

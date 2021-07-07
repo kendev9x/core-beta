@@ -1,6 +1,6 @@
 "use strict";
 const ApiGateway = require("moleculer-web");
-const { NovaHelpers } = require("../../../libs");
+const { CoreHelpers } = require("../../../libs");
 const { FileRoutes } = require("./routes/");
 const BaseGw = require("./base.gw");
 
@@ -60,7 +60,7 @@ class FileGW extends BaseGw {
 
 	/** PRIVATE FUNCTIONS AUTHENTICATE AND AUTHORIZE */
 	async authenticateMobile(_config, ctx) {
-		const functionPath = NovaHelpers.RequestHelper
+		const functionPath = CoreHelpers.RequestHelper
 			.genPathByServiceAndActionName(_config, process.env.BIZ_AUTH_NAME, "mobileAuthenticate");
 		const result = await ctx.call(functionPath, {params: {route: ctx.span.name}});
 		if (result.code !== 200) {
@@ -70,7 +70,7 @@ class FileGW extends BaseGw {
 	}
 
 	async authenticatePortal(_config, ctx) {
-		const functionPath = NovaHelpers.RequestHelper
+		const functionPath = CoreHelpers.RequestHelper
 			.genPathByServiceAndActionName(_config, process.env.BIZ_AUTH_NAME, "portalVerifyToken");
 		const result = await ctx.call(functionPath, {params: {route: ctx.span.name}});
 		if (result.code !== 200) {
@@ -80,11 +80,11 @@ class FileGW extends BaseGw {
 	}
 
 	async authorizationMobile(_config, ctx, req) {
-		const functionPathAuthor = NovaHelpers.RequestHelper
+		const functionPathAuthor = CoreHelpers.RequestHelper
 			.genPathByServiceAndActionName(_config, process.env.BIZ_AUTH_NAME, "mobileVerifyToken");
 		const user = await ctx.call(functionPathAuthor);
 		const {accountId, fullName} = user.data || {};
-		const functionPath = NovaHelpers.RequestHelper
+		const functionPath = CoreHelpers.RequestHelper
 			.genPathByServiceAndActionName(_config, process.env.BIZ_AUTH_NAME, "mobileAuthorization");
 		const result = await ctx.call(functionPath, {
 			params: {
@@ -102,7 +102,7 @@ class FileGW extends BaseGw {
 	async authorizationPortal(_config, ctx, req) {
 		const user = ctx.meta.user;
 		const {accountId, fullName} = user || {};
-		const functionPath = NovaHelpers.RequestHelper
+		const functionPath = CoreHelpers.RequestHelper
 			.genPathByServiceAndActionName(_config, process.env.BIZ_AUTH_NAME, "portalAuthorize");
 		const result = await ctx.call(functionPath, {params: {route: ctx.span.name, accountId, actionName: req.$action.name}});
 		if (result.code !== 200) {

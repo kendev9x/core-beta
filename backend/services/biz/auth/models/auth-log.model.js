@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const {NovaHelpers} = require("../../../../libs");
+const {CoreHelpers} = require("../../../../libs");
 const {APP_SETTING} = require("../defined");
 
 const fields = {
@@ -35,7 +35,7 @@ class AuthLogModel {
 		const filter = {
 			client_id: clientId
 		};
-		return NovaHelpers.MongoFuncHelper.$findOne(this.model, filter);
+		return CoreHelpers.MongoFuncHelper.$findOne(this.model, filter);
 	}
 
 	/** Create a AuthLog
@@ -43,7 +43,7 @@ class AuthLogModel {
 	 * @output object AuthLog created
 	 */
 	async create(ent) {
-		return await NovaHelpers.MongoFuncHelper.$save(this.model, ent);
+		return await CoreHelpers.MongoFuncHelper.$save(this.model, ent);
 	}
 
 	/** Updating a AuthLog
@@ -54,7 +54,7 @@ class AuthLogModel {
 		const filter = {
 			_id: ent._id,
 		};
-		return await NovaHelpers.MongoFuncHelper.$updateOne(this.model, filter, ent);
+		return await CoreHelpers.MongoFuncHelper.$updateOne(this.model, filter, ent);
 	}
 
 	/** Get a AuthLog
@@ -63,7 +63,7 @@ class AuthLogModel {
 	 * @output object result
 	 */
 	async getById(_id, isWithoutCheckDelete = false) {
-		return await NovaHelpers.MongoFuncHelper.$getById(this.model, _id, isWithoutCheckDelete);
+		return await CoreHelpers.MongoFuncHelper.$getById(this.model, _id, isWithoutCheckDelete);
 	}
 
 	/** Get a AuthLog
@@ -72,7 +72,7 @@ class AuthLogModel {
 	 * @output object result updating
 	 */
 	async findOne(filter, isWithoutCheckDelete = false) {
-		return await NovaHelpers.MongoFuncHelper.$findOne(this.model, filter, isWithoutCheckDelete);
+		return await CoreHelpers.MongoFuncHelper.$findOne(this.model, filter, isWithoutCheckDelete);
 	}
 
 	/** Get all AuthLog -- just use for test
@@ -82,7 +82,7 @@ class AuthLogModel {
 	 * @output array AuthLog
 	 */
 	async getAll(filter, sort = {}, select = {}) {
-		return await NovaHelpers.MongoFuncHelper.$getAll(this.model, filter, sort, select);
+		return await CoreHelpers.MongoFuncHelper.$getAll(this.model, filter, sort, select);
 	}
 
 	/** Get list AuthLog
@@ -97,7 +97,7 @@ class AuthLogModel {
 		if (!filter) {
 			filter = {};
 		}
-		return await NovaHelpers.MongoFuncHelper.$list(this.model, filter, sort, skip, limit, select);
+		return await CoreHelpers.MongoFuncHelper.$list(this.model, filter, sort, skip, limit, select);
 	}
 }
 

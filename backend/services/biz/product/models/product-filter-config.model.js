@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const {APP_SETTING} = require("../defined");
-const {NovaHelpers} = require("../../../../libs");
+const {CoreHelpers} = require("../../../../libs");
 const { Schema } = require("mongoose");
 const {Mixed} = Schema.Types;
 
@@ -33,7 +33,7 @@ class ProductFilterConfigModel {
 	 * @output object ProductFilterConfig created
 	 */
 	async getConfig() {
-		return await NovaHelpers.MongoFuncHelper.$findOne(this.model, {});
+		return await CoreHelpers.MongoFuncHelper.$findOne(this.model, {});
 	}
 }
 

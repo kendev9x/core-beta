@@ -1,4 +1,4 @@
-const { NovaHelpers } = require("../../../../../libs");
+const { CoreHelpers } = require("../../../../../libs");
 const BaseRoute = require("./base.mobile.routes");
 
 class AuthMobileRoutes extends BaseRoute {
@@ -11,10 +11,10 @@ class AuthMobileRoutes extends BaseRoute {
 	registerAlias() {
 		return {
 			"POST /auth/genOtp":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_AUTH_NAME, "mobileGenOtp"),
 			"POST /auth/verifyOtp":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_AUTH_NAME, "mobileVerifyOtp")
 		};
 	}

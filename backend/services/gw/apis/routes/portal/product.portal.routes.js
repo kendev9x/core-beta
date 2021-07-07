@@ -1,4 +1,4 @@
-const { NovaHelpers } = require("../../../../../libs");
+const { CoreHelpers } = require("../../../../../libs");
 const BaseRoute = require("./base.portal.routes");
 
 class ProductPortalRoutes extends BaseRoute {
@@ -11,16 +11,16 @@ class ProductPortalRoutes extends BaseRoute {
 	registerAlias() {
 		return {
 			"GET /product/industry":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_PRODUCT_NAME, "portalIndustryGetAll"),
 			"GET /product/":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_PRODUCT_NAME, "portalProductGetList"),
 			"GET /product/template":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_PRODUCT_NAME, "portalProductTemplateGetList"),
 			"GET /product/template/:id":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_PRODUCT_NAME, "portalProductTemplateGetDetail")
 		};
 	}
@@ -35,8 +35,8 @@ class ProductPortalRoutes extends BaseRoute {
 			],
 			use: [],
 			mergeParams: true,
-			authentication: true,
-			authorization: true,
+			authentication: false,
+			authorization: false,
 			autoAliases: true,
 			aliases: this.registerAlias(),
 			bodyParsers: {

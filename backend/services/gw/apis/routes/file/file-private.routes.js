@@ -1,4 +1,4 @@
-const { NovaHelpers } = require("../../../../../libs");
+const { CoreHelpers } = require("../../../../../libs");
 const BaseRoute = require("./base.file.routes");
 
 class FilePrivateRoutes extends BaseRoute {
@@ -12,14 +12,14 @@ class FilePrivateRoutes extends BaseRoute {
 		return {
 			"POST /upload-private/": {
 				type: "multipart",
-				action: NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				action: CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_FILE_NAME, "uploadFilePrivate")
 			},
 			"GET /private/:id":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_FILE_NAME, "getFilePrivate"),
 			"GET /thumbnail/private/:id":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_FILE_NAME, "getFilePrivateThumbnail"),
 		};
 	}

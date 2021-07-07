@@ -1,4 +1,4 @@
-const { NovaHelpers } = require("../../../../../libs");
+const { CoreHelpers } = require("../../../../../libs");
 const BaseRoute = require("./base.mobile.routes");
 
 class AccountMobileRoutes extends BaseRoute {
@@ -11,10 +11,10 @@ class AccountMobileRoutes extends BaseRoute {
 	registerAlias() {
 		return {
 			"GET /customer/:phone":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_ACCOUNT_NAME, "mobileCustomerFindByPhone"),
 			"POST /customer/register":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_ACCOUNT_NAME, "mobileCustomerRegister")
 		};
 	}

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const {APP_SETTING} = require("../defined");
-const {NovaHelpers} = require("../../../../libs");
+const {CoreHelpers} = require("../../../../libs");
 
 const fields = {
 	customerId: { type: String, require: [true, "accountId required"]},
@@ -46,7 +46,7 @@ class ProductCustomerModel {
 	 * @output object product-customer data created
 	 */
 	async create(ent) {
-		return await NovaHelpers.MongoFuncHelper.$save(this.model, ent);
+		return await CoreHelpers.MongoFuncHelper.$save(this.model, ent);
 	}
 
 	/** Updating a product-customer data
@@ -57,7 +57,7 @@ class ProductCustomerModel {
 		const filter = {
 			_id: ent._id,
 		};
-		return await NovaHelpers.MongoFuncHelper.$updateOne(this.model, filter, ent);
+		return await CoreHelpers.MongoFuncHelper.$updateOne(this.model, filter, ent);
 	}
 
 	/** Updating a product-customer data
@@ -66,7 +66,7 @@ class ProductCustomerModel {
 	 * @param setObj
 	 */
 	async updateSet(filterObj, setObj) {
-		return await NovaHelpers.MongoFuncHelper.$updateOne(this.model, filterObj, setObj);
+		return await CoreHelpers.MongoFuncHelper.$updateOne(this.model, filterObj, setObj);
 	}
 
 	/** Get a product-customer data
@@ -74,7 +74,7 @@ class ProductCustomerModel {
 	 * @output object result
 	 */
 	async getById(_id) {
-		return await NovaHelpers.MongoFuncHelper.$getById(this.model, _id);
+		return await CoreHelpers.MongoFuncHelper.$getById(this.model, _id);
 	}
 
 	/** Get a product-customer data
@@ -82,7 +82,7 @@ class ProductCustomerModel {
 	 * @output object result updating
 	 */
 	async findOne(filter) {
-		return await NovaHelpers.MongoFuncHelper.$findOne(this.model, filter);
+		return await CoreHelpers.MongoFuncHelper.$findOne(this.model, filter);
 	}
 
 	/** Get all product-customer data -- just use for test
@@ -92,7 +92,7 @@ class ProductCustomerModel {
 	 * @output array product-customer data
 	 */
 	async getAll(filter, sort = {}, select = {}) {
-		return await NovaHelpers.MongoFuncHelper.$getAll(this.model, filter, sort, select);
+		return await CoreHelpers.MongoFuncHelper.$getAll(this.model, filter, sort, select);
 	}
 
 	/** Get list product-customer data
@@ -107,7 +107,7 @@ class ProductCustomerModel {
 		if (!filter) {
 			filter = {};
 		}
-		return await NovaHelpers.MongoFuncHelper.$list(this.model, filter, sort, skip, limit, select);
+		return await CoreHelpers.MongoFuncHelper.$list(this.model, filter, sort, skip, limit, select);
 	}
 
 	/** Get list product-customer data
@@ -121,7 +121,7 @@ class ProductCustomerModel {
 		if (!filter) {
 			filter = {};
 		}
-		return await NovaHelpers.MongoFuncHelper.$listPaging(this.model, filter, sort, pageIndex, pageSize);
+		return await CoreHelpers.MongoFuncHelper.$listPaging(this.model, filter, sort, pageIndex, pageSize);
 	}
 
 	/** Get list report products were viewed
@@ -156,7 +156,7 @@ class ProductCustomerModel {
 			{$skip: skip},
 			{$limit: limit}
 		];
-		return await NovaHelpers.MongoFuncHelper.$aggregate(this.model, aggregateFilter);
+		return await CoreHelpers.MongoFuncHelper.$aggregate(this.model, aggregateFilter);
 	}
 
 	/** Get list report products were favorite
@@ -188,7 +188,7 @@ class ProductCustomerModel {
 			{$skip: skip},
 			{$limit: limit}
 		];
-		return await NovaHelpers.MongoFuncHelper.$aggregate(this.model, aggregateFilter);
+		return await CoreHelpers.MongoFuncHelper.$aggregate(this.model, aggregateFilter);
 	}
 }
 

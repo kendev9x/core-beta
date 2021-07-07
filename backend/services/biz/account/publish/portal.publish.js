@@ -1,4 +1,4 @@
-const {NovaHelpers} = require("../../../../libs");
+const {CoreHelpers} = require("../../../../libs");
 const {CustomerLogic} = require("../logics");
 const {Response} = require("../io");
 
@@ -23,7 +23,7 @@ class PortalPublish {
 				if (!data || data.length < 1) {
 					return result;
 				}
-				result.data = NovaHelpers.MapperHelper.mapListObj(data, Response.PortalCustomerResponse);
+				result.data = CoreHelpers.MapperHelper.mapListObj(data, Response.PortalCustomerResponse);
 				return result;
 			})
 			.catch((err) => err);

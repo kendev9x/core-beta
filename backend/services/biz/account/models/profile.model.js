@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const {EncryptHelper} = require("../../../../libs/helpers");
-const {NovaHelpers} = require("../../../../libs");
+const {CoreHelpers} = require("../../../../libs");
 const {APP_SETTING} = require("../defined");
 
 const fields = {
@@ -58,48 +58,48 @@ class ProfileModel {
 	}
 
 	async create(ent) {
-		return await NovaHelpers.MongoFuncHelper.$save(this.model, ent);
+		return await CoreHelpers.MongoFuncHelper.$save(this.model, ent);
 	}
 
 	async update(ent) {
 		const filter = {
 			_id: ent._id,
 		};
-		return await NovaHelpers.MongoFuncHelper.$updateOne(this.model, filter, ent);
+		return await CoreHelpers.MongoFuncHelper.$updateOne(this.model, filter, ent);
 	}
 
 	async getById(_id, isWithoutCheckDelete = false) {
-		return await NovaHelpers.MongoFuncHelper.$getById(this.model, _id, isWithoutCheckDelete);
+		return await CoreHelpers.MongoFuncHelper.$getById(this.model, _id, isWithoutCheckDelete);
 	}
 
 	async findOne(filter, isWithoutCheckDelete = false) {
-		return await NovaHelpers.MongoFuncHelper.$findOne(this.model, filter, isWithoutCheckDelete);
+		return await CoreHelpers.MongoFuncHelper.$findOne(this.model, filter, isWithoutCheckDelete);
 	}
 
 	async getAll(filter, sort = {}, select = {}) {
-		return await NovaHelpers.MongoFuncHelper.$getAll(this.model, filter, sort, select);
+		return await CoreHelpers.MongoFuncHelper.$getAll(this.model, filter, sort, select);
 	}
 
 	async list(filter, sort = {createdAt: -1}, skip = 0, limit = 20, select = {}) {
 		if (!filter) {
 			filter = {};
 		}
-		return await NovaHelpers.MongoFuncHelper.$list(this.model, filter, sort, skip, limit, select);
+		return await CoreHelpers.MongoFuncHelper.$list(this.model, filter, sort, skip, limit, select);
 	}
 
 	async listPaging(filter, sort = {createdAt: -1}, pageIndex = 0, pageSize = 20) {
 		if (!filter) {
 			filter = {};
 		}
-		return await NovaHelpers.MongoFuncHelper.$listPaging(this.model, filter, sort, pageIndex, pageSize);
+		return await CoreHelpers.MongoFuncHelper.$listPaging(this.model, filter, sort, pageIndex, pageSize);
 	}
 
 	async setIsActive(_id, isActive) {
-		return await NovaHelpers.MongoFuncHelper.$setIsActive(this.mode, _id, isActive);
+		return await CoreHelpers.MongoFuncHelper.$setIsActive(this.mode, _id, isActive);
 	}
 
 	async setIsDelete(_id, isDelete) {
-		return await NovaHelpers.MongoFuncHelper.$setIsDelete(this.mode, _id, isDelete);
+		return await CoreHelpers.MongoFuncHelper.$setIsDelete(this.mode, _id, isDelete);
 	}
 }
 

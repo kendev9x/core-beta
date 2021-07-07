@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = require("mongoose");
-const {NovaHelpers} = require("../../../../libs");
+const {CoreHelpers} = require("../../../../libs");
 const {APP_SETTING} = require("../defined");
 
 const fields = {
@@ -128,7 +128,7 @@ class ApprovalConfigModel {
 	 * @output object approval created
 	 */
 	async create(ent) {
-		return await NovaHelpers.MongoFuncHelper.$save(this.model, ent);
+		return await CoreHelpers.MongoFuncHelper.$save(this.model, ent);
 	}
 
 	/** Updating a approval config
@@ -139,7 +139,7 @@ class ApprovalConfigModel {
 		const filter = {
 			_id: ent._id,
 		};
-		return await NovaHelpers.MongoFuncHelper.$updateOne(this.model, filter, ent);
+		return await CoreHelpers.MongoFuncHelper.$updateOne(this.model, filter, ent);
 	}
 
 	/** Get a approval config
@@ -148,7 +148,7 @@ class ApprovalConfigModel {
 	 * @output object result
 	 */
 	async getById(_id, isWithoutCheckDelete = false) {
-		return await NovaHelpers.MongoFuncHelper.$getById(this.model, _id, isWithoutCheckDelete);
+		return await CoreHelpers.MongoFuncHelper.$getById(this.model, _id, isWithoutCheckDelete);
 	}
 
 	/** Get a approval config
@@ -157,7 +157,7 @@ class ApprovalConfigModel {
 	 * @output object result updating
 	 */
 	async findOne(filter, isWithoutCheckDelete = false) {
-		return await NovaHelpers.MongoFuncHelper.$findOne(this.model, filter, isWithoutCheckDelete);
+		return await CoreHelpers.MongoFuncHelper.$findOne(this.model, filter, isWithoutCheckDelete);
 	}
 
 	/** Get all approval config -- just use for test
@@ -167,7 +167,7 @@ class ApprovalConfigModel {
 	 * @output array approval config
 	 */
 	async getAll(filter, sort = {}, select = {}) {
-		return await NovaHelpers.MongoFuncHelper.$getAll(this.model, filter, sort, select);
+		return await CoreHelpers.MongoFuncHelper.$getAll(this.model, filter, sort, select);
 	}
 
 	/** Get list approval config
@@ -182,7 +182,7 @@ class ApprovalConfigModel {
 		if (!filter) {
 			filter = {};
 		}
-		return await NovaHelpers.MongoFuncHelper.$list(this.model, filter, sort, skip, limit, select);
+		return await CoreHelpers.MongoFuncHelper.$list(this.model, filter, sort, skip, limit, select);
 	}
 
 	/** Get list approval config
@@ -196,7 +196,7 @@ class ApprovalConfigModel {
 		if (!filter) {
 			filter = {};
 		}
-		return await NovaHelpers.MongoFuncHelper.$listPaging(this.model, filter, sort, pageIndex, pageSize);
+		return await CoreHelpers.MongoFuncHelper.$listPaging(this.model, filter, sort, pageIndex, pageSize);
 	}
 
 	/** Set is active or in-active a approval config
@@ -205,7 +205,7 @@ class ApprovalConfigModel {
 	 * @output object result updating
 	 */
 	async setIsActive(_id, isActive) {
-		return await NovaHelpers.MongoFuncHelper.$setIsActive(this.mode, _id, isActive);
+		return await CoreHelpers.MongoFuncHelper.$setIsActive(this.mode, _id, isActive);
 	}
 
 	/** Set is delete or in-delete a approval config
@@ -214,7 +214,7 @@ class ApprovalConfigModel {
 	 * @output object result updating
 	 */
 	async setIsDelete(_id, isDelete) {
-		return await NovaHelpers.MongoFuncHelper.$setIsDelete(this.mode, _id, isDelete);
+		return await CoreHelpers.MongoFuncHelper.$setIsDelete(this.mode, _id, isDelete);
 	}
 
 	/** Get a approval config by code
@@ -222,7 +222,7 @@ class ApprovalConfigModel {
 	 * @output object result updating
 	 */
 	async getByCode(code) {
-		return await NovaHelpers.MongoFuncHelper.$getByCode(this.model, code);
+		return await CoreHelpers.MongoFuncHelper.$getByCode(this.model, code);
 	}
 
 	/** Create many approval config
@@ -230,7 +230,7 @@ class ApprovalConfigModel {
 	 * @param listEnt
 	 */
 	async createMany(listEnt) {
-		return await NovaHelpers.MongoFuncHelper.$saveMany(this.model, listEnt);
+		return await CoreHelpers.MongoFuncHelper.$saveMany(this.model, listEnt);
 	}
 
 	/** Find all approval config by list approval config id
@@ -239,7 +239,7 @@ class ApprovalConfigModel {
 	 * @param select
 	 */
 	async findByListId(listId, select = {}) {
-		return await NovaHelpers.MongoFuncHelper.$findByListId(this.model, listId, select);
+		return await CoreHelpers.MongoFuncHelper.$findByListId(this.model, listId, select);
 	}
 
 	/** Updata a approval config
@@ -248,7 +248,7 @@ class ApprovalConfigModel {
 	 * @param newObj
 	 */
 	async updateOne(conditionObj, newObj) {
-		return await NovaHelpers.MongoFuncHelper.$updateOne(this.model, conditionObj, newObj);
+		return await CoreHelpers.MongoFuncHelper.$updateOne(this.model, conditionObj, newObj);
 	}
 
 	/** Get list approval config with aggregate query
@@ -256,7 +256,7 @@ class ApprovalConfigModel {
 	 * @param aggregateParams
 	 */
 	async aggregate(aggregateParams) {
-		return await NovaHelpers.MongoFuncHelper.$aggregate(this.model, aggregateParams);
+		return await CoreHelpers.MongoFuncHelper.$aggregate(this.model, aggregateParams);
 	}
 }
 

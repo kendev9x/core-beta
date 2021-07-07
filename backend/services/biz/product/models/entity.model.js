@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema } = require("mongoose");
 const {Mixed} = Schema.Types;
-const {NovaHelpers} = require("../../../../libs");
+const {CoreHelpers} = require("../../../../libs");
 const {APP_SETTING} = require("../defined");
 
 const fields = {
@@ -58,7 +58,7 @@ class EntityModel {
 	 * @output object Entity created
 	 */
 	async create(ent) {
-		return await NovaHelpers.MongoFuncHelper.$save(this.model, ent);
+		return await CoreHelpers.MongoFuncHelper.$save(this.model, ent);
 	}
 
 	/** Updating a Entity
@@ -69,7 +69,7 @@ class EntityModel {
 		const filter = {
 			_id: ent._id,
 		};
-		return await NovaHelpers.MongoFuncHelper.$updateOne(this.model, filter, ent);
+		return await CoreHelpers.MongoFuncHelper.$updateOne(this.model, filter, ent);
 	}
 
 	/** Get a Entity
@@ -78,7 +78,7 @@ class EntityModel {
 	 * @output object result
 	 */
 	async getById(_id, isWithoutCheckDelete = false) {
-		return await NovaHelpers.MongoFuncHelper.$getById(this.model, _id, isWithoutCheckDelete);
+		return await CoreHelpers.MongoFuncHelper.$getById(this.model, _id, isWithoutCheckDelete);
 	}
 
 	/** Get a Entity
@@ -87,7 +87,7 @@ class EntityModel {
 	 * @output object result updating
 	 */
 	async findOne(filter, isWithoutCheckDelete = false) {
-		return await NovaHelpers.MongoFuncHelper.$findOne(this.model, filter, isWithoutCheckDelete);
+		return await CoreHelpers.MongoFuncHelper.$findOne(this.model, filter, isWithoutCheckDelete);
 	}
 
 	/** Get all Entity -- just use for test
@@ -97,7 +97,7 @@ class EntityModel {
 	 * @output array Entity
 	 */
 	async getAll(filter, sort = {}, select = {}) {
-		return await NovaHelpers.MongoFuncHelper.$getAll(this.model, filter, sort, select);
+		return await CoreHelpers.MongoFuncHelper.$getAll(this.model, filter, sort, select);
 	}
 
 	/** Get list Entity
@@ -112,7 +112,7 @@ class EntityModel {
 		if (!filter) {
 			filter = {};
 		}
-		return await NovaHelpers.MongoFuncHelper.$list(this.model, filter, sort, skip, limit, select);
+		return await CoreHelpers.MongoFuncHelper.$list(this.model, filter, sort, skip, limit, select);
 	}
 
 	/** Get list Entity
@@ -126,7 +126,7 @@ class EntityModel {
 		if (!filter) {
 			filter = {};
 		}
-		return await NovaHelpers.MongoFuncHelper.$listPaging(this.model, filter, sort, pageIndex, pageSize);
+		return await CoreHelpers.MongoFuncHelper.$listPaging(this.model, filter, sort, pageIndex, pageSize);
 	}
 
 	/** Set is active or in-active a Entity
@@ -135,7 +135,7 @@ class EntityModel {
 	 * @output object result updating
 	 */
 	async setIsActive(_id, isActive) {
-		return await NovaHelpers.MongoFuncHelper.$setIsActive(this.mode, _id, isActive);
+		return await CoreHelpers.MongoFuncHelper.$setIsActive(this.mode, _id, isActive);
 	}
 
 	/** Set is delete or in-delete a Entity
@@ -144,7 +144,7 @@ class EntityModel {
 	 * @output object result updating
 	 */
 	async setIsDelete(_id, isDelete) {
-		return await NovaHelpers.MongoFuncHelper.$setIsDelete(this.mode, _id, isDelete);
+		return await CoreHelpers.MongoFuncHelper.$setIsDelete(this.mode, _id, isDelete);
 	}
 
 	/** Get a Entity by code
@@ -152,7 +152,7 @@ class EntityModel {
 	 * @output object result updating
 	 */
 	async getByCode(code) {
-		return await NovaHelpers.MongoFuncHelper.$getByCode(this.model, code);
+		return await CoreHelpers.MongoFuncHelper.$getByCode(this.model, code);
 	}
 
 	/** Get list Entity by list id
@@ -160,11 +160,11 @@ class EntityModel {
 	 * @output object result updating
 	 */
 	async getByListId(listId) {
-		return await NovaHelpers.MongoFuncHelper.$findByListId(listId);
+		return await CoreHelpers.MongoFuncHelper.$findByListId(listId);
 	}
 
 	async createMany(listEnt) {
-		return await NovaHelpers.MongoFuncHelper.$saveMany(this.model, listEnt);
+		return await CoreHelpers.MongoFuncHelper.$saveMany(this.model, listEnt);
 	}
 }
 

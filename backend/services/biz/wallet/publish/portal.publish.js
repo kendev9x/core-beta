@@ -1,4 +1,4 @@
-const {NovaHelpers} = require("../../../../libs");
+const {CoreHelpers} = require("../../../../libs");
 const {Response} = require("../io");
 const {CashWalletLogic, BonusWalletLogic, WalletLogic, TicketLogic} = require("../logics");
 /**

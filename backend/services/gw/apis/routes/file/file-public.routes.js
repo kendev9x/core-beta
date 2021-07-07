@@ -1,4 +1,4 @@
-const { NovaHelpers } = require("../../../../../libs");
+const { CoreHelpers } = require("../../../../../libs");
 const BaseRoute = require("./base.file.routes");
 
 class FilePublicRoutes extends BaseRoute {
@@ -12,19 +12,19 @@ class FilePublicRoutes extends BaseRoute {
 		return {
 			"POST /upload": {
 				type: "multipart",
-				action: NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				action: CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_FILE_NAME, "uploadFile")
 			},
 			"POST /upload-360": {
 				type: "multipart",
-				action: NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				action: CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_FILE_NAME, "uploadFile360")
 			},
 			"GET /:id":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_FILE_NAME, "getFile"),
 			"GET /thumbnail/:id":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_FILE_NAME, "getFileThumbnail"),
 		};
 	}

@@ -1,4 +1,4 @@
-const { NovaHelpers } = require("../../../../../libs");
+const { CoreHelpers } = require("../../../../../libs");
 const BaseRoute = require("./base.portal.routes");
 
 class AuthMobileRoutes extends BaseRoute {
@@ -11,7 +11,7 @@ class AuthMobileRoutes extends BaseRoute {
 	registerAlias() {
 		return {
 			"POST /auth/genToken":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config, process.env.BIZ_AUTH_NAME, "portalGenToken")
 		};
 	}

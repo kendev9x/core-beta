@@ -1,6 +1,6 @@
 const _ = require("lodash");
 const ResponseCode = require("../../../../defined/response-code");
-const { NovaHelpers } = require("../../../../libs");
+const { CoreHelpers } = require("../../../../libs");
 const BaseLogic = require("./base.logic");
 
 class DeviceInfoLogic extends BaseLogic {

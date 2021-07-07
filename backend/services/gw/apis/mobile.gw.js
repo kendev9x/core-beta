@@ -1,11 +1,8 @@
 "use strict";
 const ApiGateway = require("moleculer-web");
-const E = require("moleculer-web").Errors;
 const BaseGw = require("./base.gw");
-const ResponseCode = require("../../../defined/response-code");
 const { MobileRoutes } = require("./routes/");
-const {NovaHelpers} = require("../../../libs");
-const {resErr} = require("../../../libs/helpers/response.helper");
+const {CoreHelpers} = require("../../../libs");
 
 class MobileGw extends BaseGw {
 	constructor(broker) {
@@ -38,7 +35,7 @@ class MobileGw extends BaseGw {
 			},
 			methods: {
 				async authenticate(ctx, route, req, res) {
-					const functionPath = NovaHelpers.RequestHelper
+					const functionPath = CoreHelpers.RequestHelper
 						.genPathByServiceAndActionName(_config, process.env.BIZ_AUTH_NAME, "mobileAuthenticate");
 					const result = await ctx.call(functionPath, {params: {route: ctx.span.name}});
 					if (result.code !== 200) {
@@ -48,11 +45,11 @@ class MobileGw extends BaseGw {
 				},
 
 				async authorize(ctx, route, req, res) {
-					const functionPathAuthor = NovaHelpers.RequestHelper
+					const functionPathAuthor = CoreHelpers.RequestHelper
 						.genPathByServiceAndActionName(_config, process.env.BIZ_AUTH_NAME, "mobileVerifyToken");
 					const user = await ctx.call(functionPathAuthor);
 					const {accountId, fullName} = user.data || {};
-					const functionPath = NovaHelpers.RequestHelper
+					const functionPath = CoreHelpers.RequestHelper
 						.genPathByServiceAndActionName(_config, process.env.BIZ_AUTH_NAME, "mobileAuthorization");
 					const result = await ctx.call(functionPath, {params: {route: ctx.span.name, accountId, actionName: req.$action.name}});
 					if (result.code !== 200) {

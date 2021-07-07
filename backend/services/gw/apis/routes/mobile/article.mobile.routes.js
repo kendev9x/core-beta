@@ -1,4 +1,4 @@
-const { NovaHelpers } = require("../../../../../libs");
+const { CoreHelpers } = require("../../../../../libs");
 const BaseRoute = require("./base.mobile.routes");
 
 class ProductMobileRoutes extends BaseRoute {
@@ -12,31 +12,31 @@ class ProductMobileRoutes extends BaseRoute {
 	registerAlias() {
 		return {
 			"POST /cms/articles/search":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config,
 					process.env.BIZ_ARTICLE_NAME,
 					"mobileTestingSqlBySP"
 				),
 			"GET /cms/articles/:id":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config,
 					process.env.BIZ_ARTICLE_NAME,
 					"mobileTestingSqlBySP"
 				),
 			"POST /cms/articles/searchArticlesByIds":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config,
 					process.env.BIZ_ARTICLE_NAME,
 					"mobileTestingSqlBySP"
 				),
 			"POST /cms/articles/findArticlesByTags":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config,
 					process.env.BIZ_ARTICLE_NAME,
 					"mobileTestingSqlBySP"
 				),
 			"GET /cms/articles/getArticles":
-				NovaHelpers.RequestHelper.genPathByServiceAndActionName(
+				CoreHelpers.RequestHelper.genPathByServiceAndActionName(
 					this.config,
 					process.env.BIZ_ARTICLE_NAME,
 					"mobileTestingSqlBySP"

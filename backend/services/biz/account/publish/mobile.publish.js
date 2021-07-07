@@ -1,4 +1,4 @@
-const {NovaHelpers} = require("../../../../libs");
+const {CoreHelpers} = require("../../../../libs");
 const {CustomerLogic} = require("../logics");
 const {Response} = require("../io");
 

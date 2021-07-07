@@ -1,7 +1,8 @@
 const os = require("os");
 
+
 const DevConfig = {
-	namespace: "NOVA-BE-DEV",
+	namespace: "CORE-BE-DEV",
 	nodeID: (process.env.NODEID ? process.env.NODEID : "") + os.hostname().toLowerCase(),
 	// Add manual -- not default
 	versionEndpoint: "v3",
@@ -38,10 +39,6 @@ const DevConfig = {
 	heartbeatInterval: 10,
 	heartbeatTimeout: 30,
 	contextParamsCloning: false,
-	tracking: {
-		enabled: true,
-		shutdownTimeout: 5000,
-	},
 	disableBalancer: true,
 	registry: {
 		strategy: "RoundRobin",
@@ -65,29 +62,51 @@ const DevConfig = {
 		this.logger.warn("Log the error:", err);
 		throw err; // Throw further
 	},
-	// metrics: {
-	// 	enabled: true,
-	// 	reporter: {
-	// 		type: "Prometheus",
-	// 		options: {
-	// 			port: process.env.GW_METRICS_PORT,
-	// 			path: "/metrics",
-	// 			defaultLabels: registry => ({
-	// 				namespace: registry.broker.namespace,
-	// 				nodeID: registry.broker.nodeID
-	// 			})
-	// 		}
-	// 	}
-	// },
+	metrics: {
+		enabled: true,
+		reporter: {
+			type: "Prometheus",
+			options: {
+				port: process.env.GW_METRICS_PORT,
+				path: "/metrics",
+				defaultLabels: registry => ({
+					namespace: registry.broker.namespace,
+					nodeID: registry.broker.nodeID
+				})
+			}
+		}
+	},
 	tracing: {
 		enabled: true,
+		// exporter: {
+		// 	type: "Console",
+		// 	options: {
+		// 		logger: null,
+		// 		colors: true,
+		// 		width: 100,
+		// 		gaugeWidth: 40
+		// 	}
+		// }
 		exporter: {
-			type: "Console",
+			type: "Jaeger",
 			options: {
-				logger: null,
-				colors: true,
-				width: 100,
-				gaugeWidth: 40
+				// HTTP Reporter endpoint. If set, HTTP Reporter will be used.
+				endpoint: null,
+				// UDP Sender host option.
+				host: "127.0.0.1",
+				// UDP Sender port option.
+				port: 6832,
+				// Jaeger Sampler configuration.
+				sampler: {
+					// Sampler type. More info: https://www.jaegertracing.io/docs/1.14/sampling/#client-sampling-configuration
+					type: "Const",
+					// Sampler specific options.
+					options: {}
+				},
+				// Additional options for `Jaeger.Tracer`
+				tracerOptions: {},
+				// Default tags. They will be added into all span tags.
+				defaultTags: null
 			}
 		}
 	},

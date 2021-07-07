@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { NovaHelpers } = require("../../../../libs");
+const { CoreHelpers } = require("../../../../libs");
 const { APP_SETTING } = require("../defined");
 
 const fields = {
@@ -56,15 +56,15 @@ class ArticleModel {
 	}
 
 	async createArticle(entity) {
-		return await NovaHelpers.MongoFuncHelper.$save(this.model, entity);
+		return await CoreHelpers.MongoFuncHelper.$save(this.model, entity);
 	}
 
 	async updateArticle(id, entity) {
-		return NovaHelpers.MongoFuncHelper.$updateOne(id, entity);
+		return CoreHelpers.MongoFuncHelper.$updateOne(id, entity);
 	}
 
 	async findArticleById(id, isWithoutCheckDelete = false) {
-		return await NovaHelpers.MongoFuncHelper.$getById(
+		return await CoreHelpers.MongoFuncHelper.$getById(
 			this.model,
 			id,
 			(isWithoutCheckDelete = false)
@@ -73,7 +73,7 @@ class ArticleModel {
 
   async findArticleByIds(ids) {
 		const query = { _id: { $in: ids } };
-		return await NovaHelpers.MongoFuncHelper.$findByListId(this.model, ids);
+		return await CoreHelpers.MongoFuncHelper.$findByListId(this.model, ids);
 	}
 
 	async findArticle(
@@ -82,7 +82,7 @@ class ArticleModel {
 		pageSize,
 		sort = { createdAt: -1 }
 	) {
-		return await NovaHelpers.MongoFuncHelper.$listPaging(
+		return await CoreHelpers.MongoFuncHelper.$listPaging(
 			this.model,
 			query,
 			sort,
@@ -92,7 +92,7 @@ class ArticleModel {
 	}
 
 	async findArticleByQuery(query, skip = 0, limit = 20, select = {}) {
-		return await NovaHelpers.MongoFuncHelper.$list(
+		return await CoreHelpers.MongoFuncHelper.$list(
 			this.model,
 			query,
 			{},
@@ -109,7 +109,7 @@ class ArticleModel {
 	}
 
 	async updateOne(conditionObj, newObj) {
-		return await NovaHelpers.MongoFuncHelper.$updateOne(
+		return await CoreHelpers.MongoFuncHelper.$updateOne(
 			this.model,
 			conditionObj,
 			newObj
@@ -125,7 +125,7 @@ class ArticleModel {
 		if (!filter) {
 			filter = {};
 		}
-		return await NovaHelpers.MongoFuncHelper.$listPaging(
+		return await CoreHelpers.MongoFuncHelper.$listPaging(
 			this.model,
 			filter,
 			sort,
